@@ -1,0 +1,212 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Provider Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;overflow-y:auto}
+.role-chip{margin:16px 14px 20px;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border:1.5px solid rgba(230,81,0,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.panel-hero{background:linear-gradient(135deg,#0A2540,#1565C0,#0288D1);border-radius:16px;padding:32px;margin-bottom:24px;color:#fff;display:flex;justify-content:space-between;align-items:flex-start}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 1px 6px rgba(10,37,64,.07);position:relative}
+.stat-icon{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.content-grid{display:grid;grid-template-columns:1fr 300px;gap:20px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07)}
+.card-header{padding:16px 20px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* inbox table */
+.inbox-row{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid #F8FAFB;cursor:pointer;position:relative}
+.inbox-row:last-child{border-bottom:none}
+.inbox-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0}
+.inbox-row.urgent::before{background:#C62828}
+.inbox-row.moderate::before{background:#E65100}
+.inbox-row.low::before{background:#29B6F6}
+.urg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.inbox-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sla-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+/* Performance */
+.perf-item{padding:14px 20px;border-bottom:1px solid #F8FAFB}
+.perf-item:last-child{border-bottom:none}
+.perf-label{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:flex;justify-content:space-between}
+.perf-bar{height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden}
+.perf-fill{height:100%;border-radius:4px}
+</style></head><body>
+
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <div style="display:flex;align-items:center;gap:3px">
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+    <span style="color:#CBD5E1">|</span>
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+  </div>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div style="font-size:13px;font-weight:700;color:#334155">WASAC</div>
+  <div class="avatar">W</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip">
+      <div class="role-icon"><i class="ti ti-building" style="color:#fff;font-size:15px"></i></div>
+      <div><div style="font-size:13px;font-weight:800;color:#0A2540">WASAC</div><div style="font-size:11px;color:#64748B;margin-top:1px">Water Provider</div></div>
+    </div>
+    <div class="sec-label">OPERATIONS</div>
+    <div class="nav-item active"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-inbox" style="font-size:16px"></i> Reports Inbox <span class="nav-badge">5</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">COMMUNITY</div>
+    <div class="nav-item"><i class="ti ti-speakerphone" style="font-size:16px"></i> Announcements</div>
+    <div class="nav-item"><i class="ti ti-users" style="font-size:16px"></i> Community</div>
+    <div class="nav-item"><i class="ti ti-droplet" style="font-size:16px"></i> Water Quality</div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">TEAM</div>
+    <div class="nav-item"><i class="ti ti-user-plus" style="font-size:16px"></i> My Team</div>
+    <div class="nav-item"><i class="ti ti-calendar-event" style="font-size:16px"></i> My Availability</div>
+  </aside>
+
+  <main class="main">
+    <!-- Overdue Alert Banner -->
+    <div style="background:#FFEBEE;border:1.5px solid rgba(198,40,40,.2);border-radius:12px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+      <i class="ti ti-alert-triangle" style="color:#C62828;font-size:20px;flex-shrink:0"></i>
+      <div style="flex:1"><span style="font-size:14px;font-weight:700;color:#C62828">2 reports have breached SLA</span><span style="font-size:13px;color:#64748B;margin-left:10px">Immediate action required to avoid escalation</span></div>
+      <button style="background:#C62828;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">View Overdue</button>
+    </div>
+
+    <div class="panel-hero">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px">PROVIDER DASHBOARD</div>
+        <div style="font-size:26px;font-weight:800;margin-bottom:6px">Good morning, WASAC Team</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.75);margin-bottom:14px">Water and Sanitation Corporation · Kigali Province</div>
+        <span style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px"><i class="ti ti-circle-check"></i> Approved Provider</span>
+      </div>
+      <button style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);color:#fff;padding:12px 22px;border-radius:12px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px"><i class="ti ti-speakerphone"></i> Post Announcement</button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#EFF6FF"><i class="ti ti-report" style="color:#1565C0"></i></div>
+        <div style="font-size:28px;font-weight:800;color:#0A2540;line-height:1">142</div>
+        <div style="font-size:12px;color:#64748B;font-weight:600;margin-top:5px">Total Reports</div>
+        <div style="font-size:11px;font-weight:700;color:#2E7D32;margin-top:8px;display:flex;align-items:center;gap:3px"><i class="ti ti-trending-up"></i> +12 this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#FFF3E0"><i class="ti ti-clock" style="color:#E65100"></i></div>
+        <div style="font-size:28px;font-weight:800;color:#E65100;line-height:1">18</div>
+        <div style="font-size:12px;color:#64748B;font-weight:600;margin-top:5px">Pending / Open</div>
+        <div style="font-size:11px;font-weight:700;color:#C62828;margin-top:8px;display:flex;align-items:center;gap:3px"><i class="ti ti-alert-triangle"></i> 2 overdue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+        <div style="font-size:28px;font-weight:800;color:#2E7D32;line-height:1">124</div>
+        <div style="font-size:12px;color:#64748B;font-weight:600;margin-top:5px">Resolved</div>
+        <div style="font-size:11px;font-weight:700;color:#2E7D32;margin-top:8px;display:flex;align-items:center;gap:3px"><i class="ti ti-trending-up"></i> 87% resolution</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#F3E5F5"><i class="ti ti-gauge" style="color:#7B1FA2"></i></div>
+        <div style="font-size:28px;font-weight:800;color:#0A2540;line-height:1">94%</div>
+        <div style="font-size:12px;color:#64748B;font-weight:600;margin-top:5px">SLA Compliance</div>
+        <div style="font-size:11px;font-weight:700;color:#7B1FA2;margin-top:8px;display:flex;align-items:center;gap:3px"><i class="ti ti-star"></i> Top performer</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="card">
+        <div class="card-header">
+          <span style="font-size:15px;font-weight:700;color:#0A2540">Reports Inbox</span>
+          <div style="display:flex;gap:6px">
+            <span class="badge" style="background:#FFEBEE;color:#C62828;cursor:pointer">Overdue (2)</span>
+            <span class="badge" style="background:#EFF6FF;color:#1565C0;cursor:pointer">All (18)</span>
+          </div>
+        </div>
+        <div>
+          <div class="inbox-row urgent">
+            <div class="urg-dot" style="background:#C62828"></div>
+            <div class="inbox-icon" style="background:#FFEBEE"><i class="ti ti-droplet-off" style="color:#C62828"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:700;color:#1E293B">No Water Supply — Kicukiro</div>
+              <div style="font-size:12px;color:#94A3B8;margin-top:2px">Jean Mugisha · Kicukiro, Kigali · <span style="font-family:monospace;font-size:11px">RPT-20260612-K7M3</span></div>
+            </div>
+            <span class="sla-pill" style="background:#FFEBEE;color:#C62828">Overdue 1d</span>
+            <button style="background:#1565C0;color:#fff;border:none;border-radius:8px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Assign</button>
+          </div>
+          <div class="inbox-row moderate">
+            <div class="urg-dot" style="background:#E65100"></div>
+            <div class="inbox-icon" style="background:#FFF3E0"><i class="ti ti-gauge" style="color:#E65100"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:700;color:#1E293B">Low Water Pressure — Remera</div>
+              <div style="font-size:12px;color:#94A3B8;margin-top:2px">Marie Uwase · Gasabo, Kigali</div>
+            </div>
+            <span class="sla-pill" style="background:#FFF3E0;color:#E65100">2d left</span>
+            <button style="background:#1565C0;color:#fff;border:none;border-radius:8px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Assign</button>
+          </div>
+          <div class="inbox-row low">
+            <div class="urg-dot" style="background:#29B6F6"></div>
+            <div class="inbox-icon" style="background:#F0FAFF"><i class="ti ti-flask" style="color:#0288D1"></i></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:700;color:#1E293B">Water Quality Concern</div>
+              <div style="font-size:12px;color:#94A3B8;margin-top:2px">Paul Nkurunziza · Nyarugenge, Kigali</div>
+            </div>
+            <span class="sla-pill" style="background:#E1F5FE;color:#0288D1">4d left</span>
+            <button style="background:#1565C0;color:#fff;border:none;border-radius:8px;padding:7px 13px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Assign</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">SLA Performance</span></div>
+          <div>
+            <div class="perf-item">
+              <div class="perf-label"><span>Resolved on time</span><span style="color:#2E7D32">94%</span></div>
+              <div class="perf-bar"><div class="perf-fill" style="width:94%;background:linear-gradient(90deg,#2E7D32,#4CAF50)"></div></div>
+            </div>
+            <div class="perf-item">
+              <div class="perf-label"><span>First response &lt; 2h</span><span style="color:#1565C0">88%</span></div>
+              <div class="perf-bar"><div class="perf-fill" style="width:88%;background:linear-gradient(90deg,#1565C0,#0288D1)"></div></div>
+            </div>
+            <div class="perf-item">
+              <div class="perf-label"><span>Escalated</span><span style="color:#E65100">6%</span></div>
+              <div class="perf-bar"><div class="perf-fill" style="width:6%;background:linear-gradient(90deg,#E65100,#FF9800)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Team Overview</span><a href="#" style="font-size:13px;font-weight:600;color:#1565C0;text-decoration:none">Manage →</a></div>
+          <div style="padding:14px 20px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">E</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1E293B">Eric Habimana</div><div style="font-size:11px;color:#64748B">Field Officer · 5 assigned</div></div>
+              <span style="background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px">Active</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7B1FA2,#9C27B0);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">A</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1E293B">Aline Mukamana</div><div style="font-size:11px;color:#64748B">Supervisor · 12 assigned</div></div>
+              <span style="background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px">Active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body></html>

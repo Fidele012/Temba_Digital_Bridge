@@ -1,0 +1,101 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign In Screen</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;background:linear-gradient(135deg,#071E38 0%,#0A2540 40%,#1565C0 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden}
+body::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.logo-link{display:flex;flex-direction:column;align-items:center;margin-bottom:28px;text-decoration:none}
+.logo-img{background:#fff;border-radius:18px;padding:12px 22px;box-shadow:0 8px 32px rgba(0,0,0,.3);display:flex;align-items:center;gap:10px}
+.logo-mark{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:17px;font-weight:800;color:#0A2540}
+.lang-toggle{display:flex;align-items:center;gap:4px;margin-bottom:20px}
+.lang-btn{background:none;border:none;font-family:inherit;font-size:13px;cursor:pointer;padding:4px 8px;border-radius:6px}
+.card{background:#fff;border-radius:20px;padding:40px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.card-title{font-size:26px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.card-sub{font-size:14px;color:#64748B;margin-bottom:28px}
+/* tabs */
+.tabs{display:flex;background:#F1F5F9;border-radius:12px;padding:4px;gap:4px;margin-bottom:24px}
+.tab{flex:1;padding:10px;border:none;border-radius:9px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;background:transparent;color:#64748B;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .18s}
+.tab.active{background:#fff;color:#1565C0;box-shadow:0 1px 4px rgba(10,37,64,.09)}
+/* field */
+.field{margin-bottom:18px}
+.field-label{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.req{color:#C62828}
+.field-wrap{position:relative;display:flex;align-items:center}
+.fi{position:absolute;left:14px;color:#94A3B8;font-size:17px;pointer-events:none;z-index:1}
+.field-wrap input{width:100%;padding:12px 14px 12px 42px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none}
+.field-wrap input:focus{border-color:#1565C0;box-shadow:0 0 0 3px rgba(21,101,192,.12)}
+.eye-btn{position:absolute;right:12px;background:none;border:none;cursor:pointer;color:#94A3B8;font-size:17px;display:flex;align-items:center}
+.check-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.check-label{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#334155}
+.check-label input{accent-color:#1565C0;width:16px;height:16px}
+.forgot-link{font-size:13px;font-weight:600;color:#1565C0;text-decoration:none}
+.btn-submit{width:100%;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:14px;border-radius:10px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(21,101,192,.32)}
+.or-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#94A3B8;font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:#E2E8F0}
+.ussd-box{background:linear-gradient(135deg,#EDF6FF,#E8F8FD);border:1.5px solid #B8DCF8;border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px}
+.ussd-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(21,101,192,.3)}
+.footer-link{text-align:center;margin-top:24px;font-size:13.5px;color:rgba(255,255,255,.65)}
+.footer-link a{color:#fff;font-weight:700;text-decoration:none}
+</style></head><body>
+
+<div class="logo-link">
+  <div class="logo-img">
+    <div class="logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:20px"></i></div>
+    <span class="logo-text">Temba Digital Bridge</span>
+  </div>
+</div>
+
+<div class="lang-toggle">
+  <button class="lang-btn" style="font-weight:700;color:#fff">EN</button>
+  <span style="color:rgba(255,255,255,.25)">|</span>
+  <button class="lang-btn" style="font-weight:600;color:rgba(255,255,255,.5)">RW</button>
+</div>
+
+<div class="card">
+  <div class="card-title">Sign In</div>
+  <p class="card-sub">Welcome back. Sign in to manage reports and stay informed.</p>
+
+  <div class="tabs">
+    <button class="tab active"><i class="ti ti-users"></i> Community Member</button>
+    <button class="tab"><i class="ti ti-building"></i> Water Provider</button>
+  </div>
+
+  <div class="field">
+    <div class="field-label">Phone Number or Email <span class="req">*</span></div>
+    <div class="field-wrap"><i class="ti ti-user fi"></i><input type="text" placeholder="e.g. +250 788 123 456 or jean@example.com" value="jean.mugisha@example.com"></div>
+  </div>
+
+  <div class="field">
+    <div class="field-label">
+      <span>Password <span class="req">*</span></span>
+      <a href="#" class="forgot-link">Forgot password?</a>
+    </div>
+    <div class="field-wrap">
+      <i class="ti ti-lock fi"></i>
+      <input type="password" placeholder="Enter your password" value="••••••••">
+      <button class="eye-btn"><i class="ti ti-eye"></i></button>
+    </div>
+  </div>
+
+  <div class="check-row">
+    <label class="check-label"><input type="checkbox" checked> Remember me</label>
+  </div>
+
+  <button class="btn-submit"><i class="ti ti-arrow-right-to-bracket"></i> Sign In</button>
+
+  <div class="or-divider">or access via</div>
+
+  <div class="ussd-box">
+    <div class="ussd-icon"><i class="ti ti-device-mobile" style="font-size:20px;color:#fff"></i></div>
+    <div>
+      <div style="font-weight:800;font-size:14.5px;color:#071E38;margin-bottom:4px">Using a basic phone?</div>
+      <div style="font-size:13px;color:#475569;line-height:1.65">Dial <strong style="color:#1565C0;font-weight:800">*XXX#</strong> on any phone — no internet needed. Available in English and Kinyarwanda.</div>
+    </div>
+  </div>
+</div>
+
+<p class="footer-link">Don't have an account? <a href="#">Sign Up</a></p>
+</body></html>

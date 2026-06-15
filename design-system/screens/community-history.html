@@ -1,0 +1,126 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community — History</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.sidebar-cta{margin:10px 14px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 28px);padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Timeline */
+.month-block{margin-bottom:28px}
+.month-label{font-size:13px;font-weight:800;color:#0A2540;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.month-label::after{content:'';flex:1;height:1px;background:#E2E8F0}
+.hist-item{display:flex;gap:14px;margin-bottom:2px}
+.hist-line{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.hist-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 2px currentColor}
+.hist-vert{width:2px;flex:1;background:#E2E8F0;margin:4px 0}
+.hist-card{background:#fff;border-radius:12px;padding:14px 18px;flex:1;margin-bottom:8px;box-shadow:0 1px 6px rgba(10,37,64,.07);cursor:pointer}
+.hist-card:hover{box-shadow:0 4px 18px rgba(10,37,64,.10)}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">J</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-users" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#0A2540">Jean Mugisha</div><div style="font-size:11px;color:#64748B">Community Member</div></div></div>
+    <div class="sec-label">MAIN</div>
+    <div class="nav-item"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-report" style="font-size:16px"></i> My Reports <span class="nav-badge">3</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item"><i class="ti ti-bell" style="font-size:16px"></i> Alerts <span class="nav-badge">5</span></div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">EXPLORE</div>
+    <div class="nav-item"><i class="ti ti-building" style="font-size:16px"></i> Providers</div>
+    <div class="nav-item active"><i class="ti ti-history" style="font-size:16px"></i> History</div>
+    <div class="sb-divider"></div>
+    <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Activity History</div><div style="font-size:13px;color:#64748B;margin-top:3px">All your reports, requests, and interactions</div></div>
+      <div style="display:flex;gap:10px">
+        <select style="padding:9px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:13px;font-family:inherit;color:#334155;outline:none;background:#fff;font-weight:600"><option>All Types</option><option>Reports</option><option>Service Requests</option><option>Appointments</option></select>
+        <button style="background:#F1F5F9;border:none;color:#64748B;padding:9px 14px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-download"></i> Export</button>
+      </div>
+    </div>
+    <!-- Stats strip -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px">
+      <div style="background:#fff;border-radius:11px;padding:14px 16px;box-shadow:0 1px 6px rgba(10,37,64,.07);text-align:center"><div style="font-size:24px;font-weight:800;color:#0A2540">24</div><div style="font-size:12px;color:#64748B;font-weight:600">Reports</div></div>
+      <div style="background:#fff;border-radius:11px;padding:14px 16px;box-shadow:0 1px 6px rgba(10,37,64,.07);text-align:center"><div style="font-size:24px;font-weight:800;color:#0A2540">8</div><div style="font-size:12px;color:#64748B;font-weight:600">Requests</div></div>
+      <div style="background:#fff;border-radius:11px;padding:14px 16px;box-shadow:0 1px 6px rgba(10,37,64,.07);text-align:center"><div style="font-size:24px;font-weight:800;color:#0A2540">5</div><div style="font-size:12px;color:#64748B;font-weight:600">Appointments</div></div>
+      <div style="background:#fff;border-radius:11px;padding:14px 16px;box-shadow:0 1px 6px rgba(10,37,64,.07);text-align:center"><div style="font-size:24px;font-weight:800;color:#2E7D32">87%</div><div style="font-size:12px;color:#64748B;font-weight:600">Resolved</div></div>
+    </div>
+    <!-- Timeline -->
+    <div class="month-block">
+      <div class="month-label">June 2026</div>
+      <div class="hist-item">
+        <div class="hist-line"><div class="hist-dot" style="color:#1565C0;background:#1565C0"></div><div class="hist-vert"></div></div>
+        <div class="hist-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="badge" style="background:#EFF6FF;color:#1565C0">Report</span><span style="font-size:12px;color:#94A3B8;margin-left:auto">Jun 12, 2026</span></div>
+          <div style="font-size:14px;font-weight:700;color:#1E293B">No Water Supply — Kicukiro Sector</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:3px">WASAC · <span style="font-family:monospace">RPT-20260612-K7M3</span></div>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-line"><div class="hist-dot" style="color:#E65100;background:#E65100"></div><div class="hist-vert"></div></div>
+        <div class="hist-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="badge" style="background:#FFF3E0;color:#E65100">Request</span><span style="font-size:12px;color:#94A3B8;margin-left:auto">Jun 10, 2026</span></div>
+          <div style="font-size:14px;font-weight:700;color:#1E293B">Water Quality Issue — Cloudy Water</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:3px">IRIBA Water Group · <span style="font-family:monospace">RPT-20260610-A9Z2</span></div>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-line"><div class="hist-dot" style="color:#0288D1;background:#0288D1"></div><div class="hist-vert"></div></div>
+        <div class="hist-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="badge" style="background:#E1F5FE;color:#0288D1">Appointment</span><span style="font-size:12px;color:#94A3B8;margin-left:auto">Jun 5, 2026</span></div>
+          <div style="font-size:14px;font-weight:700;color:#1E293B">Meter Reading Support — Completed</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:3px">WASAC · Field Officer Eric H.</div>
+        </div>
+      </div>
+    </div>
+    <div class="month-block">
+      <div class="month-label">May 2026</div>
+      <div class="hist-item">
+        <div class="hist-line"><div class="hist-dot" style="color:#2E7D32;background:#2E7D32"></div><div class="hist-vert"></div></div>
+        <div class="hist-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span><span style="font-size:12px;color:#94A3B8;margin-left:auto">May 28, 2026</span></div>
+          <div style="font-size:14px;font-weight:700;color:#1E293B">Pipe Leak Near Market — Repaired</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:3px">WASAC · <span style="font-family:monospace">RPT-20260528-Q8W2</span></div>
+        </div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-line"><div class="hist-dot" style="color:#2E7D32;background:#2E7D32"></div></div>
+        <div class="hist-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span><span style="font-size:12px;color:#94A3B8;margin-left:auto">May 22, 2026</span></div>
+          <div style="font-size:14px;font-weight:700;color:#1E293B">New Water Connection — Installed</div>
+          <div style="font-size:12px;color:#94A3B8;margin-top:3px">IRIBA Water Group · <span style="font-family:monospace">SRQ-20260605-B3X1</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:16px;font-size:13px;color:#94A3B8">Showing 5 of 37 activities · <a href="#" style="color:#1565C0;font-weight:700">Load more</a></div>
+  </main>
+</div>
+</body></html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+</head>
+<body>
+<div class="auth-page">
+
+  <a href="index.html" class="auth-logo">
+    <img src="assets/temba-logo.png" alt="Temba Digital Bridge" class="auth-logo-img">
+    <span class="auth-brand-name">Temba Digital Bridge</span>
+  </a>
+
+  <div class="auth-lang-toggle" style="display:flex;align-items:center;gap:4px;margin-bottom:-0.5rem;">
+    <button data-lang-btn="en" onclick="setLang('en')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);cursor:pointer;padding:4px 8px;">EN</button>
+    <span style="color:rgba(255,255,255,0.25);">|</span>
+    <button data-lang-btn="rw" onclick="setLang('rw')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;padding:4px 8px;">RW</button>
+  </div>
+
+  <div class="auth-card">
+    <h1 class="auth-title" data-i18n="signin_title">Sign In</h1>
+    <p class="auth-sub" data-i18n="signin_sub">Welcome back. Sign in to manage reports and stay informed.</p>
+
+    <!-- Role tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabC" onclick="setRole('community')">
+        <i class="ti ti-users" aria-hidden="true"></i> <span data-i18n="tab_community">Community Member</span>
+      </button>
+      <button class="auth-tab" id="tabP" onclick="setRole('provider')">
+        <i class="ti ti-building" aria-hidden="true"></i> <span data-i18n="tab_provider">Water Provider</span>
+      </button>
+    </div>
+
+    <form id="signinForm" onsubmit="handleSignin(event)">
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="lbl_phone_or_email">Phone Number or Email</span> <span class="req">*</span></label>
+        <div class="field-wrap">
+          <i class="ti ti-user field-icon" aria-hidden="true"></i>
+          <input type="text" id="siIdentifier" data-i18n-placeholder="ph_phone_or_email" placeholder="e.g. +250 788 123 456 or jean@example.com" autocomplete="username" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" style="display:flex; justify-content:space-between; align-items:center;">
+          <span data-i18n="lbl_password">Password</span> <span class="req">*</span>
+          <a href="forgot-password.html" style="font-size:12.5px; color:var(--blue); font-weight:600; margin-left:auto;" data-i18n="lbl_forgot_pw">Forgot password?</a>
+        </label>
+        <div class="field-wrap">
+          <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+          <input type="password" id="siPassword" data-i18n-placeholder="ph_password" placeholder="Enter your password" autocomplete="current-password" />
+          <button type="button" class="eye-btn" onclick="togglePw('siPassword',this)">
+            <i class="ti ti-eye" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+        <label class="check-item" style="font-size:13.5px;">
+          <input type="checkbox" id="rememberMe" /> <span data-i18n="lbl_remember_me">Remember me</span>
+        </label>
+      </div>
+
+      <div id="siError" style="display:none; background:var(--red-light); border:1px solid #FFCDD2; border-radius:var(--radius-sm); padding:10px 14px; font-size:13.5px; color:var(--red); margin-bottom:1rem; align-items:center; gap:8px;">
+        <i class="ti ti-circle-x" aria-hidden="true"></i>
+        <span id="siErrorMsg" data-i18n="si_error_default">Invalid credentials. Please try again.</span>
+      </div>
+
+      <button type="submit" class="btn-primary" id="siBtn">
+        <i class="ti ti-arrow-right-to-bracket" aria-hidden="true"></i> <span data-i18n="btn_signin">Sign In</span>
+      </button>
+
+    </form>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:1.5rem 0;color:var(--gray-400);font-size:12.5px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;">
+      <div style="flex:1;height:1px;background:var(--gray-200);"></div>
+      <span data-i18n="si_or_via">or access via</span>
+      <div style="flex:1;height:1px;background:var(--gray-200);"></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#EDF6FF,#E8F8FD);border:1.5px solid #B8DCF8;border-radius:14px;padding:1.1rem 1.25rem;display:flex;align-items:flex-start;gap:14px;">
+      <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(21,101,192,0.3);">
+        <i class="ti ti-device-mobile" style="font-size:20px;color:#fff;" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14.5px;color:#071E38;margin-bottom:4px;" data-i18n="ussd_box_title">Using a basic phone?</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.65;" data-i18n="ussd_box_desc">Dial <strong style="color:#1565C0;font-weight:800;">*XXX#</strong> on any phone — no internet needed. Available in English and Kinyarwanda.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="auth-footer"><span data-i18n="si_no_account">Don't have an account?</span> <a href="signup.html" data-i18n="link_signup">Sign Up</a></p>
+
+</div>
+
+<div id="temba-toast"></div>
+<script src="temba-auth.js"></script>
+<script>
+const API_BASE = 'http://127.0.0.1:8000/api/v1';
+
+/* Track which tab the user selected — enforced during sign-in */
+let _signinRole = 'community';
+
+function setRole(role) {
+  _signinRole = role;
+  document.getElementById('tabC').classList.toggle('active', role === 'community');
+  document.getElementById('tabP').classList.toggle('active', role === 'provider');
+  /* Update placeholder to match the selected role */
+  const id = document.getElementById('siIdentifier');
+  if (id) id.placeholder = role === 'provider'
+    ? 'Organisation admin email'
+    : 'e.g. +250 788 123 456 or jean@example.com';
+}
+
+function _siError(msg) {
+  const errBox = document.getElementById('siError');
+  errBox.style.display = 'flex';
+  document.getElementById('siErrorMsg').textContent = msg;
+  const btn = document.getElementById('siBtn');
+  btn.innerHTML = '<i class="ti ti-arrow-right-to-bracket"></i> Sign In';
+  btn.disabled = false;
+}
+
+/* Role-mismatch helper — tells user exactly which tab to use */
+function _roleMismatchError(actualRole) {
+  const selected = _signinRole === 'provider' ? 'Water Provider' : 'Community Member';
+  const correct  = actualRole  === 'provider' ? 'Water Provider' : 'Community Member';
+  _siError(
+    `This account is registered as a ${correct}. ` +
+    `Please select the "${correct}" tab to sign in.`
+  );
+}
+
+async function handleSignin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('siBtn');
+  document.getElementById('siError').style.display = 'none';
+  btn.innerHTML = '<i class="ti ti-loader-2 ti-spin"></i> Signing in…';
+  btn.disabled = true;
+
+  const email = document.getElementById('siIdentifier').value.trim();
+  const pw    = document.getElementById('siPassword').value;
+
+  if (!email || !pw) {
+    _siError('Please enter your email and password.');
+    return;
+  }
+
+  let usedLocalAuth = false;
+  let localAccount  = null;
+  let tokenData;
+
+  /* ── Try live API first ── */
+  try {
+    const loginResp = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw })
+    });
+
+    if (!loginResp.ok) {
+      if (loginResp.status === 401) {
+        /* API rejected — account may only exist locally (registered while offline).
+           Check local store: if password matches AND role matches selected tab, re-register + retry. */
+        const acct = _getLocalAccount(email);
+        if (acct) {
+          const typedHash = await _hashPw(pw);
+          if (typedHash !== acct.passwordHash) {
+            _siError('Incorrect password. Please check your credentials and try again.');
+            return;
+          }
+          /* Password matches — validate role against selected tab before proceeding */
+          if (acct.role !== _signinRole) {
+            _roleMismatchError(acct.role);
+            return;
+          }
+          /* Try to push account to API (registered offline) */
+          try {
+            const reReg = await fetch(`${API_BASE}/auth/register`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: acct.email,
+                password: pw,
+                full_name: acct.name,
+                role: acct.role,
+                phone: acct.phone || null,
+              })
+            });
+            if (reReg.ok || reReg.status === 409) {
+              const retry = await fetch(`${API_BASE}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: pw })
+              });
+              if (retry.ok) tokenData = await retry.json();
+            }
+          } catch (_) { /* network dropped — fall through to local sign-in */ }
+
+          if (!tokenData) { usedLocalAuth = true; localAccount = acct; }
+        } else {
+          _siError('No account found with this email. Please sign up first.');
+          return;
+        }
+      } else {
+        const errBody = await loginResp.json().catch(() => ({}));
+        _siError(loginResp.status === 403
+          ? 'Your account has been deactivated. Please contact support.'
+          : (errBody.detail || 'Sign in failed. Please try again.'));
+        return;
+      }
+    }
+
+    if (!usedLocalAuth && !localAccount && !tokenData) tokenData = await loginResp.json();
+
+  } catch (_) {
+    /* ── API unreachable — verify against local credential store ── */
+    const acct = _getLocalAccount(email);
+    if (!acct) {
+      _siError('No account found with this email. Please sign up first.');
+      return;
+    }
+    const typedHash = await _hashPw(pw);
+    if (typedHash !== acct.passwordHash) {
+      _siError('Incorrect password. Please check your credentials and try again.');
+      return;
+    }
+    /* Validate role matches selected tab */
+    if (acct.role !== _signinRole) {
+      _roleMismatchError(acct.role);
+      return;
+    }
+    usedLocalAuth = true;
+    localAccount  = acct;
+  }
+
+  /* ── Local auth path ── */
+  if (usedLocalAuth && localAccount) {
+    localStorage.removeItem('temba_token');
+    localStorage.setItem('temba_session', JSON.stringify({
+      loggedIn:   true,
+      role:       localAccount.role,
+      name:       localAccount.name,
+      firstName:  localAccount.firstName  || null,
+      lastName:   localAccount.lastName   || null,
+      gender:     localAccount.gender     || null,
+      orgName:    localAccount.orgName    || null,
+      orgPhone:   localAccount.orgPhone   || null,
+      orgEmail:   localAccount.orgEmail   || null,
+      adminPhone: localAccount.adminPhone || null,
+      title:      localAccount.title      || null,
+      licence:    localAccount.licence    || null,
+      coverage:   localAccount.coverage   || null,
+      services:   localAccount.services   || null,
+      email:      localAccount.email,
+      phone:      localAccount.phone      || null,
+      province:   localAccount.province   || null,
+      district:   localAccount.district   || null,
+      sector:     localAccount.sector     || null,
+      cell:       localAccount.cell       || null,
+    }));
+    localStorage.setItem('temba_lang', localAccount.lang || localStorage.getItem('temba_lang') || 'en');
+    showTembaToast('Signed in successfully!', 'success');
+    setTimeout(() => {
+      window.location.href = localAccount.role === 'provider'
+        ? 'dashboard-provider.html'
+        : 'dashboard-community.html';
+    }, 600);
+    return;
+  }
+
+  /* ── API auth path — load real profile ── */
+  localStorage.setItem('temba_token', tokenData.access_token);
+
+  let me = {};
+  try {
+    const meResp = await fetch(`${API_BASE}/users/me`, {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    if (!meResp.ok) throw new Error('profile');
+    me = await meResp.json();
+  } catch (_) {
+    localStorage.removeItem('temba_token');
+    _siError('Signed in but could not load your profile. Please try again.');
+    return;
+  }
+
+  const role = (me.role || 'community').toLowerCase();
+
+  /* Enforce: the selected tab must match the account's role */
+  if (role !== _signinRole) {
+    localStorage.removeItem('temba_token');
+    _roleMismatchError(role);
+    return;
+  }
+
+  const name = me.full_name || email.split('@')[0];
+
+  let orgName = null;
+  if (role === 'provider') {
+    try {
+      const provResp = await fetch(`${API_BASE}/providers/me`, {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` }
+      });
+      if (provResp.ok) { const prov = await provResp.json(); orgName = prov.organization_name || null; }
+    } catch (_) { /* dashboard will reload org name */ }
+  }
+
+  const nameParts = name.trim().split(/\s+/);
+  localStorage.setItem('temba_session', JSON.stringify({
+    loggedIn:   true,
+    role,
+    name,
+    firstName:  me.first_name  || nameParts[0]                       || null,
+    lastName:   me.last_name   || nameParts.slice(1).join(' ')       || null,
+    gender:     me.gender      || null,
+    orgName,
+    email:      me.email       || email,
+    phone:      me.phone       || null,
+    province:   me.province    || null,
+    district:   me.district    || null,
+    sector:     me.sector      || null,
+    cell:       me.cell        || null,
+  }));
+
+  if (!localStorage.getItem('temba_lang')) localStorage.setItem('temba_lang', 'en');
+
+  showTembaToast('Signed in successfully!', 'success');
+  setTimeout(() => {
+    window.location.href = role === 'provider'
+      ? 'dashboard-provider.html'
+      : 'dashboard-community.html';
+  }, 600);
+}
+</script>
+  <script src="temba-i18n.js"></script>
+  <script src="temba-chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand" style="cursor:pointer;">
+      <img src="assets/temba-logo.png" alt="Temba Digital Bridge" style="height:38px;width:auto;display:block;">
+      <span style="font-size:15px;font-weight:800;color:var(--navy,#0A2540);white-space:nowrap;letter-spacing:-0.01em;">Temba Digital Bridge</span>
+    </a>
+    <div class="nav-actions">
+      <div style="display:flex;align-items:center;gap:4px;font-size:13px;">
+        <button data-lang-btn="en" onclick="setLang('en');rerenderDashboard()" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--blue);cursor:pointer;">EN</button>
+        <span style="color:var(--gray-200);">|</span>
+        <button data-lang-btn="rw" onclick="setLang('rw');rerenderDashboard()" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;">RW</button>
+      </div>
+      <button class="dark-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Toggle dark mode"><i class="ti ti-moon" id="darkModeIcon"></i></button>
+      <button class="notif-btn" id="notifBtn" onclick="openNotifDrawer()" title="Notifications" aria-label="Notifications">
+        <i class="ti ti-bell"></i>
+        <span class="notif-badge" id="notifBadge" style="display:none;"></span>
+      </button>
+      <div class="nav-avatar" id="navAvatar" title="View profile" onclick="openCommunityProfile()" style="cursor:pointer;">U</div>
+      <button class="btn-ghost" onclick="signOut()" style="font-size:13px;" data-i18n="nav_signout">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="dash-sidebar">
+    <div style="padding:1.25rem 1.5rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:0.5rem;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00695C,#26A69A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,105,92,0.45);"><i class="ti ti-users"></i></div>
+        <div>
+          <div style="font-size:11px;font-weight:800;color:rgba(178,223,219,0.95);letter-spacing:0.8px;line-height:1.2;" data-i18n="sidebar_community_label">COMMUNITY</div>
+          <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.2px;" data-i18n="sidebar_member_portal">Member Portal</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-section-label" data-i18n="sidebar_main">Main</div>
+    <a href="#" class="sidebar-item active" onclick="showPanel('overview',this)">
+      <i class="ti ti-layout-dashboard" aria-hidden="true"></i> <span data-i18n="dash_overview">Overview</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('my-reports',this)">
+      <i class="ti ti-flag" aria-hidden="true"></i> <span data-i18n="dash_my_reports">My Reports</span>
+      <span class="s-badge" id="activeBadge">2</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('service-requests',this)">
+      <i class="ti ti-tool" aria-hidden="true"></i> <span data-i18n="dash_service_requests">Service Requests</span>
+      <span class="s-badge" id="svcBadge" style="display:none;"></span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('appointments',this)">
+      <i class="ti ti-calendar" aria-hidden="true"></i> <span data-i18n="dash_appointments">Appointments</span>
+      <span class="s-badge" id="apptBadge" style="display:none;"></span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('alerts',this)">
+      <i class="ti ti-bell" aria-hidden="true"></i> <span data-i18n="dash_alerts">Alerts</span>
+      <span class="s-badge" id="alertBadge">2</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('water-quality',this)">
+      <i class="ti ti-flask" aria-hidden="true"></i> <span data-i18n="dash_quality">Water Quality</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('providers',this)">
+      <i class="ti ti-building" aria-hidden="true"></i> <span data-i18n="dash_providers">Providers</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('history',this)">
+      <i class="ti ti-history" aria-hidden="true"></i> <span data-i18n="dash_history">History</span>
+    </a>
+    <hr class="sidebar-divider" />
+    <button class="sidebar-new-btn" onclick="window.location.href='report.html'">
+      <i class="ti ti-plus" aria-hidden="true"></i> <span data-i18n="dash_new_report">New Report</span>
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash-main">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="dash-panel active" id="panel-overview">
+      <div class="panel-hero">
+        <div>
+          <h1 id="greetingText">Good morning, there</h1>
+          <p id="greetingSub" data-i18n="overview_hero_sub">Here's what's happening in your area.</p>
+        </div>
+        <a href="report.html" class="btn-nav-cta" style="text-decoration:none;">
+          <i class="ti ti-flag" aria-hidden="true"></i> <span data-i18n="overview_report_problem">Report a Problem</span>
+        </a>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="ti ti-flag" aria-hidden="true"></i></div>
+          <div><div class="stat-num" id="statTotal">3</div><div class="stat-lbl" data-i18n="stat_total_reports">Total Reports</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange"><i class="ti ti-loader-2" aria-hidden="true"></i></div>
+          <div><div class="stat-num" id="statActive">2</div><div class="stat-lbl" data-i18n="stat_active_reports">Active Reports</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="ti ti-tool" aria-hidden="true"></i></div>
+          <div><div class="stat-num" id="statRequests">0</div><div class="stat-lbl" data-i18n="stat_service_requests">Service Requests</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="ti ti-calendar" aria-hidden="true"></i></div>
+          <div><div class="stat-num" id="statAppts">0</div><div class="stat-lbl" data-i18n="stat_appointments_lbl">Appointments</div></div>
+        </div>
+      </div>
+
+      <div class="two-col" style="gap:1.25rem;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-flag" style="color:var(--blue);" aria-hidden="true"></i> <span data-i18n="card_active_reports">Active Reports</span></span>
+            <a href="#" class="card-link" onclick="showPanel('my-reports',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewReports"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-bell" style="color:var(--orange);" aria-hidden="true"></i> <span data-i18n="card_recent_alerts">Recent Alerts</span></span>
+            <a href="#" class="card-link" onclick="showPanel('alerts',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewAlerts"></div>
+        </div>
+      </div>
+
+      <div class="two-col" style="gap:1.25rem;margin-top:1.25rem;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-tool" style="color:var(--purple);" aria-hidden="true"></i> <span data-i18n="card_recent_svc">Recent Service Requests</span></span>
+            <a href="#" class="card-link" onclick="showPanel('service-requests',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewRequests"><div class="empty-state"><i class="ti ti-tool"></i><p data-i18n="empty_no_svc_requests">No service requests yet.</p></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-calendar" style="color:var(--green);" aria-hidden="true"></i> <span data-i18n="card_upcoming_appts">Upcoming Appointments</span></span>
+            <a href="#" class="card-link" onclick="showPanel('appointments',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewAppts"><div class="empty-state"><i class="ti ti-calendar"></i><p data-i18n="empty_no_upcoming_appts">No appointments scheduled.</p></div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem;">
+        <div class="card-header">
+          <span class="card-title"><i class="ti ti-map-pin" style="color:var(--sky);" aria-hidden="true"></i> <span data-i18n="card_area_reports">Reports In Your Area</span></span>
+        </div>
+        <div id="areaFeed"></div>
+      </div>
+
+      <!-- Community Feedback Survey Card -->
+      <div id="surveyCard" class="card" style="margin-top:1.25rem;border-left:4px solid var(--blue);background:linear-gradient(135deg,#EFF6FF,#fff);">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="ti ti-message-circle" style="color:#fff;font-size:22px;" aria-hidden="true"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:3px;" data-i18n="survey_card_title">Community Voice</div>
+            <div style="font-size:13px;color:var(--gray-500);margin-bottom:12px;" data-i18n="survey_card_sub">Why do some community members not report water problems?</div>
+            <div id="surveyDone" style="display:none;font-size:13px;color:var(--green);font-weight:600;"><i class="ti ti-circle-check"></i> <span data-i18n="survey_thanks">Thank you! Your feedback helps strengthen community accountability.</span></div>
+            <button id="surveyOpenBtn" class="btn-primary" style="width:auto;padding:8px 18px;font-size:13px;" onclick="openSurveyModal()">
+              <i class="ti ti-clipboard-list" aria-hidden="true"></i> <span data-i18n="survey_btn_open">Share Your Experience</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MY REPORTS ── -->
+    <div class="dash-panel" id="panel-my-reports">
+      <div class="dash-header">
+        <div><h1 data-i18n="my_reports_title">My Reports</h1><p data-i18n="my_reports_sub">All water and sanitation issues you have submitted.</p></div>
+        <a href="report.html" class="btn-nav-cta" style="text-decoration:none;"><i class="ti ti-plus" aria-hidden="true"></i> <span data-i18n="dash_new_report">New Report</span></a>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterReports('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterReports('submitted',this)" data-i18n="filter_submitted">Submitted</button>
+        <button class="filter-btn" onclick="filterReports('in-progress',this)" data-i18n="filter_in_progress">In Progress</button>
+        <button class="filter-btn" onclick="filterReports('resolved',this)" data-i18n="filter_resolved">Resolved</button>
+      </div>
+      <div id="reportsList"></div>
+    </div>
+
+    <!-- ── SERVICE REQUESTS ── -->
+    <div class="dash-panel" id="panel-service-requests">
+      <div class="dash-header">
+        <div><h1 data-i18n="svc_section_title">Service Requests</h1><p data-i18n="svc_section_sub">Request water connections, tank deliveries, truck services, meter support, and inspections.</p></div>
+        <button class="btn-nav-cta" onclick="openSvcModal()"><i class="ti ti-plus" aria-hidden="true"></i> <span data-i18n="svc_modal_title">New Service Request</span></button>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterSvc('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterSvc('water_connection',this)" data-i18n="filter_water_connection">Water Connection</button>
+        <button class="filter-btn" onclick="filterSvc('tank_delivery',this)" data-i18n="filter_tank_delivery">Tank Delivery</button>
+        <button class="filter-btn" onclick="filterSvc('truck_delivery',this)" data-i18n="filter_water_truck">Water Truck</button>
+        <button class="filter-btn" onclick="filterSvc('meter_support',this)" data-i18n="filter_meter_support">Meter Support</button>
+        <button class="filter-btn" onclick="filterSvc('inspection',this)" data-i18n="filter_inspection">Inspection</button>
+      </div>
+      <div id="svcVerifyBanner"></div>
+      <div id="svcList"></div>
+    </div>
+
+    <!-- ── APPOINTMENTS ── -->
+    <div class="dash-panel" id="panel-appointments">
+      <div class="dash-header">
+        <div><h1 data-i18n="appt_section_title">Appointments</h1><p data-i18n="appt_section_sub">Schedule consultations and meetings with water service providers.</p></div>
+        <button class="btn-nav-cta" onclick="openApptModal()"><i class="ti ti-calendar-plus" aria-hidden="true"></i> <span data-i18n="btn_book_appt">Book Appointment</span></button>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterAppts('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterAppts('pending',this)" data-i18n="filter_pending">Pending</button>
+        <button class="filter-btn" onclick="filterAppts('approved',this)" data-i18n="filter_approved">Approved</button>
+        <button class="filter-btn" onclick="filterAppts('rescheduled',this)" data-i18n="filter_rescheduled">Rescheduled</button>
+        <button class="filter-btn" onclick="filterAppts('completed',this)" data-i18n="filter_completed">Completed</button>
+      </div>
+      <div id="apptVerifyBanner"></div>
+      <div id="apptList"></div>
+    </div>
+
+    <!-- ── ALERTS ── -->
+    <div class="dash-panel" id="panel-alerts">
+      <div class="dash-header"><div><h1 data-i18n="alerts_title">Alerts &amp; Announcements</h1><p data-i18n="alerts_sub">Updates from your water service providers.</p></div></div>
+      <div id="alertsList"></div>
+    </div>
+
+    <!-- ── WATER QUALITY ── -->
+    <div class="dash-panel" id="panel-water-quality">
+      <div class="dash-header"><div><h1 data-i18n="dash_quality">Water Quality</h1><p data-i18n="quality_panel_sub">Current water safety information for your area.</p></div></div>
+      <div class="quality-grid" id="qualityGrid"></div>
+    </div>
+
+    <!-- ── PROVIDERS ── -->
+    <div class="dash-panel" id="panel-providers">
+      <div class="dash-header"><div><h1 data-i18n="providers_title">Water Service Providers</h1><p data-i18n="providers_sub">Contact information for providers in your area.</p></div></div>
+      <div class="provider-cards" id="providerCards"></div>
+    </div>
+
+    <!-- ── HISTORY ── -->
+    <div class="dash-panel" id="panel-history">
+      <div class="dash-header">
+        <div><h1 data-i18n="dash_history">History</h1><p data-i18n="history_sub">Your completed, resolved, and cancelled interactions with water service providers.</p></div>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterHistory('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterHistory('appointments',this)"><i class="ti ti-calendar"></i> <span data-i18n="filter_appointments">Appointments</span></button>
+        <button class="filter-btn" onclick="filterHistory('reports',this)"><i class="ti ti-flag"></i> <span data-i18n="filter_reports">Reports</span></button>
+        <button class="filter-btn" onclick="filterHistory('service_requests',this)"><i class="ti ti-tool"></i> <span data-i18n="filter_svc_requests">Service Requests</span></button>
+      </div>
+      <div class="card">
+        <div id="historyList"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── SERVICE REQUEST MODAL ── -->
+<div class="modal-overlay" id="svcModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2><i class="ti ti-tool" style="color:var(--blue);" aria-hidden="true"></i> <span data-i18n="svc_modal_title">New Service Request</span></h2>
+      <button class="modal-close" onclick="closeSvcModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="step-section"><i class="ti ti-grid-dots" aria-hidden="true"></i> <span data-i18n="svc_select_type">Select Service Type</span></div>
+      <div class="svc-type-grid" id="svcTypeGrid">
+        <div class="svc-type-card" onclick="selectSvcType('water_connection',this)">
+          <i class="ti ti-droplet svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_connection">Water Connection</div>
+        </div>
+        <div class="svc-type-card" onclick="selectSvcType('tank_delivery',this)">
+          <i class="ti ti-device-floppy svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_tank">Tank Delivery</div>
+        </div>
+        <div class="svc-type-card" onclick="selectSvcType('truck_delivery',this)">
+          <i class="ti ti-truck svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_truck">Water Truck</div>
+        </div>
+        <div class="svc-type-card" onclick="selectSvcType('meter_support',this)">
+          <i class="ti ti-gauge svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_meter">Meter Support</div>
+        </div>
+        <div class="svc-type-card" onclick="selectSvcType('inspection',this)">
+          <i class="ti ti-search svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_inspection">Technical Inspection</div>
+        </div>
+        <div class="svc-type-card" onclick="selectSvcType('other',this)">
+          <i class="ti ti-help-circle svc-icon" aria-hidden="true"></i>
+          <div class="svc-label" data-i18n="svc_type_other">Other Service</div>
+        </div>
+      </div>
+      <div id="svcOtherReveal" style="display:none;margin-bottom:12px;">
+        <div class="field-wrap">
+          <i class="ti ti-pencil field-icon" style="top:13px;bottom:auto;" aria-hidden="true"></i>
+          <input type="text" id="svcOtherType" data-i18n-placeholder="svc_other_hint" placeholder="Please describe the service you need…" maxlength="150" style="padding-left:42px;" />
+        </div>
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;" data-i18n="svc_other_hint">Providing specific details helps the provider understand your request clearly.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="svc_provider_label">Water Service Provider</span> <span class="req">*</span></label>
+        <div class="field-wrap sel-wrap">
+          <i class="ti ti-building field-icon" aria-hidden="true"></i>
+          <select id="svcProvider">
+            <option value="" disabled selected data-i18n="appt_select_provider">Select a provider</option>
+          </select>
+          <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="lbl_urgency">Urgency Level</span> <span class="req">*</span></label>
+        <div class="radio-pills">
+          <label class="radio-pill-opt"><input type="radio" name="svcUrgency" value="low" checked /><span class="radio-pill-box" data-i18n="svc_urg_low">Non-Urgent</span></label>
+          <label class="radio-pill-opt"><input type="radio" name="svcUrgency" value="medium" /><span class="radio-pill-box" data-i18n="svc_urg_medium">Moderate</span></label>
+          <label class="radio-pill-opt"><input type="radio" name="svcUrgency" value="high" /><span class="radio-pill-box" data-i18n="svc_urg_high">High — Emergency</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="svc_location_label">Location (Sector / Cell / Village)</span> <span class="req">*</span></label>
+        <div class="field-wrap">
+          <i class="ti ti-map-pin field-icon" aria-hidden="true"></i>
+          <input type="text" id="svcLocation" placeholder="e.g. Kimisagara Cell, Nyarugenge, Kigali" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="svc_desc_label">Description</span> <span class="req">*</span></label>
+        <div class="field-wrap">
+          <i class="ti ti-align-left field-icon" style="top:13px;bottom:auto;" aria-hidden="true"></i>
+          <textarea id="svcDesc" rows="3" placeholder="Sobanura serivisi ukeneye n'ibindi bisobanuro byafasha…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeSvcModal()" data-i18n="btn_cancel">Cancel</button>
+      <button class="btn-primary" style="width:auto;height:42px;padding:0 24px;margin-top:0;" onclick="submitSvcRequest()">
+        <i class="ti ti-send" aria-hidden="true"></i> <span data-i18n="btn_submit_req">Submit Request</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPOINTMENT BOOKING MODAL ── -->
+<div class="modal-overlay" id="apptModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2><i class="ti ti-calendar-plus" style="color:var(--blue);" aria-hidden="true"></i> <span data-i18n="appt_modal_title">Book an Appointment</span></h2>
+      <button class="modal-close" onclick="closeApptModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label"><span data-i18n="svc_provider_label">Water Service Provider</span> <span class="req">*</span></label>
+        <div class="field-wrap sel-wrap">
+          <i class="ti ti-building field-icon" aria-hidden="true"></i>
+          <select id="apptProvider" onchange="onApptDateChange()">
+            <option value="" disabled selected data-i18n="appt_select_provider">Select a provider</option>
+          </select>
+          <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="appt_reason_label">Appointment Reason</span> <span class="req">*</span></label>
+        <div class="field-wrap sel-wrap">
+          <i class="ti ti-message field-icon" aria-hidden="true"></i>
+          <select id="apptReason" onchange="onApptReasonChange()">
+            <option value="" disabled selected data-i18n="appt_select_reason">Select reason</option>
+            <option value="water_connection" data-i18n="appt_rsn_connection">New Water Connection</option>
+            <option value="billing" data-i18n="appt_rsn_billing">Billing Dispute or Inquiry</option>
+            <option value="meter_reading" data-i18n="appt_rsn_meter">Meter Issue / Reading Dispute</option>
+            <option value="pipe_repair" data-i18n="appt_rsn_repair">Pipe Repair / Infrastructure</option>
+            <option value="inspection" data-i18n="appt_rsn_inspection">Inspection / Water Quality</option>
+            <option value="consultation" data-i18n="appt_rsn_consultation">General Consultation</option>
+            <option value="other" data-i18n="appt_rsn_other">Other</option>
+          </select>
+          <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+        </div>
+        <div id="apptOtherReasonReveal" style="display:none;margin-top:8px;">
+          <div class="field-wrap">
+            <i class="ti ti-pencil field-icon" aria-hidden="true"></i>
+            <input type="text" id="apptOtherReason" placeholder="Please describe the reason for your appointment…" maxlength="150" style="padding-left:42px;" />
+          </div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:4px;" data-i18n="svc_other_hint">Providing details helps the provider prepare for your appointment.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="appt_preferred_date">Preferred Date</span> <span class="req">*</span></label>
+        <div class="field-wrap">
+          <i class="ti ti-calendar field-icon" aria-hidden="true"></i>
+          <input type="date" id="apptDate" onchange="onApptDateChange()" />
+        </div>
+      </div>
+
+      <!-- Slot picker — shown after date is selected -->
+      <div id="slotPickerSection" style="display:none;margin-bottom:1rem;">
+        <label class="field-label" style="margin-bottom:8px;"><span data-i18n="appt_avail_slots">Available Time Slots</span> <span class="req">*</span></label>
+        <div id="slotPickerGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        <input type="hidden" id="apptSelectedSlot" />
+        <div id="slotPickerMsg" style="font-size:12.5px;color:var(--gray-500);margin-top:6px;"></div>
+      </div>
+
+      <!-- Fallback: free-form time (shown when provider has no availability configured) -->
+      <div id="slotFallbackSection" style="display:none;">
+        <div class="field">
+          <label class="field-label"><span data-i18n="appt_pref_time">Preferred Time</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-clock field-icon" aria-hidden="true"></i>
+            <select id="apptTimeSelect">
+              <option value="" disabled selected data-i18n="appt_select_time">Select time</option>
+              <option value="08:00 AM">08:00 AM</option>
+              <option value="09:00 AM">09:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="01:00 PM">01:00 PM</option>
+              <option value="02:00 PM">02:00 PM</option>
+              <option value="03:00 PM">03:00 PM</option>
+              <option value="04:00 PM">04:00 PM</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="info-box" style="margin-bottom:0;">
+          <i class="ti ti-info-circle" aria-hidden="true"></i>
+          <span data-i18n="appt_no_avail_hint">This provider hasn't published their availability yet. Your preferred time will be sent as a request for the provider to confirm.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" data-i18n="appt_meeting_type">Meeting Type</label>
+        <div class="radio-pills">
+          <label class="radio-pill-opt"><input type="radio" name="apptType" value="in-person" checked /><span class="radio-pill-box"><i class="ti ti-building" aria-hidden="true"></i> <span data-i18n="appt_type_inperson">In-Person</span></span></label>
+          <label class="radio-pill-opt"><input type="radio" name="apptType" value="phone" /><span class="radio-pill-box"><i class="ti ti-phone" aria-hidden="true"></i> <span data-i18n="appt_type_phone">Phone Call</span></span></label>
+          <label class="radio-pill-opt"><input type="radio" name="apptType" value="online" /><span class="radio-pill-box"><i class="ti ti-video" aria-hidden="true"></i> <span data-i18n="appt_type_online">Online</span></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span data-i18n="appt_notes_label">Additional Notes</span> <span style="font-weight:400;color:var(--gray-400);">(<span data-i18n="appt_notes_optional">Optional</span>)</span></label>
+        <div class="field-wrap">
+          <i class="ti ti-pencil field-icon" style="top:13px;bottom:auto;" aria-hidden="true"></i>
+          <textarea id="apptNotes" rows="2" placeholder="Any additional context or specific questions for the provider…"></textarea>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <i class="ti ti-info-circle" aria-hidden="true"></i>
+        <span data-i18n="appt_info_text">The provider will review your request and confirm or suggest an alternative time within 1–2 business days. You'll be notified by SMS and email.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeApptModal()" data-i18n="btn_cancel">Cancel</button>
+      <button class="btn-primary" style="width:auto;height:42px;padding:0 24px;margin-top:0;" onclick="submitAppt()">
+        <i class="ti ti-calendar-check" aria-hidden="true"></i> <span data-i18n="btn_book_appt">Book Appointment</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── COMMUNITY SURVEY MODAL ── -->
+<div class="modal-overlay" id="surveyModal">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-head">
+      <h2><i class="ti ti-clipboard-list" style="color:var(--blue);" aria-hidden="true"></i> <span data-i18n="survey_title">Why Do People Not Report Water Problems?</span></h2>
+      <button class="modal-close" onclick="closeSurveyModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;" data-i18n="survey_sub">Select all reasons that apply in your community.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="surveyOptions">
+        <label class="survey-opt"><input type="checkbox" value="no_contact"> <span data-i18n="survey_opt1">I do not know who to contact</span></label>
+        <label class="survey-opt"><input type="checkbox" value="no_channel"> <span data-i18n="survey_opt2">No reporting channel exists in my area</span></label>
+        <label class="survey-opt"><input type="checkbox" value="ignored"> <span data-i18n="survey_opt3">Past reports were ignored or produced no result</span></label>
+        <label class="survey-opt"><input type="checkbox" value="far_office"> <span data-i18n="survey_opt4">The responsible office is too far to visit</span></label>
+        <label class="survey-opt"><input type="checkbox" value="no_phone"> <span data-i18n="survey_opt5">I do not have a phone or internet access</span></label>
+        <label class="survey-opt"><input type="checkbox" value="always_report"> <span data-i18n="survey_opt6">I always report when problems occur</span></label>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:flex-end;gap:10px;">
+      <button class="btn-secondary" onclick="closeSurveyModal()"><span data-i18n="btn_back">Back</span></button>
+      <button class="btn-primary" style="width:auto;padding:0 24px;" onclick="submitSurvey()">
+        <i class="ti ti-send" aria-hidden="true"></i> <span data-i18n="survey_btn_submit">Submit Feedback</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── STAR RATING MODAL ── -->
+<div class="modal-overlay" id="ratingModal">
+  <div class="modal-box" style="max-width:420px;text-align:center;">
+    <div class="modal-head" style="justify-content:center;border-bottom:none;padding-bottom:0;">
+      <div>
+        <div style="font-size:2rem;margin-bottom:4px;">⭐</div>
+        <h2 style="font-size:17px;font-weight:800;color:var(--navy);" data-i18n="rating_title">How was your experience?</h2>
+        <p style="font-size:13px;color:var(--gray-500);margin-top:4px;" id="ratingSubtitle" data-i18n="rating_subtitle">Rate your interaction with the provider.</p>
+      </div>
+    </div>
+    <div class="modal-body" style="padding-top:0.5rem;">
+      <div class="star-row" id="starRow">
+        <button class="star-btn" type="button" data-v="1" onclick="selectStar(1)">★</button>
+        <button class="star-btn" type="button" data-v="2" onclick="selectStar(2)">★</button>
+        <button class="star-btn" type="button" data-v="3" onclick="selectStar(3)">★</button>
+        <button class="star-btn" type="button" data-v="4" onclick="selectStar(4)">★</button>
+        <button class="star-btn" type="button" data-v="5" onclick="selectStar(5)">★</button>
+      </div>
+      <div class="star-label" id="starLabel" data-i18n="rating_tap_star">Tap a star to rate</div>
+      <div class="field">
+        <div class="field-wrap">
+          <i class="ti ti-pencil field-icon" style="top:13px;bottom:auto;"></i>
+          <textarea id="ratingComment" rows="2" placeholder="Optional — share any feedback about this interaction…" data-i18n-placeholder="rating_feedback_ph"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:12px;">
+      <button class="btn-secondary" onclick="closeRatingModal()" data-i18n="rating_skip">Skip</button>
+      <button class="btn-primary" style="width:auto;padding:0 28px;" onclick="submitRating()"><i class="ti ti-star"></i> <span data-i18n="rating_submit">Submit Rating</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESCHEDULE MODAL ── -->
+<div class="modal-overlay" id="reschedModal">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-head">
+      <h2><i class="ti ti-calendar-event" style="color:var(--purple);"></i> <span data-i18n="resched_title">Reschedule Appointment</span></h2>
+      <button class="modal-close" onclick="closeReschedModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--gray-600);margin-bottom:1.25rem;" data-i18n="resched_subtitle">Select a new preferred date and time. The provider will be notified and must confirm the new schedule.</p>
+      <input type="hidden" id="reschedApptId" />
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label"><span data-i18n="resched_new_date">New Date</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-calendar field-icon"></i>
+            <input type="date" id="reschedDate" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label"><span data-i18n="resched_new_time">New Time</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-clock field-icon"></i>
+            <select id="reschedTime">
+              <option value="" disabled selected data-i18n="resched_select_time">Select time</option>
+              <option>08:00 AM</option><option>09:00 AM</option><option>10:00 AM</option>
+              <option>11:00 AM</option><option>12:00 PM</option><option>01:00 PM</option>
+              <option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" data-i18n="resched_reason_lbl">Reason for rescheduling</label>
+        <div class="field-wrap">
+          <i class="ti ti-pencil field-icon" style="top:13px;bottom:auto;"></i>
+          <textarea id="reschedReason" rows="2" placeholder="e.g. schedule conflict, travel, work commitments…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeReschedModal()" data-i18n="btn_cancel">Cancel</button>
+      <button class="btn-primary" style="width:auto;height:42px;padding:0 24px;margin-top:0;" onclick="submitResched()">
+        <i class="ti ti-calendar-event"></i> <span data-i18n="resched_submit">Request Reschedule</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT MODAL ── -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal-box" style="max-width:580px;">
+    <div class="modal-head">
+      <h2><i class="ti ti-droplet" style="color:var(--blue);"></i> <span data-i18n="about_modal_title">About Temba Digital Bridge</span></h2>
+      <button class="modal-close" onclick="closeAboutModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14.5px;color:var(--gray-600);line-height:1.75;margin-bottom:1.25rem;" data-i18n="about_modal_p1">
+        Temba Digital Bridge is a <strong style="color:var(--navy);">civic platform</strong> built to close the communication gap between Rwandan communities and the water service providers that serve them.
+      </p>
+      <p style="font-size:14px;color:var(--gray-600);line-height:1.7;margin-bottom:1.5rem;" data-i18n="about_modal_p2">
+        Accessible via <strong>web app</strong> or <strong>USSD</strong> on any phone — no smartphone or internet required. Available in <strong>English</strong> and <strong>Kinyarwanda</strong>.
+      </p>
+      <div style="margin-bottom:1.5rem;">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;" data-i18n="about_modal_providers_heading">Registered Providers</div>
+        <div>
+          <span class="about-provider-tag"><i class="ti ti-building"></i> WASAC</span>
+          <span class="about-provider-tag"><i class="ti ti-building"></i> Water Access Rwanda</span>
+          <span class="about-provider-tag"><i class="ti ti-building"></i> IRIBA Water Group</span>
+          <span class="about-provider-tag"><i class="ti ti-building"></i> Aquasan Limited</span>
+          <span class="about-provider-tag"><i class="ti ti-building"></i> Pro Water Rwanda</span>
+        </div>
+      </div>
+      <div class="about-modal-grid">
+        <div class="about-metric"><div class="about-metric-num">6+</div><div class="about-metric-lbl" data-i18n="about_modal_metric1_lbl">Water Service Providers</div></div>
+        <div class="about-metric"><div class="about-metric-num">5</div><div class="about-metric-lbl" data-i18n="about_modal_metric2_lbl">Administrative Levels</div></div>
+        <div class="about-metric"><div class="about-metric-num">2</div><div class="about-metric-lbl" data-i18n="about_modal_metric3_lbl">Languages Supported</div></div>
+        <div class="about-metric"><div class="about-metric-num">Web + USSD</div><div class="about-metric-lbl" data-i18n="about_modal_metric4_lbl">Access Channels</div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" style="width:auto;height:42px;padding:0 24px;margin-top:0;" onclick="closeAboutModal()" data-i18n="about_modal_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COMMUNITY PROFILE MODAL ══ -->
+<div id="communityProfileModal" onclick="if(event.target===this)closeCommunityProfile()" style="display:none;position:fixed;inset:0;background:rgba(4,20,30,0.6);z-index:900;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px);">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,50,40,0.3);">
+
+    <!-- ─ Header ─ -->
+    <div style="background:linear-gradient(135deg,#00695C 0%,#00897B 45%,#26C6DA 100%);padding:2rem 2rem 1.5rem;border-radius:20px 20px 0 0;position:relative;overflow:hidden;">
+      <svg style="position:absolute;bottom:0;left:0;right:0;opacity:0.12;" viewBox="0 0 400 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 20 C80 5 160 35 240 20 S360 5 400 20 V40 H0Z" fill="#fff"/></svg>
+      <button onclick="closeCommunityProfile()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.18);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&times;</button>
+      <div style="display:flex;align-items:center;gap:1rem;position:relative;">
+        <div id="cp-avatar" style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.25);border:3px solid rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;flex-shrink:0;">U</div>
+        <div>
+          <div id="cp-name" style="font-size:20px;font-weight:800;color:#fff;line-height:1.2;"></div>
+          <div id="cp-email-sub" style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:3px;"></div>
+          <div style="margin-top:6px;">
+            <span style="background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:#fff;display:inline-flex;align-items:center;gap:5px;"><i class="ti ti-users"></i> <span data-i18n="profile_community_member">Community Member</span></span>
+          </div>
+        </div>
+      </div>
+      <!-- live stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1.25rem;position:relative;">
+        <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+          <div id="cp-stat-reports" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;" data-i18n="profile_reports_stat">Reports</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+          <div id="cp-stat-appts" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;" data-i18n="profile_appts_stat">Appointments</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+          <div id="cp-stat-svc" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.75);font-weight:600;margin-top:2px;" data-i18n="profile_requests_stat">Requests</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ Body ─ -->
+    <div style="padding:1.5rem 1.75rem;">
+
+      <!-- Personal Information -->
+      <div style="font-size:11px;font-weight:800;color:#00897B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-user-circle"></i> <span data-i18n="profile_personal_info">Personal Information</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_first_name">First Name</div>
+          <div id="cp-first-name" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_last_name">Last Name</div>
+          <div id="cp-last-name" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_gender_lbl">Gender</div>
+          <div id="cp-gender" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_phone_lbl">Phone</div>
+          <div id="cp-phone" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;grid-column:span 2;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_email_addr">Email Address</div>
+          <div id="cp-email" style="font-size:13.5px;font-weight:600;color:var(--navy);word-break:break-word;">—</div>
+        </div>
+      </div>
+
+      <!-- Geographical Address -->
+      <div style="font-size:11px;font-weight:800;color:#00897B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-map-pin"></i> <span data-i18n="profile_geo_address">Geographical Address</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_province_lbl">Province</div>
+          <div id="cp-province" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_district_lbl">District</div>
+          <div id="cp-district" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_sector_lbl">Sector</div>
+          <div id="cp-sector" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_cell_lbl">Cell</div>
+          <div id="cp-cell" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+      </div>
+
+      <!-- Account Status row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_acct_status">Account Status</div>
+          <div style="font-size:13.5px;font-weight:700;color:#2E7D32;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#2E7D32;display:inline-block;"></span> <span data-i18n="profile_acct_active">Active</span></div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="profile_member_since">Member Since</div>
+          <div id="cp-since" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div style="border:1.5px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;">
+        <button onclick="toggleCpPwForm()" style="width:100%;padding:12px 14px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--font);">
+          <span style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--navy);"><i class="ti ti-lock" style="color:#00897B;font-size:16px;"></i> <span data-i18n="profile_change_pw">Change Password</span></span>
+          <i class="ti ti-chevron-down" id="cpPwChevron" style="color:var(--gray-400);font-size:15px;transition:transform 0.2s;"></i>
+        </button>
+        <div id="cpPwForm" style="display:none;padding:0 14px 14px;border-top:1px solid var(--gray-200);">
+          <div style="height:10px;"></div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="profile_current_pw">Current Password</label>
+            <div style="position:relative;">
+              <input type="password" id="cpPwCurrent" placeholder="Enter current password" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="toggleCpEye('cpPwCurrent',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="profile_new_pw">New Password</label>
+            <div style="position:relative;">
+              <input type="password" id="cpPwNew" placeholder="Min 8 chars, uppercase, number, symbol" oninput="cpCheckStrength(this.value)" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="toggleCpEye('cpPwNew',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+            <div style="margin-top:5px;height:4px;background:var(--gray-200);border-radius:4px;overflow:hidden;"><div id="cpStrFill" style="height:100%;width:0;border-radius:4px;transition:width 0.3s,background 0.3s;"></div></div>
+            <div id="cpStrLbl" style="font-size:11px;font-weight:600;margin-top:3px;color:var(--gray-400);"></div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="profile_confirm_pw_lbl">Confirm New Password</label>
+            <div style="position:relative;">
+              <input type="password" id="cpPwConf" placeholder="Repeat new password" oninput="cpCheckMatch()" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="toggleCpEye('cpPwConf',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+            <div id="cpMatchLbl" style="font-size:11px;font-weight:600;margin-top:3px;"></div>
+          </div>
+          <button onclick="submitCpPwChange()" id="cpPwBtn" style="width:100%;padding:11px;background:linear-gradient(135deg,#00897B,#26C6DA);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13.5px;cursor:pointer;" data-i18n="profile_update_pw">Update Password</button>
+          <div id="cpPwError" style="display:none;margin-top:8px;font-size:12.5px;color:#C62828;font-weight:600;"></div>
+        </div>
+      </div>
+
+      <button onclick="closeCommunityProfile()" style="width:100%;padding:12px;background:linear-gradient(135deg,#00897B,#26C6DA);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;" data-i18n="profile_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="temba-toast"></div>
+
+<!-- ── NOTIFICATION DRAWER ── -->
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotifDrawer()"></div>
+<div class="notif-drawer" id="notifDrawer">
+  <div class="notif-drawer-head">
+    <div>
+      <div class="notif-drawer-title"><i class="ti ti-bell" style="margin-right:6px;color:var(--blue);"></i><span data-i18n="notif_title">Notifications</span></div>
+      <div class="notif-drawer-sub" id="notifSubLine" data-i18n="notif_all_caught_up">All caught up</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <button class="notif-mark-btn" onclick="markAllNotifsRead()" data-i18n="notif_mark_all_read">Mark all read</button>
+      <button onclick="closeNotifDrawer()" style="background:none;border:none;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:18px;" title="Close"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+  <div class="notif-list" id="notifList"></div>
+</div>
+
+<script>
+/* ── Session guard: must be logged in as a community member ── */
+const _s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+if (!_s.loggedIn) window.location.href = 'signin.html';
+if (_s.loggedIn && _s.role === 'provider') window.location.href = 'dashboard-provider.html';
+
+/* ── Storage keys — namespaced per user so accounts don't share data ── */
+const _userKey = (_s.email || 'guest').toLowerCase().replace(/[^a-z0-9]/g, '_');
+const SVC_KEY  = `temba_svc_${_userKey}`;
+const APPT_KEY = `temba_appts_${_userKey}`;
+
+/* ── Alerts / Announcements ── */
+function getAlertsData() {
+  return [
+    { type:'warning', title:t('alert_1_title'), desc:t('alert_1_desc'), provider:'WASAC',     time:t('alert_1_time'), unread:true  },
+    { type:'info',    title:t('alert_2_title'), desc:t('alert_2_desc'), provider:'Pro Water', time:t('alert_2_time'), unread:true  },
+    { type:'success', title:t('alert_3_title'), desc:t('alert_3_desc'), provider:'IRIBA',     time:t('alert_3_time'), unread:false },
+  ];
+}
+function getQualityData() {
+  return [
+    { label:t('quality_ph'),        value:'7.2',  unit:'pH',        status:'good', note:t('quality_note_ph')        },
+    { label:t('quality_turbidity'), value:'0.8',  unit:'NTU',       status:'good', note:t('quality_note_turbidity') },
+    { label:t('quality_chlorine'),  value:'0.4',  unit:'mg/L',      status:'good', note:t('quality_note_chlorine')  },
+    { label:t('quality_ecoli'),     value:'0',    unit:'CFU/100ml', status:'good', note:t('quality_note_ecoli')     },
+    { label:t('quality_hardness'),  value:'148',  unit:'mg/L',      status:'warn', note:t('quality_note_hardness')  },
+    { label:t('quality_nitrate'),   value:'6.2',  unit:'mg/L',      status:'good', note:t('quality_note_nitrate')   },
+  ];
+}
+const providersData = [
+  { name:'WASAC',              type:'Water & Sanitation Corporation', coverage:'National',        phone:'+250 788 123 456', email:'info@wasac.rw',                  services:['Water Supply','Sanitation','Infrastructure'] },
+  { name:'Water Access Rwanda',type:'Rural Water Supply',             coverage:'Rural areas',     phone:'+250 788 234 567', email:'contact@wateraccessrwanda.rw',    services:['Water Supply','Rural Connections'] },
+  { name:'IRIBA Water Group',  type:'Urban Distribution',            coverage:'Urban/peri-urban', phone:'+250 788 345 678', email:'support@iriba.rw',                services:['Water Distribution','Meter Services'] },
+  { name:'Aquasan Limited',    type:'Sanitation Services',           coverage:'Kigali City',      phone:'+250 788 456 789', email:'info@aquasan.rw',                 services:['Sanitation','Drainage'] },
+  { name:'Pro Water Rwanda',   type:'Commercial Water',              coverage:'Commercial zones',  phone:'+250 788 567 890', email:'hello@prowater.rw',               services:['Commercial Supply','Water Trucks'] },
+];
+function getAreaData() {
+  return [
+    { text:t('area_1_text'), urgency:'urgent',   meta:t('area_1_meta') },
+    { text:t('area_2_text'), urgency:'moderate', meta:t('area_2_meta') },
+    { text:t('area_3_text'), urgency:'resolved', meta:t('area_3_meta') },
+  ];
+}
+
+const SVC_ICONS = { water_connection:'ti-droplet', tank_delivery:'ti-device-floppy', truck_delivery:'ti-truck', meter_support:'ti-gauge', inspection:'ti-search' };
+const SVC_ICON_CLASS = { water_connection:'water-conn', tank_delivery:'tank', truck_delivery:'truck', meter_support:'meter', inspection:'inspection' };
+const SVC_LABELS = { water_connection:'Water Connection', tank_delivery:'Tank Delivery', truck_delivery:'Water Truck', meter_support:'Meter Support', inspection:'Technical Inspection' };
+const STATUS_BADGE = { submitted:'badge-active', 'in-progress':'badge-moderate', resolved:'badge-resolved', reviewing:'badge-reviewing', approved:'badge-approved', rejected:'badge-rejected', completed:'badge-completed', cancelled:'badge-cancelled', pending:'badge-pending', rescheduled:'badge-rescheduled' };
+const STATUS_LABEL = { submitted:'Submitted','in-progress':'In Progress', resolved:'Resolved', reviewing:'Under Review', approved:'Approved', rejected:'Rejected', completed:'Completed', cancelled:'Cancelled', pending:'Pending Approval', rescheduled:'Reschedule Requested' };
+const URGENCY_COLOR = { urgent:'#C62828', moderate:'#E65100', low:'#1565C0', resolved:'#2E7D32', submitted:'#29B6F6','in-progress':'#E65100' };
+const APPT_REASON_LABELS = { water_connection:'New Connection Inquiry', billing:'Billing Dispute', meter_reading:'Meter Issue', pipe_repair:'Pipe Repair / Infrastructure', inspection:'Inspection / Water Quality', consultation:'General Consultation', other:'Other', new_connection:'New Connection Inquiry', general:'General Consultation', meter:'Meter Issue', infrastructure:'Service Complaint', quality:'Water Quality Concern' };
+
+/* ── i18n helpers for JS-rendered content ── */
+function _svcLabel(type) {
+  const map = { water_connection:'svc_type_connection', tank_delivery:'svc_type_tank', truck_delivery:'svc_type_truck', meter_support:'svc_type_meter', inspection:'svc_type_inspection' };
+  return (map[type] && t(map[type])) || SVC_LABELS[type] || type;
+}
+function _statusLabel(st) {
+  const map = { submitted:'status_submitted', 'in-progress':'status_in_progress', resolved:'status_resolved', reviewing:'status_under_review', approved:'appt_approved', rejected:'svc_rejected', completed:'status_completed', cancelled:'svc_cancelled', pending:'status_pending', rescheduled:'status_rescheduled' };
+  return (map[st] && t(map[st])) || STATUS_LABEL[st] || st;
+}
+function _apptReasonLabel(reason) {
+  const map = { water_connection:'appt_rsn_connection', billing:'appt_rsn_billing', meter_reading:'appt_rsn_meter', pipe_repair:'appt_rsn_repair', inspection:'appt_rsn_inspection', consultation:'appt_rsn_consultation', other:'appt_rsn_other', new_connection:'appt_rsn_connection', general:'appt_rsn_consultation', meter:'appt_rsn_meter', infrastructure:'appt_rsn_repair', quality:'appt_rsn_inspection' };
+  return (map[reason] && t(map[reason])) || APPT_REASON_LABELS[reason] || reason;
+}
+
+/* ── Helpers ── */
+function getSvcRequests() { return JSON.parse(localStorage.getItem(SVC_KEY) || '[]'); }
+function saveSvcRequests(d) { localStorage.setItem(SVC_KEY, JSON.stringify(d)); }
+function getAppts() { return JSON.parse(localStorage.getItem(APPT_KEY) || '[]'); }
+function saveAppts(d) { localStorage.setItem(APPT_KEY, JSON.stringify(d)); }
+function uid() { return 'id_' + Date.now() + '_' + Math.floor(Math.random()*9999); }
+function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-RW',{day:'numeric',month:'short',year:'numeric'}); }
+
+/* ── API Integration ── */
+const API_BASE = 'http://127.0.0.1:8000/api/v1';
+window._apiReports = []; window._apiAppts = []; window._apiSvcReqs = [];
+window._apiProviders = [];
+
+async function apiGet(path) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+async function apiPost(path, body) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+async function apiPut(path, body) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+function convertTo24h(timeStr) {
+  if (!timeStr) return '08:00';
+  if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+  const [time, period] = timeStr.trim().split(' ');
+  let [h, m] = time.split(':').map(Number);
+  if (period === 'PM' && h !== 12) h += 12;
+  if (period === 'AM' && h === 12) h = 0;
+  return `${String(h).padStart(2,'0')}:${String(m||0).padStart(2,'0')}`;
+}
+
+const REASON_MAP = {
+  new_connection:'water_connection', billing:'billing', meter:'meter_reading',
+  infrastructure:'pipe_repair', quality:'inspection', general:'consultation', other:'other',
+};
+const MEETING_MAP = { 'in-person':'in_person', phone:'phone_call', online:'site_visit' };
+
+async function loadProviders() {
+  const data = await apiGet('/providers?size=50');
+  if (data && data.items && data.items.length) {
+    window._apiProviders = data.items;
+    localStorage.setItem('temba_providers_cache', JSON.stringify(data.items));
+    _populateProviderSelects();
+    renderProviderCards();
+  }
+}
+
+function _populateProviderSelects() {
+  ['svcProvider','apptProvider'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    sel.innerHTML = `<option value="" disabled selected>${t('appt_select_provider')}</option>`;
+    window._apiProviders.forEach(p => {
+      sel.appendChild(new Option(p.organization_name, p.id));
+    });
+  });
+}
+
+function _normReport(r) {
+  const cm = { CONTAMINATION:'Contamination', contamination:'Contamination', PIPE_BURST:'Pipe Burst', pipe_burst:'Pipe Burst', NO_SUPPLY:'No Water Supply', no_supply:'No Water Supply', LOW_PRESSURE:'Low Pressure', low_pressure:'Low Pressure', OTHER:'Water Issue', other:'Water Issue' };
+  const um = { HIGH:'urgent', MEDIUM:'moderate', LOW:'low', high:'urgent', medium:'moderate', low:'low' };
+  return { ref:'#'+String(r.id).slice(0,8).toUpperCase(), issue:cm[r.category]||r.category, urgency:um[r.urgency]||'moderate', loc:[r.district,r.province].filter(Boolean).join(' - ')||'Rwanda', provider:r.provider_name||(r.provider&&r.provider.organization_name)||'WASAC', status:(r.status||'submitted').toLowerCase().replace(/_/g,'-'), time:r.created_at, fromApi:true, apiId:r.id };
+}
+function _normAppt(a) {
+  const reason = (a.reason||'consultation').toLowerCase();
+  return { id:a.id, provider:a.provider_name||(a.provider&&a.provider.organization_name)||'Provider', reason, date:a.appointment_date||'', time:a.appointment_time||'', status:(a.status||'pending').toLowerCase(), notes:a.notes||'', proposedDate:a.proposed_date||null, proposedTime:a.proposed_time||null, createdAt:a.created_at, fromApi:true };
+}
+function _normSvc(s) {
+  const tl = { WATER_CONNECTION:'water_connection', water_connection:'water_connection', TANK_DELIVERY:'tank_delivery', tank_delivery:'tank_delivery', TRUCK_DELIVERY:'truck_delivery', truck_delivery:'truck_delivery', METER_SUPPORT:'meter_support', meter_support:'meter_support', INSPECTION:'inspection', inspection:'inspection' };
+  return { id:s.id, type:tl[s.request_type]||'water_connection', provider:s.provider_name||(s.provider&&s.provider.organization_name)||'Provider', urgency:(s.urgency||'low').toLowerCase(), status:(s.status||'submitted').toLowerCase(), description:s.description||'', location:[s.district,s.province].filter(Boolean).join(', ')||'', createdAt:s.created_at, fromApi:true };
+}
+
+function getAllReports() {
+  const local = JSON.parse(sessionStorage.getItem('temba_reports') || '[]');
+  const apiIds = new Set(window._apiReports.map(r => r.apiId));
+  return [...window._apiReports, ...local.filter(r => !r.fromApi)];
+}
+function getAllSvcReqs() { return [...window._apiSvcReqs, ...getSvcRequests().filter(r => !r.fromApi)]; }
+function _provPhone(nameOrId) {
+  const p = window._apiProviders.find(x => x.id === nameOrId || x.organization_name === nameOrId);
+  return p ? (p.phone || '').replace(/[\s\-]/g, '') : '';
+}
+function getAllAppts()   { return [...window._apiAppts,   ...getAppts().filter(a => !a.fromApi)]; }
+
+async function loadApiData() {
+  const [rd, ad, sd] = await Promise.all([
+    apiGet('/reports?size=100'),
+    apiGet('/appointments?size=100'),
+    apiGet('/service-requests?size=100'),
+  ]);
+  let changed = false;
+  if (rd && rd.items) { window._apiReports = rd.items.map(_normReport); changed = true; }
+  if (ad && ad.items) { window._apiAppts   = ad.items.map(_normAppt);   changed = true; }
+  if (sd && sd.items) { window._apiSvcReqs = sd.items.map(_normSvc);    changed = true; }
+  if (changed) _refreshAll();
+}
+
+function _refreshAll() {
+  const all = getAllReports();
+  document.getElementById('statTotal').textContent   = all.length;
+  document.getElementById('statActive').textContent  = all.filter(r=>r.status!=='resolved').length;
+  document.getElementById('activeBadge').textContent = all.filter(r=>r.status!=='resolved').length;
+  _updateSvcBadgeAll(); _updateApptBadgeAll();
+  renderOverview(all); renderReportsList(all,'all'); renderSvcList('all'); renderApptList('all');
+}
+function _updateSvcBadgeAll() {
+  const all = getAllSvcReqs();
+  const p = all.filter(r=>r.status==='submitted'||r.status==='reviewing').length;
+  const b = document.getElementById('svcBadge');
+  if (p){b.textContent=p;b.style.display='flex';}else b.style.display='none';
+  document.getElementById('statRequests').textContent = all.length;
+}
+function _updateApptBadgeAll() {
+  const all = getAllAppts();
+  const p = all.filter(a=>a.status==='pending'||a.status==='rescheduled').length;
+  const b = document.getElementById('apptBadge');
+  if (p){b.textContent=p;b.style.display='flex';}else b.style.display='none';
+  document.getElementById('statAppts').textContent = all.length;
+}
+
+/* ── API notification sync ─────────────────────────────────────────────── */
+async function _syncApiNotifs() {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return;
+  try {
+    const resp = await fetch(`${API_BASE}/notifications?size=50`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const apiItems = (data.items || []);
+    if (!apiItems.length) return;
+    const _ICON = {
+      report_update:          { icon: 'ti-file-report',    color: 'blue'   },
+      service_request_update: { icon: 'ti-tool',           color: 'teal'   },
+      appointment_update:     { icon: 'ti-calendar-check', color: 'purple' },
+      announcement:           { icon: 'ti-speakerphone',   color: 'orange' },
+      system:                 { icon: 'ti-alert-circle',   color: 'red'    },
+    };
+    const stored = getNotifs();
+    const seen = new Set(stored.map(n => n.id));
+    let added = 0;
+    for (const n of apiItems) {
+      const mid = 'api_' + n.id;
+      if (seen.has(mid)) continue;
+      const { icon, color } = _ICON[n.notification_type] || { icon: 'ti-bell', color: 'blue' };
+      stored.unshift({ id: mid, type: n.notification_type, icon, color,
+        title: n.title, body: n.body, time: n.created_at, read: n.is_read });
+      added++;
+    }
+    if (added > 0) { saveNotifs(stored); updateNotifBadge(); }
+  } catch (_) { /* offline */ }
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded', async () => {
+  window.addEventListener('scroll', () => document.getElementById('mainNav').classList.toggle('shadow', window.scrollY > 8));
+
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  const name = s.name || 'there';
+  document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+  const h = new Date().getHours();
+  const gr = h < 12 ? t('greeting_morning') : h < 17 ? t('greeting_afternoon') : t('greeting_evening');
+  document.getElementById('greetingText').textContent = `${gr}, ${name}`;
+
+  const sr = JSON.parse(sessionStorage.getItem('temba_reports') || '[]');
+  const allReports = [...sr];
+
+  document.getElementById('statTotal').textContent    = allReports.length;
+  document.getElementById('statActive').textContent   = allReports.filter(r => r.status !== 'resolved').length;
+  const _activeCnt = allReports.filter(r => r.status !== 'resolved').length;
+  const _activeBadge = document.getElementById('activeBadge');
+  if (_activeCnt > 0) { _activeBadge.textContent = _activeCnt; _activeBadge.style.display = 'flex'; }
+  else _activeBadge.style.display = 'none';
+
+  updateSvcBadge();
+  updateApptBadge();
+  updateNotifBadge();
+  renderVerifyBanners();
+
+  renderOverview(allReports);
+  renderAlerts();
+  renderArea();
+  renderQuality();
+  renderProviderCards();
+  renderReportsList(allReports, 'all');
+  renderSvcList('all');
+  renderApptList('all');
+
+  // Set min date on date pickers
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('apptDate').min = today;
+  document.getElementById('reschedDate').min = today;
+
+  // Load providers for dropdowns (needed before modals open)
+  await loadProviders();
+
+  // Fetch live data from API (USSD + web submissions)
+  await loadApiData();
+
+  // Poll every 30 s to keep both dashboards in sync
+  setInterval(loadApiData, 30000);
+  // Sync API notifications every 5 minutes
+  _syncApiNotifs();
+  setInterval(_syncApiNotifs, 5 * 60 * 1000);
+});
+
+function updateSvcBadge() {
+  const pending = getSvcRequests().filter(r => r.status === 'submitted' || r.status === 'reviewing').length;
+  const badge = document.getElementById('svcBadge');
+  if (pending) { badge.textContent = pending; badge.style.display = 'flex'; }
+  else badge.style.display = 'none';
+  document.getElementById('statRequests').textContent = getSvcRequests().length;
+}
+function updateApptBadge() {
+  const pending = getAppts().filter(a => a.status === 'pending' || a.status === 'rescheduled').length;
+  const badge = document.getElementById('apptBadge');
+  if (pending) { badge.textContent = pending; badge.style.display = 'flex'; }
+  else badge.style.display = 'none';
+  document.getElementById('statAppts').textContent = getAppts().length;
+}
+
+/* ── Render helpers ── */
+function renderOverview(all) {
+  const active = all.filter(r => r.status !== 'resolved').slice(0,3);
+  document.getElementById('overviewReports').innerHTML = active.length
+    ? active.map(r => reportItemHTML(r)).join('')
+    : `<div class="empty-state"><i class="ti ti-check-circle"></i><p>${t('empty_no_active_reports')}</p></div>`;
+  document.getElementById('overviewAlerts').innerHTML = getAlertsData().slice(0,3).map(alertItemHTML).join('');
+
+  const reqs = getAllSvcReqs().slice(0,2);
+  document.getElementById('overviewRequests').innerHTML = reqs.length
+    ? reqs.map(r => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+        <div class="request-icon ${SVC_ICON_CLASS[r.type]||'water-conn'}" style="width:34px;height:34px;border-radius:8px;font-size:15px;"><i class="ti ${SVC_ICONS[r.type]||'ti-tool'}"></i></div>
+        <div style="flex:1;"><div style="font-size:13.5px;font-weight:700;color:var(--navy);">${_svcLabel(r.type)}</div><div style="font-size:12px;color:var(--gray-400);">${r.provider} · ${fmtDate(r.createdAt)}</div></div>
+        <span class="badge ${STATUS_BADGE[r.status]||'badge-active'}">${_statusLabel(r.status)}</span>
+      </div>`).join('')
+    : `<div class="empty-state"><i class="ti ti-tool"></i><p>${t('empty_no_svc_requests')}</p></div>`;
+
+  const appts = getAllAppts().filter(a => a.status !== 'cancelled' && a.status !== 'completed' && a.status !== 'rejected').slice(0,2);
+  document.getElementById('overviewAppts').innerHTML = appts.length
+    ? appts.map(a => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+        <div style="width:34px;height:34px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--green);"><i class="ti ti-calendar"></i></div>
+        <div style="flex:1;"><div style="font-size:13.5px;font-weight:700;color:var(--navy);">${_apptReasonLabel(a.reason)}</div><div style="font-size:12px;color:var(--gray-400);">${a.provider} · ${a.date}</div></div>
+        <span class="badge ${STATUS_BADGE[a.status]||'badge-pending'}">${_statusLabel(a.status)}</span>
+      </div>`).join('')
+    : `<div class="empty-state"><i class="ti ti-calendar"></i><p>${t('empty_no_upcoming_appts')}</p></div>`;
+}
+
+function reportItemHTML(r) {
+  return `<div class="report-item" onclick="window.location.href='report-detail.html?ref=${r.ref}'">
+    <div class="ri-bar" style="background:${URGENCY_COLOR[r.urgency]||'var(--blue)'}"></div>
+    <div class="ri-body">
+      <div class="ri-title">${r.issue}</div>
+      <div class="ri-meta">${r.loc} · ${r.provider}</div>
+      <div class="ri-ref">${r.ref}</div>
+    </div>
+    <span class="badge ${STATUS_BADGE[r.status]||'badge-active'}">${_statusLabel(r.status)}</span>
+  </div>`;
+}
+
+function alertItemHTML(a) {
+  const icons = { warning:'ti-alert-triangle', info:'ti-info-circle', success:'ti-circle-check' };
+  const colors = { warning:'var(--orange-light)', info:'var(--sky-light)', success:'var(--green-light)' };
+  const ic     = { warning:'var(--orange)', info:'var(--blue)', success:'var(--green)' };
+  return `<div class="alert-item ${a.unread?'unread':''}">
+    <div class="alert-icon" style="background:${colors[a.type]};"><i class="ti ${icons[a.type]}" style="color:${ic[a.type]};" aria-hidden="true"></i></div>
+    <div>
+      <div class="alert-title">${a.title}</div>
+      <div class="alert-desc">${a.desc}</div>
+      <div class="alert-meta">${a.provider} · ${a.time}</div>
+    </div>
+  </div>`;
+}
+
+function renderAlerts() {
+  const alertsData = getAlertsData();
+  document.getElementById('alertsList').innerHTML = alertsData.map(alertItemHTML).join('');
+  document.getElementById('alertBadge').textContent = alertsData.filter(a => a.unread).length;
+}
+function renderArea() {
+  document.getElementById('areaFeed').innerHTML = getAreaData().map(r => `
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+    <div style="width:8px;height:8px;border-radius:50%;background:${URGENCY_COLOR[r.urgency]};flex-shrink:0;"></div>
+    <div style="flex:1;font-size:13.5px;color:var(--navy);font-weight:500;">${r.text}</div>
+    <div style="font-size:12px;color:var(--gray-400);">${r.meta}</div>
+  </div>`).join('');
+}
+function renderQuality() {
+  document.getElementById('qualityGrid').innerHTML = getQualityData().map(q => `
+  <div class="quality-card">
+    <div class="qc-lbl">${q.label}</div>
+    <div class="qc-val">${q.value}</div>
+    <div class="qc-unit">${q.unit}</div>
+    <span class="qc-status qc-${q.status}">${q.status==='good'?'✓ '+t('quality_safe'):q.status==='warn'?'⚠ '+t('quality_monitor'):'✗ '+t('quality_unsafe')}</span>
+    <div style="font-size:11.5px;color:var(--gray-400);margin-top:5px;">${q.note}</div>
+  </div>`).join('');
+}
+function renderProviderCards() {
+  const source = window._apiProviders.length ? window._apiProviders.map(p => ({
+    id: p.id, name: p.organization_name,
+    type: (p.service_categories || []).join(', ') || 'Water Service Provider',
+    coverage: (p.service_areas || []).map(a => a.province).filter(Boolean).join(', ') || 'Rwanda',
+    phone: p.phone || '—', email: p.email || '—',
+    services: p.service_categories || [],
+  })) : providersData.map(p => ({ ...p, id: null }));
+
+  document.getElementById('providerCards').innerHTML = source.map(p => `
+  <div class="provider-card">
+    <div class="pc-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+    <div style="flex:1;">
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-type">${p.type} · ${p.coverage}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;">
+        ${(p.services||[]).map(s=>`<span style="background:var(--sky-pale);color:var(--blue);font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;">${s.replace(/_/g,' ')}</span>`).join('')}
+      </div>
+      <div class="pc-row"><i class="ti ti-phone" aria-hidden="true"></i>${p.phone&&p.phone!=='—'?p.phone:`<em style="color:var(--gray-400);font-style:italic;font-size:12px;">${t('provider_no_phone')}</em>`}</div>
+      <div class="pc-row"><i class="ti ti-mail" aria-hidden="true"></i>${p.email}</div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        ${p.phone&&p.phone!=='—'
+          ?`<a href="tel:${p.phone.replace(/[\s\-]/g,'')}" class="btn-call" style="text-decoration:none;font-size:13px;padding:7px 15px;"><i class="ti ti-phone"></i> <span data-i18n="btn_call">Call</span></a>
+            <a href="sms:${p.phone.replace(/[\s\-]/g,'')}&body=Hello%20${encodeURIComponent(p.name)},%20I%20am%20contacting%20you%20via%20Temba." class="btn-sms" style="text-decoration:none;font-size:13px;padding:7px 15px;"><i class="ti ti-message"></i> <span data-i18n="btn_sms">SMS</span></a>`
+          :`<span style="font-size:12px;color:var(--gray-400);padding:7px 0;"><i class="ti ti-info-circle"></i> ${t('provider_no_contact')}</span>`}
+        ${p.id ? `<button class="btn-action primary" onclick="openApptModalFor('${p.id}')"><i class="ti ti-calendar-plus"></i> ${t('btn_book_appt')}</button>` : ''}
+      </div>
+    </div>
+  </div>`).join('');
+  applyTranslations();
+}
+
+/* ── SLA accountability helper ── */
+const _SLA_H = {
+  contamination: 48, pipe_burst: 168, Contamination: 48, 'Pipe Burst': 168,
+  no_supply: 72, low_pressure: 72, 'No Water Supply': 72, 'Low Pressure': 72,
+  water_connection: 336, tank_delivery: 48, truck_delivery: 48,
+  meter_support: 120, inspection: 72, appointment: 48, default: 120,
+};
+const _CLOSED = new Set(['resolved','completed','cancelled','rejected','closed','verified']);
+
+function _slaBadge(type, createdAt, status) {
+  if (!createdAt || _CLOSED.has(status)) return '';
+  const h   = _SLA_H[type] || _SLA_H.default;
+  const ela = (Date.now() - new Date(createdAt)) / 3_600_000;
+  const pct = ela / h;
+  if (pct < 0.75) return '';
+  if (pct >= 1) {
+    const over = Math.round(ela - h);
+    return `<span class="sla-badge sla-overdue"><i class="ti ti-clock-exclamation"></i> ${t('sla_overdue_badge')}${over > 0 ? ` ${t('sla_overdue_by')} ${over}h` : ''}</span>`;
+  }
+  return `<span class="sla-badge sla-warning"><i class="ti ti-clock"></i> ${Math.round(h - ela)}${t('sla_h_left')}</span>`;
+}
+
+function renderReportsList(all, filter) {
+  const list = filter === 'all' ? all : all.filter(r => r.status === filter);
+  document.getElementById('reportsList').innerHTML = list.length
+    ? list.map(r => `
+    <div class="card" style="margin-bottom:1rem;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+            <span style="font-size:15px;font-weight:700;color:var(--navy);">${r.issue}</span>
+            <span class="badge badge-${r.urgency||'active'}" style="font-size:10.5px;">${r.urgency}</span>
+            ${_slaBadge(r.issue, r.time, r.status)}
+          </div>
+          <div style="font-size:13px;color:var(--gray-400);">${r.ref} · ${r.provider} · ${fmtDate(r.time)}</div>
+        </div>
+        <span class="badge ${STATUS_BADGE[r.status]||'badge-active'}">${_statusLabel(r.status)}</span>
+      </div>
+      <div style="font-size:13px;color:var(--gray-600);margin-top:6px;display:flex;align-items:center;gap:5px;">
+        <i class="ti ti-map-pin" style="color:var(--sky);"></i>${r.loc}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <a href="report-detail.html?ref=${r.ref}" class="btn-sms" style="text-decoration:none;"><i class="ti ti-eye"></i> ${t('btn_view_details')}</a>
+        ${r.status!=='resolved'?(ph=>ph?`<a href="tel:${ph}" class="btn-call" style="text-decoration:none;"><i class="ti ti-phone"></i> ${t('btn_call_provider')}</a>`:'' )(_provPhone(r.provider)):''}
+      </div>
+    </div>`).join('')
+    : `<div class="empty-state"><i class="ti ti-flag"></i><p>${t('empty_no_reports_category')}</p></div>`;
+}
+
+function filterReports(filter, btn) {
+  document.querySelectorAll('#panel-my-reports .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReportsList(getAllReports(), filter);
+}
+
+/* ── SERVICE REQUESTS ── */
+let selectedSvcType = '';
+function selectSvcType(type, el) {
+  selectedSvcType = type;
+  document.querySelectorAll('.svc-type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const rev = document.getElementById('svcOtherReveal');
+  if (rev) rev.style.display = type === 'other' ? 'block' : 'none';
+  if (type !== 'other') { const inp = document.getElementById('svcOtherType'); if (inp) inp.value = ''; }
+}
+
+function onApptReasonChange() {
+  const val = document.getElementById('apptReason').value;
+  const rev = document.getElementById('apptOtherReasonReveal');
+  if (rev) rev.style.display = val === 'other' ? 'block' : 'none';
+  if (val !== 'other') { const inp = document.getElementById('apptOtherReason'); if (inp) inp.value = ''; }
+}
+
+function renderSvcList(filter) {
+  const all = getAllSvcReqs();
+  const list = filter === 'all' ? all : all.filter(r => r.type === filter);
+  if (!list.length) {
+    document.getElementById('svcList').innerHTML = `<div class="empty-state"><i class="ti ti-tool"></i><p>${filter==='all'?t('empty_no_svc_requests'):_svcLabel(filter)+' — '+t('empty_no_svc_requests')}<br><a href="#" onclick="openSvcModal();return false;" style="color:var(--blue);font-weight:600;">${t('svc_submit_first')}</a></p></div>`;
+    return;
+  }
+  document.getElementById('svcList').innerHTML = list.slice().reverse().map(r => `
+  <div class="request-card">
+    <div class="request-icon ${SVC_ICON_CLASS[r.type]||'water-conn'}"><i class="ti ${SVC_ICONS[r.type]||'ti-tool'}"></i></div>
+    <div class="request-body">
+      <div class="request-title" data-svc-type="${r.type}">${_svcLabel(r.type)}</div>
+      <div class="request-meta">
+        <i class="ti ti-building" style="font-size:12px;color:var(--blue);"></i> ${r.provider} &nbsp;·&nbsp;
+        <i class="ti ti-map-pin" style="font-size:12px;color:var(--sky);"></i> ${r.location} &nbsp;·&nbsp;
+        ${fmtDate(r.createdAt)}
+      </div>
+      <div style="font-size:13px;color:var(--gray-600);margin-bottom:8px;line-height:1.5;">${r.description}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+        <span class="badge ${STATUS_BADGE[r.status]||'badge-active'}">${_statusLabel(r.status)}</span>
+        <span class="badge badge-${r.urgency}">${t('svc_urg_'+r.urgency)||r.urgency} ${t('svc_priority')}</span>
+        ${_slaBadge(r.type, r.createdAt, r.status)}
+      </div>
+      <div class="request-actions">
+        ${r.status==='submitted'||r.status==='reviewing'
+          ? `<button class="btn-action danger" onclick="cancelSvcRequest('${r.id}')"><i class="ti ti-x"></i> ${t('btn_cancel')}</button>`
+          : ''}
+        ${(ph=>ph?`<a href="tel:${ph}" class="btn-action secondary" style="text-decoration:none;"><i class="ti ti-phone"></i> ${t('btn_call_provider')}</a>`:'')(_provPhone(r.provider))}
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function filterSvc(filter, btn) {
+  document.querySelectorAll('#panel-service-requests .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSvcList(filter);
+}
+
+function openSvcModal() {
+  selectedSvcType = '';
+  document.querySelectorAll('.svc-type-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('svcProvider').value = '';
+  document.querySelector('input[name="svcUrgency"][value="low"]').checked = true;
+  document.getElementById('svcLocation').value = '';
+  document.getElementById('svcDesc').value = '';
+  const svcOtherRev = document.getElementById('svcOtherReveal');
+  if (svcOtherRev) svcOtherRev.style.display = 'none';
+  const svcOtherInp = document.getElementById('svcOtherType');
+  if (svcOtherInp) svcOtherInp.value = '';
+  document.getElementById('svcModal').classList.add('open');
+}
+function closeSvcModal() { document.getElementById('svcModal').classList.remove('open'); }
+
+async function submitSvcRequest() {
+  if (!selectedSvcType) { toast('Please select a service type','error'); return; }
+  const svcOtherDetail = (document.getElementById('svcOtherType')?.value || '').trim();
+  if (selectedSvcType === 'other' && !svcOtherDetail) {
+    document.getElementById('svcOtherType').focus();
+    toast('Please describe the service you need','error'); return;
+  }
+  const providerId = document.getElementById('svcProvider').value;
+  const location   = document.getElementById('svcLocation').value.trim();
+  const desc       = document.getElementById('svcDesc').value.trim();
+  const urgency    = document.querySelector('input[name="svcUrgency"]:checked')?.value || 'low';
+  if (!providerId) { toast('Please select a provider','error'); return; }
+  if (!location)   { toast('Please enter your location','error'); return; }
+  if (desc.length < 10) { toast('Please describe your request (at least 10 characters)','error'); return; }
+  const finalDesc = selectedSvcType === 'other' && svcOtherDetail
+    ? `Service type: ${svcOtherDetail}\n\n${desc}`
+    : desc;
+
+  const btn = document.querySelector('#svcModal .btn-primary');
+  if (btn) { btn.disabled = true; btn.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> ${t('btn_submitting')}`; }
+
+  const apiResult = await apiPost('/service-requests', {
+    request_type: selectedSvcType === 'other' ? 'water_connection' : selectedSvcType,
+    urgency,
+    description: finalDesc,
+    provider_id: providerId,
+    address_detail: location,
+  });
+
+  const svcProvName  = (window._apiProviders.find(p => p.id === providerId) || {}).organization_name || providerId;
+  const svcTypeLabel = selectedSvcType === 'other' && svcOtherDetail
+    ? svcOtherDetail
+    : ({ water_connection:'Water Connection', tank_delivery:'Tank Delivery', truck_delivery:'Truck Delivery', meter_support:'Meter Support', inspection:'Inspection' }[selectedSvcType] || selectedSvcType.replace(/_/g,' '));
+
+  if (apiResult) {
+    await loadApiData();
+    closeSvcModal();
+    _pushNotif({ type:'service_submitted', icon:'ti-tool', color:'teal', title:'Service Request Submitted', body:`Your ${svcTypeLabel} request to ${svcProvName} has been submitted successfully. You will be notified once reviewed.` });
+    _pushProvNotif(svcProvName, { type:'service_new', icon:'ti-tool', color:'teal', title:'New Service Request', body:`A new ${svcTypeLabel} request has been submitted. Please review it in your Service Requests panel.` });
+    if (btn) { btn.disabled = false; btn.innerHTML = `<i class="ti ti-send"></i> ${t('btn_submit_req')}`; }
+    toast('Service request submitted successfully!', 'success');
+    return;
+  }
+
+  // Fallback: localStorage only
+  const req = { id: uid(), type: selectedSvcType, provider: svcProvName, urgency, location, description: finalDesc, status: 'submitted', createdAt: new Date().toISOString() };
+  const all = getSvcRequests(); all.push(req); saveSvcRequests(all);
+  closeSvcModal();
+  renderSvcList('all');
+  renderOverview(getAllReports());
+  updateSvcBadge();
+  _pushNotif({ type:'service_submitted', icon:'ti-tool', color:'teal', title:'Service Request Submitted', body:`Your ${svcTypeLabel} request to ${svcProvName} has been submitted. You will be notified once reviewed.` });
+  _pushProvNotif(svcProvName, { type:'service_new', icon:'ti-tool', color:'teal', title:'New Service Request', body:`A new ${svcTypeLabel} request has been submitted. Please review it in your Service Requests panel.` });
+  if (btn) { btn.disabled = false; btn.innerHTML = `<i class="ti ti-send"></i> ${t('btn_submit_req')}`; }
+  toast('Service request submitted successfully!', 'success');
+}
+
+function cancelSvcRequest(id) {
+  if (!confirm('Cancel this service request?')) return;
+  const all = getSvcRequests();
+  const r = all.find(x => x.id === id);
+  if (r) r.status = 'cancelled';
+  saveSvcRequests(all);
+  renderSvcList('all');
+  updateSvcBadge();
+  toast('Request cancelled','info');
+}
+
+/* ── APPOINTMENTS ── */
+function renderApptList(filter) {
+  const all = getAllAppts();
+  const list = filter === 'all' ? all : filter === 'rescheduled' ? all.filter(a => a.status === 'rescheduled' || a.status === 'reschedule_requested') : all.filter(a => a.status === filter);
+  if (!list.length) {
+    document.getElementById('apptList').innerHTML = `<div class="empty-state"><i class="ti ti-calendar"></i><p>${filter==='all'?t('empty_no_appts_yet'):t('empty_no_appts_category')}<br><a href="#" onclick="openApptModal();return false;" style="color:var(--blue);font-weight:600;">${t('appt_book_first')}</a></p></div>`;
+    return;
+  }
+  document.getElementById('apptList').innerHTML = list.slice().reverse().map(a => {
+    const canModify = a.status === 'pending' || a.status === 'approved';
+    const hasReschNotice = a.status === 'rescheduled' && a.proposedDate;
+    return `
+  <div class="appt-card appt-${a.status}">
+    <div class="appt-header">
+      <div>
+        <div class="appt-title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">${_apptReasonLabel(a.reason)} ${_slaBadge('appointment', a.createdAt, a.status)}</div>
+        <div class="appt-provider"><i class="ti ti-building" style="color:var(--blue);font-size:13px;"></i> ${a.provider} &nbsp;·&nbsp; ${({'in-person':t('appt_type_inperson'),phone:t('appt_type_phone'),online:t('appt_type_online')}[a.meetingType]||t('appt_type_inperson'))}</div>
+      </div>
+      <span class="badge ${STATUS_BADGE[a.status]||'badge-pending'}">${_statusLabel(a.status)}</span>
+    </div>
+    <div class="appt-detail">
+      <div class="appt-detail-item"><i class="ti ti-calendar"></i> ${a.date||'—'}</div>
+      <div class="appt-detail-item"><i class="ti ti-clock"></i> ${a.time||'—'}</div>
+      <div class="appt-detail-item"><i class="ti ti-calendar-plus"></i> ${t('appt_booked_on')} ${fmtDate(a.createdAt)}</div>
+    </div>
+    ${a.notes?`<div class="appt-note">"${a.notes}"</div>`:''}
+    ${hasReschNotice?`<div class="appt-reschedule-notice"><i class="ti ti-calendar-event"></i> ${t('appt_resched_notice')} <strong>${a.proposedDate} at ${a.proposedTime}</strong> — <a href="#" onclick="acceptResched('${a.id}');return false;" style="color:var(--green);font-weight:700;">${t('btn_accept')}</a> or <a href="#" onclick="rejectResched('${a.id}');return false;" style="color:var(--red);font-weight:700;">${t('btn_decline')}</a></div>`:''}
+    <div class="appt-detail" style="gap:8px;">
+      ${canModify?`<button class="btn-action warning" onclick="openReschedModal('${a.id}')"><i class="ti ti-calendar-event"></i> ${t('btn_reschedule')}</button>`:''}
+      ${canModify?`<button class="btn-action danger" onclick="cancelAppt('${a.id}')"><i class="ti ti-x"></i> ${t('btn_cancel')}</button>`:''}
+      ${(ph=>ph?`<a href="tel:${ph}" class="btn-action secondary" style="text-decoration:none;"><i class="ti ti-phone"></i> ${t('btn_call_provider')}</a>`:'' )(_provPhone(a.provider))}
+    </div>
+  </div>`;
+  }).join('');
+}
+
+function filterAppts(filter, btn) {
+  document.querySelectorAll('#panel-appointments .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderApptList(filter);
+}
+
+/* ── Slot availability helpers (mirrors provider dashboard) ── */
+function generateTimeSlots(avail, date, bookedList) {
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dayName  = dayNames[new Date(date + 'T12:00:00').getDay()];
+  if (!avail.days.includes(dayName)) return null;
+  if ((avail.unavailDates || []).includes(date)) return null;
+  const [oh, om] = avail.openTime.split(':').map(Number);
+  const [ch, cm] = avail.closeTime.split(':').map(Number);
+  const dur = avail.slotDuration || 60;
+  const max = avail.maxPerSlot  || 1;
+  let cur = oh * 60 + om;
+  const end = ch * 60 + cm;
+  const slots = [];
+  const now = new Date();
+  while (cur + dur <= end) {
+    const h = Math.floor(cur / 60), m = cur % 60;
+    const timeKey = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const slotDt  = new Date(`${date}T${timeKey}:00`);
+    const isPast  = slotDt <= now;
+    const booked  = (bookedList || []).filter(b => b.date === date && b.time === timeKey)
+                      .reduce((s, b) => s + (b.count || 1), 0);
+    slots.push({ time: timeKey, booked, available: Math.max(0, max - booked), total: max, isPast });
+    cur += dur;
+  }
+  return slots;
+}
+function fmt12h(time24) {
+  const [h, m] = time24.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  return `${h % 12 || 12}:${String(m).padStart(2,'0')} ${period}`;
+}
+function _provAvailKey(provName) {
+  return 'temba_avail_' + (provName || 'provider').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+function _provBookedKey(provName) {
+  return 'temba_booked_' + (provName || 'provider').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+
+function _resetSlotPicker() {
+  document.getElementById('slotPickerSection').style.display  = 'none';
+  document.getElementById('slotFallbackSection').style.display = 'none';
+  document.getElementById('slotPickerGrid').innerHTML = '';
+  document.getElementById('apptSelectedSlot').value  = '';
+  document.getElementById('slotPickerMsg').textContent = '';
+  document.getElementById('apptTimeSelect').value = '';
+}
+
+function onApptDateChange() {
+  const date       = document.getElementById('apptDate').value;
+  const providerId = document.getElementById('apptProvider').value;
+  if (!date) { _resetSlotPicker(); return; }
+
+  /* Resolve provider name for storage key */
+  const provObj = window._apiProviders.find(p => p.id === providerId);
+  const provName = provObj ? provObj.organization_name : providerId;
+  const availKey  = _provAvailKey(provName);
+  const bookedKey = _provBookedKey(provName);
+
+  const avail      = JSON.parse(localStorage.getItem(availKey) || 'null');
+  const bookedList = JSON.parse(localStorage.getItem(bookedKey) || '[]');
+
+  const slotSec     = document.getElementById('slotPickerSection');
+  const fallbackSec = document.getElementById('slotFallbackSection');
+  const grid        = document.getElementById('slotPickerGrid');
+  const msg         = document.getElementById('slotPickerMsg');
+
+  document.getElementById('apptSelectedSlot').value = '';
+  document.getElementById('apptTimeSelect').value   = '';
+
+  if (!avail) {
+    /* Provider hasn't published availability — show free-form fallback */
+    slotSec.style.display     = 'none';
+    fallbackSec.style.display = 'block';
+    return;
+  }
+
+  const slots = generateTimeSlots(avail, date, bookedList);
+
+  if (!slots) {
+    /* Not a working day or date is blocked */
+    slotSec.style.display     = 'none';
+    fallbackSec.style.display = 'none';
+    toast(t('provider_unavail_date'), 'info');
+    document.getElementById('apptDate').value = '';
+    return;
+  }
+
+  fallbackSec.style.display = 'none';
+  slotSec.style.display     = 'block';
+
+  const available = slots.filter(s => !s.isPast && s.available > 0);
+  if (!slots.length) {
+    grid.innerHTML = `<p style="color:var(--gray-400);font-size:13px;">${t('slot_no_slots_date')}</p>`;
+    msg.textContent = '';
+    return;
+  }
+  if (!available.length) {
+    grid.innerHTML = `<p style="color:var(--red);font-size:13px;">${t('slot_all_full_date')}</p>`;
+    msg.textContent = '';
+    return;
+  }
+
+  grid.innerHTML = slots.map(s => {
+    const isFull = s.available === 0 || s.isPast;
+    const label  = s.isPast ? t('slot_past') : (s.available === 0 ? t('slot_full') : `${s.available} ${t('slot_avail_left')}`);
+    const cls    = isFull ? 'slot-chip full' : 'slot-chip avail';
+    return `<button type="button" class="${cls}" data-time="${s.time}"
+      onclick="selectSlot(this,'${s.time}')" ${isFull ? 'disabled' : ''}>
+      <span style="font-size:13px;font-weight:700;">${fmt12h(s.time)}</span>
+      <span style="font-size:10.5px;display:block;margin-top:2px;">${label}</span>
+    </button>`;
+  }).join('');
+
+  msg.textContent = `${available.length} ${t('slot_of')} ${slots.length} ${t('slot_avail_label')}`;
+}
+
+function selectSlot(el, time) {
+  document.querySelectorAll('#slotPickerGrid .slot-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('apptSelectedSlot').value = time;
+  document.getElementById('slotPickerMsg').textContent = `${t('slot_selected_prefix')} ${fmt12h(time)}`;
+}
+
+function openApptModal() {
+  document.getElementById('apptProvider').value = '';
+  document.getElementById('apptReason').value = '';
+  document.getElementById('apptDate').value = '';
+  document.getElementById('apptNotes').value = '';
+  document.querySelector('input[name="apptType"][value="in-person"]').checked = true;
+  const apptOtherRev = document.getElementById('apptOtherReasonReveal');
+  if (apptOtherRev) apptOtherRev.style.display = 'none';
+  const apptOtherInp = document.getElementById('apptOtherReason');
+  if (apptOtherInp) apptOtherInp.value = '';
+  _resetSlotPicker();
+  document.getElementById('apptModal').classList.add('open');
+}
+function openApptModalFor(providerId) {
+  openApptModal();
+  const sel = document.getElementById('apptProvider');
+  if (sel && providerId) sel.value = providerId;
+}
+function closeApptModal() { document.getElementById('apptModal').classList.remove('open'); }
+
+async function submitAppt() {
+  const providerId = document.getElementById('apptProvider').value;
+  const reason     = document.getElementById('apptReason').value;
+  const date       = document.getElementById('apptDate').value;
+  const notes      = document.getElementById('apptNotes').value.trim();
+  const meetType   = document.querySelector('input[name="apptType"]:checked')?.value || 'in-person';
+
+  /* Determine time: use selected slot if available, else fallback dropdown */
+  const slotTime    = document.getElementById('apptSelectedSlot').value;
+  const fallbackTime = document.getElementById('apptTimeSelect').value;
+  const usingSlot   = !!slotTime;
+  const timeStr     = slotTime || fallbackTime;
+
+  const otherReasonDetail = (document.getElementById('apptOtherReason')?.value || '').trim();
+  if (!providerId) { toast('Please select a provider','error'); return; }
+  if (!reason)     { toast('Please select an appointment reason','error'); return; }
+  if (reason === 'other' && !otherReasonDetail) {
+    document.getElementById('apptOtherReason').focus();
+    toast('Please describe the reason for your appointment','error'); return;
+  }
+  if (!date)       { toast('Please select a preferred date','error'); return; }
+  if (!timeStr)    { toast('Please select a time slot','error'); return; }
+
+  const btn = document.querySelector('#apptModal .btn-primary');
+  if (btn) { btn.disabled = true; btn.innerHTML = `<i class="ti ti-loader-2 ti-spin"></i> ${t('btn_booking_lbl')}`; }
+
+  /* Record the booked slot immediately so other users see it taken */
+  const provObj  = window._apiProviders.find(p => p.id === providerId);
+  const provName = provObj ? provObj.organization_name : providerId;
+  if (usingSlot) {
+    const bookedKey  = _provBookedKey(provName);
+    const bookedList = JSON.parse(localStorage.getItem(bookedKey) || '[]');
+    bookedList.push({ date, time: timeStr, count: 1, bookedAt: new Date().toISOString() });
+    localStorage.setItem(bookedKey, JSON.stringify(bookedList));
+  }
+
+  const _session     = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  const memberName   = _session.name || 'Community Member';
+  const reasonLabel  = reason === 'other' && otherReasonDetail
+    ? otherReasonDetail
+    : ({ water_connection:'New Water Connection', billing:'Billing Dispute', meter_reading:'Meter Issue', pipe_repair:'Pipe Repair', inspection:'Water Quality Inspection', consultation:'General Consultation', other:'Appointment' }[reason] || reason);
+  const combinedNotes = reason === 'other' && otherReasonDetail
+    ? (notes ? `Reason: ${otherReasonDetail}\n${notes}` : `Reason: ${otherReasonDetail}`)
+    : notes || null;
+
+  const apiResult = await apiPost('/appointments', {
+    provider_id: providerId,
+    reason: reason,
+    meeting_type: MEETING_MAP[meetType] || 'in_person',
+    appointment_date: date,
+    appointment_time: convertTo24h(timeStr),
+    notes: combinedNotes,
+  });
+
+  if (apiResult) {
+    await loadApiData();
+    closeApptModal();
+    _pushNotif({ type:'appointment_booked', icon:'ti-calendar-check', color:'blue', title:'Appointment Request Sent', body:`Your ${reasonLabel} request with ${provName} on ${date} at ${fmt12h(convertTo24h(timeStr))} has been submitted. The provider will confirm shortly.` });
+    _pushProvNotif(provName, { type:'appointment_new', icon:'ti-calendar-plus', color:'orange', title:'New Appointment Request', body:`${memberName} has requested a ${reasonLabel} on ${date} at ${fmt12h(convertTo24h(timeStr))}. Please review and confirm.` });
+    toast('Appointment booked! Provider will confirm within 1–2 business days.', 'success');
+    if (btn) { btn.disabled = false; btn.innerHTML = `<i class="ti ti-calendar-check"></i> ${t('btn_book_appt')}`; }
+    return;
+  }
+
+  /* Fallback: localStorage only — store bookedBy for cross-notifications */
+  const appt = { id: uid(), provider: provName, reason, date, time: timeStr, notes: combinedNotes, meetingType: meetType, status: 'pending', bookedBy: _session.email || '', bookedByName: memberName, createdAt: new Date().toISOString() };
+  const all = getAppts(); all.push(appt); saveAppts(all);
+  closeApptModal();
+  renderApptList('all');
+  renderOverview(getAllReports());
+  updateApptBadge();
+  _pushNotif({ type:'appointment_booked', icon:'ti-calendar-check', color:'blue', title:'Appointment Request Sent', body:`Your ${reasonLabel} request with ${provName} on ${date} at ${fmt12h(convertTo24h(timeStr))} has been submitted. The provider will confirm shortly.` });
+  _pushProvNotif(provName, { type:'appointment_new', icon:'ti-calendar-plus', color:'orange', title:'New Appointment Request', body:`${memberName} has requested a ${reasonLabel} on ${date} at ${fmt12h(convertTo24h(timeStr))}. Please review and confirm.` });
+  if (btn) { btn.disabled = false; btn.innerHTML = `<i class="ti ti-calendar-check"></i> ${t('btn_book_appt')}`; }
+  toast('Appointment request sent! Provider will confirm within 1–2 business days.', 'success');
+}
+
+function openReschedModal(id) {
+  document.getElementById('reschedApptId').value = id;
+  document.getElementById('reschedDate').value = '';
+  document.getElementById('reschedTime').value = '';
+  document.getElementById('reschedReason').value = '';
+  document.getElementById('reschedModal').classList.add('open');
+}
+function closeReschedModal() { document.getElementById('reschedModal').classList.remove('open'); }
+
+async function submitResched() {
+  const id   = document.getElementById('reschedApptId').value;
+  const date = document.getElementById('reschedDate').value;
+  const time = document.getElementById('reschedTime').value;
+  const rsn  = document.getElementById('reschedReason').value.trim();
+  if (!date) { toast('Please select a new date','error'); return; }
+  if (!time) { toast('Please select a new time','error'); return; }
+
+  const isApiAppt = window._apiAppts.some(a => a.id === id);
+  if (isApiAppt) {
+    const r = await apiPost(`/appointments/${id}/reschedule-request`, {
+      requested_date: date,
+      requested_time: convertTo24h(time),
+      reschedule_reason: rsn || null,
+    });
+    if (r) {
+      await loadApiData();
+      closeReschedModal();
+      toast('Reschedule request sent to provider.', 'info');
+      return;
+    }
+  }
+  // Fallback: localStorage
+  const all = getAppts();
+  const a = all.find(x => x.id === id);
+  if (a) { a.status = 'reschedule_requested'; a.requestedDate = date; a.requestedTime = time; }
+  saveAppts(all);
+  closeReschedModal();
+  renderApptList('all');
+  updateApptBadge();
+  toast('Reschedule request sent to provider.', 'info');
+}
+
+async function cancelAppt(id) {
+  if (!confirm('Cancel this appointment?')) return;
+  const allLocal = getAppts();
+  const apptInfo = window._apiAppts.find(a => a.id === id) || allLocal.find(a => a.id === id);
+  const isApiAppt = window._apiAppts.some(a => a.id === id);
+  if (isApiAppt) {
+    const token = localStorage.getItem('temba_token');
+    if (token) {
+      try {
+        const r = await fetch(API_BASE + `/appointments/${id}`, {
+          method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
+        });
+        if (r.ok) {
+          await loadApiData();
+          _pushNotif({ type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled', body:`Your appointment with ${apptInfo?.provider || 'the provider'} on ${apptInfo?.date || ''} has been cancelled.` });
+          if (apptInfo?.provider) _pushProvNotif(apptInfo.provider, { type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled by Member', body:`A community member cancelled their appointment scheduled for ${apptInfo.date || ''}.` });
+          toast('Appointment cancelled.', 'info');
+          return;
+        }
+      } catch {}
+    }
+  }
+  const all = getAppts();
+  const a = all.find(x => x.id === id);
+  if (a) a.status = 'cancelled';
+  saveAppts(all);
+  renderApptList('all');
+  updateApptBadge();
+  _pushNotif({ type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled', body:`Your appointment with ${a?.provider || 'the provider'} on ${a?.date || ''} has been cancelled.` });
+  if (a?.provider) _pushProvNotif(a.provider, { type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled by Member', body:`${a.bookedByName || 'A community member'} cancelled their appointment scheduled for ${a.date || ''}.` });
+  toast('Appointment cancelled.','info');
+}
+
+async function acceptResched(id) {
+  const allLocal  = getAppts();
+  const apptInfo  = window._apiAppts.find(a => a.id === id) || allLocal.find(a => a.id === id);
+  const isApiAppt = window._apiAppts.some(a => a.id === id);
+  if (isApiAppt) {
+    const r = await apiPost(`/appointments/${id}/accept-reschedule`, {});
+    if (r) {
+      await loadApiData();
+      _pushNotif({ type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted', body:`You accepted the new time proposed by ${apptInfo?.provider || 'the provider'}.` });
+      if (apptInfo?.provider) _pushProvNotif(apptInfo.provider, { type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted by Member', body:`The community member accepted your proposed new appointment time.` });
+      toast('Reschedule accepted!', 'success');
+      return;
+    }
+  }
+  const all = getAppts();
+  const a = all.find(x => x.id === id);
+  if (a && a.proposedDate) { a.date = a.proposedDate; a.time = a.proposedTime; a.status = 'approved'; delete a.proposedDate; delete a.proposedTime; }
+  saveAppts(all);
+  renderApptList('all');
+  _pushNotif({ type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted', body:`You accepted the new time proposed by ${a?.provider || 'the provider'}.` });
+  if (a?.provider) _pushProvNotif(a.provider, { type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted by Member', body:`The community member accepted your proposed new appointment time.` });
+  toast('Reschedule accepted!', 'success');
+}
+
+async function rejectResched(id) {
+  const isApiAppt = window._apiAppts.some(a => a.id === id);
+  if (isApiAppt) {
+    const r = await apiPost(`/appointments/${id}/reject-reschedule`, {});
+    if (r) { await loadApiData(); toast('Reschedule declined.', 'info'); return; }
+  }
+  const all = getAppts();
+  const a = all.find(x => x.id === id);
+  if (a) { a.status = 'cancelled'; delete a.proposedDate; delete a.proposedTime; }
+  saveAppts(all);
+  renderApptList('all');
+  toast('Reschedule declined. Appointment cancelled.', 'info');
+}
+
+/* ── Panel navigation ── */
+function showPanel(id, linkEl) {
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (linkEl) {
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    linkEl.classList.add('active');
+  }
+  if (id === 'history') renderHistory();
+}
+
+function rerenderDashboard() {
+  /* Always re-render language-sensitive JS content */
+  renderAlerts();
+  renderArea();
+  renderQuality();
+  renderProviderCards();
+  const active = document.querySelector('.dash-panel.active');
+  if (!active) { applyTranslations(); return; }
+  const id = active.id.replace('panel-', '');
+  if (id === 'overview') renderOverview(getAllReports());
+  else if (id === 'my-reports') renderReportsList(getAllReports(), 'all');
+  else if (id === 'service-requests') renderSvcList('all');
+  else if (id === 'appointments') renderApptList('all');
+  else if (id === 'history') renderHistory();
+  applyTranslations();
+}
+
+/* ── About modal ── */
+function openAboutModal()  { document.getElementById('aboutModal').classList.add('open'); }
+function closeAboutModal() { document.getElementById('aboutModal').classList.remove('open'); }
+
+/* ── Community Survey ── */
+function openSurveyModal() {
+  document.getElementById('surveyModal').classList.add('open');
+  applyTranslations();
+}
+function closeSurveyModal() {
+  document.getElementById('surveyModal').classList.remove('open');
+}
+function submitSurvey() {
+  const checked = [...document.querySelectorAll('#surveyOptions input:checked')].map(i => i.value);
+  localStorage.setItem('temba_survey_done', JSON.stringify({ answers: checked, at: new Date().toISOString() }));
+  closeSurveyModal();
+  document.getElementById('surveyOpenBtn').style.display = 'none';
+  document.getElementById('surveyDone').style.display = 'flex';
+  document.getElementById('surveyDone').style.alignItems = 'center';
+  document.getElementById('surveyDone').style.gap = '6px';
+}
+/* Hide survey card if already completed */
+(function() {
+  if (localStorage.getItem('temba_survey_done')) {
+    window.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('surveyOpenBtn');
+      const done = document.getElementById('surveyDone');
+      if (btn) btn.style.display = 'none';
+      if (done) done.style.display = 'flex';
+    });
+  }
+})();
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAboutModal(); closeSvcModal(); closeApptModal(); closeReschedModal(); closeSurveyModal(); }});
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+/* ── Auth ── */
+function signOut() {
+  localStorage.removeItem('temba_session');
+  toast('Signed out.', 'info');
+  setTimeout(() => window.location.href = 'index.html', 700);
+}
+
+/* ── Community Profile Modal ── */
+window._myUserProfile = null;
+async function openCommunityProfile() {
+  if (!window._myUserProfile) window._myUserProfile = await apiGet('/users/me');
+  const p = window._myUserProfile || {};
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+
+  const fullName  = p.full_name  || s.name      || 'User';
+  const firstName = p.first_name || s.firstName || fullName.split(' ')[0]           || '—';
+  const lastName  = p.last_name  || s.lastName  || fullName.split(' ').slice(1).join(' ') || '—';
+  const gender    = p.gender     || s.gender    || null;
+  const phone     = p.phone      || s.phone     || null;
+  const email     = p.email      || s.email     || null;
+  const province  = p.province   || s.province  || null;
+  const district  = p.district   || s.district  || null;
+  const sector    = p.sector     || s.sector    || null;
+  const cell      = p.cell       || s.cell      || null;
+  const since     = p.created_at
+    ? new Date(p.created_at).toLocaleDateString('en-RW',{day:'numeric',month:'long',year:'numeric'})
+    : (s.createdAt ? new Date(s.createdAt).toLocaleDateString('en-RW',{day:'numeric',month:'long',year:'numeric'}) : '—');
+
+  /* Header */
+  document.getElementById('cp-avatar').textContent = fullName[0].toUpperCase();
+  document.getElementById('cp-name').textContent   = fullName;
+  document.getElementById('cp-email-sub').textContent = email || '';
+
+  /* Live engagement stats — always recalculated */
+  document.getElementById('cp-stat-reports').textContent = getAllReports().length;
+  document.getElementById('cp-stat-appts').textContent   = getAllAppts().length;
+  document.getElementById('cp-stat-svc').textContent     = getAllSvcReqs().length;
+
+  const genderLabel = { male: t('profile_gender_male'), female: t('profile_gender_female'), other: t('profile_gender_other') };
+
+  /* Personal fields */
+  document.getElementById('cp-first-name').textContent = firstName;
+  document.getElementById('cp-last-name').textContent  = lastName;
+  document.getElementById('cp-gender').textContent     = (gender && genderLabel[gender]) || gender || '—';
+  document.getElementById('cp-phone').textContent      = phone    || '—';
+  document.getElementById('cp-email').textContent      = email    || '—';
+
+  /* Address fields */
+  document.getElementById('cp-province').textContent   = province || '—';
+  document.getElementById('cp-district').textContent   = district || '—';
+  document.getElementById('cp-sector').textContent     = sector   || '—';
+  document.getElementById('cp-cell').textContent       = cell     || '—';
+  document.getElementById('cp-since').textContent      = since;
+
+  /* Reset password form */
+  document.getElementById('cpPwForm').style.display = 'none';
+  document.getElementById('cpPwChevron').style.transform = '';
+  document.getElementById('cpPwCurrent').value = '';
+  document.getElementById('cpPwNew').value = '';
+  document.getElementById('cpPwConf').value = '';
+  document.getElementById('cpPwError').style.display = 'none';
+  document.getElementById('cpStrFill').style.width = '0';
+  document.getElementById('cpStrLbl').textContent = '';
+  document.getElementById('cpMatchLbl').textContent = '';
+
+  document.getElementById('communityProfileModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCommunityProfile() {
+  document.getElementById('communityProfileModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function toggleCpPwForm() {
+  const form = document.getElementById('cpPwForm');
+  const chevron = document.getElementById('cpPwChevron');
+  const open = form.style.display === 'none';
+  form.style.display = open ? 'block' : 'none';
+  chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function toggleCpEye(id, btn) {
+  const f = document.getElementById(id);
+  const show = f.type === 'text';
+  f.type = show ? 'password' : 'text';
+  btn.querySelector('i').className = show ? 'ti ti-eye' : 'ti ti-eye-off';
+}
+
+function cpCheckStrength(val) {
+  const fill = document.getElementById('cpStrFill');
+  const lbl  = document.getElementById('cpStrLbl');
+  let score = 0;
+  if (val.length >= 8)          score++;
+  if (/[A-Z]/.test(val))        score++;
+  if (/[0-9]/.test(val))        score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { w:'0%',   bg:'#ddd',    txt:'',                       col:'' },
+    { w:'25%',  bg:'#C62828', txt:t('pw_strength_weak'),   col:'#C62828' },
+    { w:'50%',  bg:'#E65100', txt:t('pw_strength_fair'),   col:'#E65100' },
+    { w:'75%',  bg:'#29B6F6', txt:t('pw_strength_good'),   col:'#1565C0' },
+    { w:'100%', bg:'#2E7D32', txt:t('pw_strength_strong'), col:'#2E7D32' },
+  ];
+  const l = levels[score];
+  fill.style.width = l.w; fill.style.background = l.bg;
+  lbl.textContent  = l.txt; lbl.style.color = l.col;
+  cpCheckMatch();
+}
+
+function cpCheckMatch() {
+  const p1 = document.getElementById('cpPwNew').value;
+  const p2 = document.getElementById('cpPwConf').value;
+  const el = document.getElementById('cpMatchLbl');
+  if (!p2) { el.textContent = ''; return; }
+  if (p1 === p2) { el.textContent = t('pw_match');    el.style.color = '#2E7D32'; }
+  else           { el.textContent = t('pw_no_match'); el.style.color = '#C62828'; }
+}
+
+async function submitCpPwChange() {
+  const current = document.getElementById('cpPwCurrent').value;
+  const nw      = document.getElementById('cpPwNew').value;
+  const conf    = document.getElementById('cpPwConf').value;
+  const errEl   = document.getElementById('cpPwError');
+  const btn     = document.getElementById('cpPwBtn');
+
+  const showErr = msg => { errEl.textContent = msg; errEl.style.display = 'block'; };
+  errEl.style.display = 'none';
+
+  if (!current)              { showErr('Please enter your current password.'); return; }
+  if (nw.length < 8)         { showErr('New password must be at least 8 characters.'); return; }
+  if (!/[A-Z]/.test(nw))     { showErr('New password must contain at least one uppercase letter.'); return; }
+  if (!/[0-9]/.test(nw))     { showErr('New password must contain at least one number.'); return; }
+  if (!/[^A-Za-z0-9]/.test(nw)) { showErr('New password must contain at least one special character.'); return; }
+  if (nw !== conf)           { showErr('Passwords do not match.'); return; }
+  if (nw === current)        { showErr('New password must be different from your current password.'); return; }
+
+  btn.textContent = t('btn_updating'); btn.disabled = true;
+
+  const token = localStorage.getItem('temba_token');
+  if (token) {
+    try {
+      const r = await fetch(`${API_BASE}/auth/change-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ current_password: current, new_password: nw })
+      });
+      if (!r.ok) {
+        const e = await r.json().catch(() => ({}));
+        showErr(e.detail || 'Password change failed. Please check your current password.');
+        btn.textContent = t('profile_update_pw'); btn.disabled = false;
+        return;
+      }
+    } catch (_) { /* fall through to local update */ }
+  }
+
+  /* Update local credential store */
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  const acct = _getLocalAccount(s.email || '');
+  if (acct) {
+    const currentHash = await _hashPw(current);
+    if (currentHash !== acct.passwordHash) {
+      showErr('Current password is incorrect.');
+      btn.textContent = t('profile_update_pw'); btn.disabled = false;
+      return;
+    }
+    acct.passwordHash = await _hashPw(nw);
+    _saveLocalAccount(acct);
+  }
+
+  btn.textContent = t('profile_update_pw'); btn.disabled = false;
+  document.getElementById('cpPwForm').style.display = 'none';
+  document.getElementById('cpPwChevron').style.transform = '';
+  document.getElementById('cpPwCurrent').value = '';
+  document.getElementById('cpPwNew').value = '';
+  document.getElementById('cpPwConf').value = '';
+  toast('Password updated successfully!', 'success');
+}
+
+function toast(msg, type='info') {
+  const t = document.getElementById('temba-toast');
+  if (!t) return;
+  const bg = { success:'#2E7D32', error:'#C62828', info:'#1565C0', warn:'#E65100' };
+  t.style.background = bg[type] || bg.info;
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._tm); t._tm = setTimeout(() => { t.style.opacity = '0'; }, 2800);
+}
+
+/* ── Dark mode ── */
+function toggleDarkMode() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('temba_theme', next);
+  const icon = document.getElementById('darkModeIcon');
+  if (icon) icon.className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+}
+(function initTheme() {
+  const t = localStorage.getItem('temba_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const icon = document.getElementById('darkModeIcon');
+  if (icon) icon.className = t === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+})();
+
+/* ── History ── */
+let _historyFilter = 'all';
+function filterHistory(filter, btn) {
+  _historyFilter = filter;
+  document.querySelectorAll('#panel-history .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderHistory();
+}
+
+function renderHistory() {
+  const DONE_APPT = ['completed','cancelled','rejected'];
+  const DONE_REP  = ['resolved','cancelled'];
+  const DONE_SVC  = ['completed','rejected','cancelled'];
+
+  const appts = getAllAppts().filter(a => DONE_APPT.includes(a.status));
+  const reps  = getAllReports().filter(r => DONE_REP.includes(r.status));
+  const svcs  = getAllSvcReqs().filter(s => DONE_SVC.includes(s.status));
+
+  let entries = [];
+  if (_historyFilter === 'all' || _historyFilter === 'appointments') {
+    entries.push(...appts.map(a => ({
+      type: 'appt',
+      icon: 'ti-calendar',
+      dotClass: a.status === 'completed' ? 'completed appt' : 'cancelled appt',
+      title: `${t('hist_type_appt')} — ${_apptReasonLabel(a.reason)}`,
+      meta: `${a.provider} · ${a.date||'—'}`,
+      status: a.status,
+      time: a.createdAt,
+    })));
+  }
+  if (_historyFilter === 'all' || _historyFilter === 'reports') {
+    entries.push(...reps.map(r => ({
+      type: 'report',
+      icon: 'ti-flag',
+      dotClass: r.status === 'resolved' ? 'resolved report' : 'cancelled report',
+      title: `${t('hist_type_report')} — ${r.issue}`,
+      meta: `${r.provider} · ${r.loc||'—'}`,
+      status: r.status,
+      time: r.time,
+    })));
+  }
+  if (_historyFilter === 'all' || _historyFilter === 'service_requests') {
+    entries.push(...svcs.map(s => ({
+      type: 'svc',
+      icon: 'ti-tool',
+      dotClass: s.status === 'completed' ? 'completed svc' : s.status === 'rejected' ? 'rejected svc' : 'cancelled svc',
+      title: `${t('hist_type_svc')} — ${_svcLabel(s.type)}`,
+      meta: `${s.provider} · ${s.location||'—'}`,
+      status: s.status,
+      time: s.createdAt,
+    })));
+  }
+
+  entries.sort((a,b) => new Date(b.time||0) - new Date(a.time||0));
+
+  const statusColor = { completed:'#2E7D32', resolved:'#2E7D32', cancelled:'#94A3B8', rejected:'#C62828' };
+  const statusBg    = { completed:'#E8F5E9', resolved:'#E8F5E9', cancelled:'#F1F5F9', rejected:'#FFEBEE' };
+
+  document.getElementById('historyList').innerHTML = entries.length
+    ? entries.map(e => `
+      <div class="history-entry">
+        <div class="history-dot ${e.dotClass}"><i class="ti ${e.icon}"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div class="history-title">${e.title}</div>
+          <div class="history-meta">${e.meta} · ${fmtDate(e.time)}</div>
+        </div>
+        <span class="history-status" style="background:${statusBg[e.status]||'#F1F5F9'};color:${statusColor[e.status]||'#94A3B8'};">${_statusLabel(e.status)}</span>
+      </div>`).join('')
+    : `<div class="empty-state"><i class="ti ti-history"></i><p>${t('empty_no_history')}</p></div>`;
+}
+
+/* ══════════════════════════════════════
+   COMMUNITY VERIFICATION & STAR RATING
+   ══════════════════════════════════════ */
+const _VERIFY_KEY = `temba_pending_verify_${_userKey}`;
+const _RATING_KEY = `temba_ratings_${_userKey}`;
+let _pendingRatingItem = null;
+let _selectedStar = 0;
+
+function getPendingVerify() { return JSON.parse(localStorage.getItem(_VERIFY_KEY) || '[]'); }
+function savePendingVerify(list) { localStorage.setItem(_VERIFY_KEY, JSON.stringify(list)); }
+
+function renderVerifyBanners() {
+  const items = getPendingVerify();
+  const apptItems = items.filter(i => i.type === 'appointment');
+  const svcItems  = items.filter(i => i.type === 'service_request');
+
+  const _bannerHtml = (i) => `
+    <div class="verify-banner" id="vb_${i.id}">
+      <div class="verify-banner-icon"><i class="ti ti-circle-check"></i></div>
+      <div style="flex:1;">
+        <div class="verify-banner-title">${t('verify_was_resolved')} — ${i.label}</div>
+        <div class="verify-banner-body">${i.providerName} ${t('verify_marked_completed')} ${fmtDate(i.completedAt)}. ${t('verify_confirm_msg')}</div>
+        <div class="verify-actions">
+          <button class="btn-verify-yes"  onclick="verifyItem('${i.id}','${i.type}','resolved')"><i class="ti ti-check"></i> ${t('verify_yes_resolved')}</button>
+          <button class="btn-verify-part" onclick="verifyItem('${i.id}','${i.type}','partial')"><i class="ti ti-adjustments"></i> ${t('verify_partially')}</button>
+          <button class="btn-verify-no"   onclick="verifyItem('${i.id}','${i.type}','not_resolved')"><i class="ti ti-x"></i> ${t('verify_not_resolved')}</button>
+        </div>
+      </div>
+    </div>`;
+
+  const apptEl = document.getElementById('apptVerifyBanner');
+  const svcEl  = document.getElementById('svcVerifyBanner');
+  if (apptEl) apptEl.innerHTML = apptItems.map(_bannerHtml).join('');
+  if (svcEl)  svcEl.innerHTML  = svcItems.map(_bannerHtml).join('');
+}
+
+function verifyItem(id, type, verdict) {
+  const items = getPendingVerify();
+  const item  = items.find(i => i.id === id);
+  if (!item) return;
+
+  /* Remove from pending list */
+  savePendingVerify(items.filter(i => i.id !== id));
+
+  /* Map local verdict to API verdict */
+  const _apiVerdict = { resolved: 'verified', partial: 'partial', not_resolved: 'not_resolved' };
+
+  /* ── Call API verify endpoint when online ── */
+  const token = localStorage.getItem('temba_token');
+  if (token && id && !id.startsWith('local_')) {
+    const _endpointMap = { appointment: 'appointments', svc: 'service-requests', report: 'reports' };
+    const endpoint = _endpointMap[type] || (type === 'appointment' ? 'appointments' : 'service-requests');
+    fetch(`${API_BASE}/${endpoint}/${id}/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ verdict: _apiVerdict[verdict] || verdict }),
+    }).catch(() => { /* offline — localStorage path is the source of truth */ });
+  }
+
+  if (verdict === 'resolved') {
+    _pendingRatingItem = item;
+    openRatingModal(item.label, item.providerName);
+    _pushNotif({ type:'verified_resolved', icon:'ti-circle-check', color:'green', title:'Resolution Confirmed', body:`You confirmed that your ${item.label} with ${item.providerName} was resolved. Thank you for your feedback!` });
+    if (item.providerName) _pushProvNotif(item.providerName, { type:'verified_resolved', icon:'ti-circle-check', color:'green', title:'Resolution Confirmed by Member', body:`The community member confirmed that their ${item.label} was successfully resolved.` });
+  } else if (verdict === 'partial') {
+    _reopenItem(id, type, 'in-progress');
+    _pushNotif({ type:'verify_partial', icon:'ti-adjustments', color:'orange', title:'Marked as Partially Resolved', body:`Your ${item.label} with ${item.providerName} has been reopened as still partially unresolved.` });
+    if (item.providerName) _pushProvNotif(item.providerName, { type:'verify_partial', icon:'ti-adjustments', color:'orange', title:'Member Reported Partial Resolution', body:`The community member indicated that their ${item.label} was only partially resolved. Please follow up.` });
+    toast('Marked as partially resolved — case reopened for follow-up.', 'info');
+  } else {
+    _reopenItem(id, type, 'in-progress');
+    _pushNotif({ type:'verify_disputed', icon:'ti-alert-triangle', color:'red', title:'Resolution Disputed', body:`Your ${item.label} with ${item.providerName} has been reopened because you indicated it was not resolved.` });
+    if (item.providerName) _pushProvNotif(item.providerName, { type:'verify_disputed', icon:'ti-alert-triangle', color:'red', title:'⚠ Member Disputes Resolution', body:`The community member reported that their ${item.label} was NOT resolved. This case has been reopened — immediate follow-up required.` });
+    toast('Case reopened — provider has been notified.', 'error');
+  }
+  renderVerifyBanners();
+  renderApptList('all');
+  renderSvcList('all');
+}
+
+function _reopenItem(id, type, newStatus) {
+  if (type === 'appointment') {
+    const all = getAppts();
+    const a = all.find(x => x.id === id);
+    if (a) a.status = newStatus;
+    saveAppts(all);
+  } else {
+    const all = getSvcRequests();
+    const r = all.find(x => x.id === id);
+    if (r) r.status = newStatus;
+    saveSvcRequests(all);
+  }
+  updateApptBadge(); updateSvcBadge();
+}
+
+/* ── Star Rating ── */
+function _starLabel(v) { return [t('star_poor'),t('star_fair'),t('star_good_star'),t('star_very_good'),t('star_excellent')][v-1]||''; }
+
+function openRatingModal(label, providerName) {
+  _selectedStar = 0;
+  document.getElementById('ratingSubtitle').textContent = `${t('rating_with')} ${providerName} ${t('rating_for')} ${label}`;
+  document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('starLabel').textContent = t('rating_tap_star');
+  document.getElementById('ratingComment').value = '';
+  document.getElementById('ratingModal').classList.add('open');
+}
+function closeRatingModal() {
+  document.getElementById('ratingModal').classList.remove('open');
+  _pendingRatingItem = null;
+}
+
+function selectStar(val) {
+  _selectedStar = val;
+  document.querySelectorAll('.star-btn').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.v) <= val);
+  });
+  document.getElementById('starLabel').textContent = _starLabel(val);
+}
+
+function submitRating() {
+  if (!_selectedStar) { toast('Please select a star rating','error'); return; }
+  const comment = document.getElementById('ratingComment').value.trim();
+  const ratings = JSON.parse(localStorage.getItem(_RATING_KEY) || '[]');
+  ratings.push({
+    id: uid(),
+    itemId:       _pendingRatingItem?.id || '',
+    itemType:     _pendingRatingItem?.type || '',
+    label:        _pendingRatingItem?.label || '',
+    providerName: _pendingRatingItem?.providerName || '',
+    rating:       _selectedStar,
+    comment:      comment || null,
+    createdAt:    new Date().toISOString(),
+  });
+  localStorage.setItem(_RATING_KEY, JSON.stringify(ratings));
+  /* Notify provider of the rating */
+  if (_pendingRatingItem?.providerName) {
+    _pushProvNotif(_pendingRatingItem.providerName, {
+      type:'new_rating', icon:'ti-star', color:'blue',
+      title:`New ${_selectedStar}★ Rating`,
+      body:`A community member rated their ${_pendingRatingItem.label} experience ${_selectedStar}/5${comment ? `: "${comment}"` : '.'}`,
+    });
+  }
+  closeRatingModal();
+  toast(`Thank you for your ${_selectedStar}★ rating!`, 'success');
+}
+
+/* ══════════════════════════════════════
+   IN-APP NOTIFICATION SYSTEM
+   ══════════════════════════════════════ */
+const _NOTIF_KEY = `temba_notifs_${_userKey}`;
+
+function _provNotifKey(provName) {
+  return 'temba_notifs_prov_' + (provName || 'provider').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+function getNotifs()         { return JSON.parse(localStorage.getItem(_NOTIF_KEY) || '[]'); }
+function saveNotifs(list)    { localStorage.setItem(_NOTIF_KEY, JSON.stringify(list)); }
+
+function _pushNotif({ type, icon, color, title, body }) {
+  const list = getNotifs();
+  list.unshift({ id: uid(), type, icon: icon || 'ti-bell', color: color || 'blue', title, body, read: false, createdAt: new Date().toISOString() });
+  if (list.length > 60) list.length = 60;
+  saveNotifs(list);
+  updateNotifBadge();
+  if (document.getElementById('notifDrawer').classList.contains('open')) _renderNotifList();
+}
+
+function _pushProvNotif(provName, notif) {
+  const key  = _provNotifKey(provName);
+  const list = JSON.parse(localStorage.getItem(key) || '[]');
+  list.unshift({ id: uid(), ...notif, read: false, createdAt: new Date().toISOString() });
+  if (list.length > 60) list.length = 60;
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function updateNotifBadge() {
+  const unread = getNotifs().filter(n => !n.read).length;
+  const badge  = document.getElementById('notifBadge');
+  if (!badge) return;
+  badge.textContent  = unread > 9 ? '9+' : String(unread);
+  badge.style.display = unread > 0 ? 'flex' : 'none';
+}
+
+function openNotifDrawer() {
+  _renderNotifList();
+  document.getElementById('notifOverlay').classList.add('open');
+  document.getElementById('notifDrawer').classList.add('open');
+  /* Mark all read after a short delay so the blue dots are visible first */
+  setTimeout(() => { markAllNotifsRead(); }, 900);
+}
+
+function closeNotifDrawer() {
+  document.getElementById('notifOverlay').classList.remove('open');
+  document.getElementById('notifDrawer').classList.remove('open');
+}
+
+function markAllNotifsRead() {
+  saveNotifs(getNotifs().map(n => ({ ...n, read: true })));
+  updateNotifBadge();
+  _renderNotifList();
+}
+
+function _renderNotifList() {
+  const list  = getNotifs();
+  const el    = document.getElementById('notifList');
+  const sub   = document.getElementById('notifSubLine');
+  const unread = list.filter(n => !n.read).length;
+  if (sub) sub.textContent = unread > 0 ? (unread === 1 ? t('notif_unread_singular') : `${unread} ${t('notif_unread_plural')}`) : t('notif_all_caught_up');
+  if (!list.length) {
+    el.innerHTML = `<div class="notif-empty">
+      <i class="ti ti-bell-off"></i>
+      <div class="notif-empty-title">${t('notif_empty_title')}</div>
+      <div class="notif-empty-sub">${t('notif_empty_sub')}</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = list.map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}">
+      <div class="notif-icon ${n.color || 'blue'}"><i class="ti ${n.icon || 'ti-bell'}"></i></div>
+      <div style="flex:1;min-width:0;">
+        <div class="notif-item-title">${n.title}</div>
+        <div class="notif-item-body">${n.body}</div>
+        <div class="notif-item-time"><i class="ti ti-clock" style="font-size:10px;margin-right:3px;"></i>${fmtDate(n.createdAt)}</div>
+      </div>
+      ${n.read ? '' : '<div class="notif-unread-dot"></div>'}
+    </div>`).join('');
+}
+</script>
+<script src="temba-i18n.js"></script>
+<script src="temba-chatbot.js"></script>
+</body>
+</html>

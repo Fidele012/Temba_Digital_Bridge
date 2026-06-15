@@ -1,0 +1,177 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report Detail & Tracking</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 32px;gap:16px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.nav-link{font-size:14px;font-weight:600;color:#475569;padding:8px 12px;border-radius:8px;text-decoration:none}
+/* HERO */
+.detail-hero{background:linear-gradient(135deg,#0A2540,#1565C0);padding:36px 40px;color:#fff}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none;font-weight:600}
+.breadcrumb a:hover{color:#fff}
+.ref-pill{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 14px;font-family:monospace;font-size:13px;font-weight:700;color:#fff;display:inline-block;margin-top:10px}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 300px;gap:24px;max-width:1060px;margin:0 auto;padding:28px 24px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07);margin-bottom:20px}
+.card-header{padding:16px 20px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between}
+.card-body{padding:20px}
+/* STATUS BANNER */
+.status-banner{background:linear-gradient(135deg,#F0FAFF,#E1F5FE);border:1.5px solid #B8DCF8;border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.sb-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px}
+/* DETAIL GRID */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dg-item{padding:12px 0;border-bottom:1px solid #F1F5F9}
+.dg-item.full{grid-column:1/-1}
+.dg-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:5px}
+.dg-val{font-size:14px;font-weight:600;color:#1E293B}
+/* TIMELINE */
+.timeline{padding-left:0}
+.tl-item{display:flex;gap:16px;position:relative;padding-bottom:22px}
+.tl-item:last-child{padding-bottom:0}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:24px;flex-shrink:0}
+.tl-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;z-index:1}
+.tl-dot.done{background:#1565C0;color:#fff}
+.tl-dot.active{background:#fff;border:2.5px solid #1565C0;color:#1565C0}
+.tl-dot.todo{background:#E2E8F0;color:#94A3B8}
+.tl-line{width:2px;flex:1;background:#E2E8F0;margin-top:4px}
+.tl-line.done{background:#1565C0}
+.tl-content{flex:1;padding-top:2px}
+.tl-title{font-size:14px;font-weight:700;color:#1E293B}
+.tl-title.todo{color:#94A3B8}
+.tl-desc{font-size:13px;color:#64748B;margin-top:3px;line-height:1.5}
+.tl-time{font-size:11px;color:#94A3B8;margin-top:5px;display:flex;align-items:center;gap:4px}
+</style></head><body>
+
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <a class="nav-link" href="#">Dashboard</a>
+  <a class="nav-link" href="#">My Reports</a>
+  <div style="display:flex;align-items:center;gap:3px;margin-left:8px">
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+    <span style="color:#CBD5E1">|</span>
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+  </div>
+</nav>
+
+<div class="detail-hero">
+  <div style="max-width:1060px;margin:0 auto">
+    <div class="breadcrumb">
+      <a href="#">Dashboard</a> <i class="ti ti-chevron-right" style="font-size:13px"></i>
+      <a href="#">My Reports</a> <i class="ti ti-chevron-right" style="font-size:13px"></i>
+      <span style="color:rgba(255,255,255,.9)">Report Detail</span>
+    </div>
+    <h1 style="font-size:28px;font-weight:800;margin-bottom:6px">No Water Supply — Kicukiro Sector</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,.75)">Submitted to WASAC · Kicukiro, Kigali Province</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+      <span class="ref-pill">RPT-20260612-K7M3</span>
+      <span style="background:rgba(230,81,0,.2);border:1.5px solid rgba(230,81,0,.3);color:#FFB74D;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:5px"><i class="ti ti-clock"></i> In Progress</span>
+      <span style="background:rgba(198,40,40,.2);border:1.5px solid rgba(198,40,40,.3);color:#EF9A9A;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:5px"><i class="ti ti-flame"></i> Urgent</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- LEFT -->
+  <div>
+    <div class="status-banner">
+      <div class="sb-icon"><i class="ti ti-search" style="color:#fff;font-size:22px"></i></div>
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:700;color:#0A2540;margin-bottom:4px">Investigation Underway</div>
+        <div style="font-size:13px;color:#475569;line-height:1.6">A WASAC field officer has been dispatched to your location. You will be notified once the issue is resolved.</div>
+      </div>
+      <span class="badge" style="background:#FFF3E0;color:#E65100;flex-shrink:0"><i class="ti ti-clock"></i> In Progress</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span style="font-size:15px;font-weight:700;color:#0A2540">Report Details</span>
+        <span style="font-family:monospace;font-size:12px;font-weight:700;color:#1565C0;background:#EFF6FF;padding:4px 10px;border-radius:6px">RPT-20260612-K7M3</span>
+      </div>
+      <div class="card-body">
+        <div class="detail-grid">
+          <div class="dg-item"><div class="dg-label">Category</div><div class="dg-val"><i class="ti ti-droplet-off" style="color:#C62828;margin-right:5px"></i>No Water Supply</div></div>
+          <div class="dg-item"><div class="dg-label">Urgency</div><div class="dg-val"><span class="badge" style="background:#FFEBEE;color:#C62828;font-size:11px">🔴 Urgent</span></div></div>
+          <div class="dg-item"><div class="dg-label">Provider</div><div class="dg-val">WASAC</div></div>
+          <div class="dg-item"><div class="dg-label">Status</div><div class="dg-val"><span class="badge" style="background:#FFF3E0;color:#E65100;font-size:11px">In Progress</span></div></div>
+          <div class="dg-item"><div class="dg-label">Location</div><div class="dg-val">Kicukiro Sector, Kicukiro District, Kigali</div></div>
+          <div class="dg-item"><div class="dg-label">Submitted</div><div class="dg-val">June 12, 2026 — 09:14</div></div>
+          <div class="dg-item"><div class="dg-label">SLA Deadline</div><div class="dg-val" style="color:#2E7D32;display:flex;align-items:center;gap:6px"><i class="ti ti-calendar-check"></i> June 15, 2026</div></div>
+          <div class="dg-item"><div class="dg-label">Reference</div><div class="dg-val"><span style="font-family:monospace;background:#EFF6FF;color:#1565C0;padding:3px 10px;border-radius:6px">RPT-20260612-K7M3</span></div></div>
+          <div class="dg-item full"><div class="dg-label">Description</div><div class="dg-val" style="font-weight:400;color:#334155;line-height:1.65">The water supply has been completely cut off in our sector since yesterday morning. About 200 households are affected. The main pipe near Kicukiro Primary School appears to have a blockage or valve closure. Children cannot wash and elderly residents cannot access water.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Progress Timeline</span></div>
+      <div style="padding:20px">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+          <div class="tl-content"><div class="tl-title">Report Submitted</div><div class="tl-desc">Your report was received and logged in the system</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> June 12, 2026 — 09:14</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+          <div class="tl-content"><div class="tl-title">Assigned to WASAC</div><div class="tl-desc">Report forwarded to the responsible provider and assigned to a field officer</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> June 12, 2026 — 10:30</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot active">3</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title" style="color:#1565C0">Investigation Underway</div><div class="tl-desc" style="color:#1565C0">Field officer dispatched to Kicukiro Sector to assess the situation</div><div class="tl-time"><i class="ti ti-loader-2" style="font-size:11px;color:#1565C0"></i> <span style="color:#1565C0;font-weight:600">In progress…</span></div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot todo">4</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title todo">Resolution Submitted</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Pending</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot todo">5</div></div>
+          <div class="tl-content"><div class="tl-title todo">Verified & Closed</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Pending</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div>
+    <div class="card">
+      <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Provider</span></div>
+      <div style="padding:18px 20px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0">W</div>
+          <div><div style="font-size:15px;font-weight:800;color:#0A2540">WASAC</div><div style="font-size:12px;color:#64748B;margin-top:1px">Water and Sanitation Corporation</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#64748B">
+          <div style="display:flex;align-items:center;gap:8px"><i class="ti ti-phone" style="color:#1565C0"></i> +250 788 000 000</div>
+          <div style="display:flex;align-items:center;gap:8px"><i class="ti ti-mail" style="color:#1565C0"></i> info@wasac.rw</div>
+          <div style="display:flex;align-items:center;gap:8px"><i class="ti ti-map-pin" style="color:#1565C0"></i> All Provinces, Rwanda</div>
+        </div>
+        <div style="margin-top:14px"><span style="background:#E8F5E9;color:#2E7D32;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:5px"><i class="ti ti-circle-check" style="font-size:13px"></i> Approved Provider</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">SLA Status</span></div>
+      <div style="padding:16px 20px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:6px"><span style="color:#334155">Time elapsed</span><span style="color:#2E7D32">2 of 5 days</span></div>
+        <div style="height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;margin-bottom:8px"><div style="height:100%;width:40%;background:linear-gradient(90deg,#2E7D32,#4CAF50);border-radius:4px"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:#94A3B8"><span>Jun 12</span><span>Deadline: Jun 15</span></div>
+        <div style="margin-top:14px;background:#E8F5E9;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px"><i class="ti ti-circle-check" style="color:#2E7D32;font-size:16px"></i><span style="font-size:13px;font-weight:700;color:#2E7D32">Within SLA</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Add a Comment</span></div>
+      <div style="padding:16px 20px">
+        <textarea style="width:100%;padding:12px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;min-height:80px;outline:none;margin-bottom:10px" placeholder="Add additional information or follow up…"></textarea>
+        <button style="width:100%;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:9px;padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer">Submit Comment</button>
+      </div>
+    </div>
+
+    <button style="width:100%;background:#fff;border:1.5px solid #E2E8F0;color:#64748B;border-radius:12px;padding:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ti ti-download"></i> Download Report PDF</button>
+  </div>
+</div>
+</body></html>

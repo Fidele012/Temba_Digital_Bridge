@@ -1,0 +1,116 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community — Alerts</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.sidebar-cta{margin:10px 14px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 28px);padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Alert cards */
+.alert-card{background:#fff;border-radius:12px;box-shadow:0 1px 6px rgba(10,37,64,.07);margin-bottom:10px;display:flex;gap:14px;padding:16px 20px;border-left:4px solid transparent;cursor:pointer}
+.alert-card:hover{box-shadow:0 4px 18px rgba(10,37,64,.10)}
+.alert-card.unread{border-left-color:#1565C0;background:#fff}
+.alert-card.critical{border-left-color:#C62828}
+.alert-card.warning{border-left-color:#E65100}
+.alert-card.info{border-left-color:#0288D1}
+.alert-card.success{border-left-color:#2E7D32}
+.alert-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.alert-time{font-size:11px;color:#94A3B8;margin-left:auto;flex-shrink:0;padding-top:2px}
+.filter-tabs{display:flex;background:#fff;border-radius:10px;border:1.5px solid #E2E8F0;overflow:hidden;margin-bottom:16px;width:fit-content}
+.ft{padding:9px 16px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:#64748B;cursor:pointer;border-right:1px solid #E2E8F0}
+.ft:last-child{border-right:none}
+.ft.active{background:#EFF6FF;color:#1565C0}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">J</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-users" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#0A2540">Jean Mugisha</div><div style="font-size:11px;color:#64748B">Community Member</div></div></div>
+    <div class="sec-label">MAIN</div>
+    <div class="nav-item"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-report" style="font-size:16px"></i> My Reports <span class="nav-badge">3</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item active"><i class="ti ti-bell" style="font-size:16px"></i> Alerts <span class="nav-badge">5</span></div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">EXPLORE</div>
+    <div class="nav-item"><i class="ti ti-building" style="font-size:16px"></i> Providers</div>
+    <div class="nav-item"><i class="ti ti-history" style="font-size:16px"></i> History</div>
+    <div class="sb-divider"></div>
+    <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Alerts & Notifications</div><div style="font-size:13px;color:#64748B;margin-top:3px">5 unread · 18 total</div></div>
+      <button style="background:#F1F5F9;border:none;color:#64748B;padding:9px 16px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Mark all read</button>
+    </div>
+    <div class="filter-tabs">
+      <button class="ft active">All (18)</button>
+      <button class="ft">Unread (5)</button>
+      <button class="ft">Critical</button>
+      <button class="ft">Info</button>
+    </div>
+    <!-- Critical unread -->
+    <div class="alert-card critical unread">
+      <div class="alert-icon" style="background:#FFEBEE"><i class="ti ti-alert-triangle" style="color:#C62828"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Boil Water Advisory — Kicukiro Sector</div><div style="font-size:13px;color:#64748B;margin-top:4px;line-height:1.5">Water quality tests detected elevated turbidity. Residents advised to boil water before drinking until further notice.</div><div style="margin-top:8px"><span class="badge" style="background:#FFEBEE;color:#C62828">Critical</span><span class="badge" style="background:#EFF6FF;color:#1565C0;margin-left:6px">WASAC</span></div></div>
+      <div class="alert-time">2h ago<div style="width:8px;height:8px;border-radius:50%;background:#C62828;margin:4px 0 0 auto"></div></div>
+    </div>
+    <div class="alert-card warning unread">
+      <div class="alert-icon" style="background:#FFF3E0"><i class="ti ti-clock" style="color:#E65100"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Scheduled Maintenance — Water Cut Tomorrow</div><div style="font-size:13px;color:#64748B;margin-top:4px;line-height:1.5">Planned maintenance on 11 Jun 2026 from 08:00–14:00. Store water in advance.</div><div style="margin-top:8px"><span class="badge" style="background:#FFF3E0;color:#E65100">Warning</span></div></div>
+      <div class="alert-time">5h ago<div style="width:8px;height:8px;border-radius:50%;background:#E65100;margin:4px 0 0 auto"></div></div>
+    </div>
+    <div class="alert-card info unread">
+      <div class="alert-icon" style="background:#E1F5FE"><i class="ti ti-refresh" style="color:#0288D1"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Report Update — RPT-20260612-K7M3 Assigned</div><div style="font-size:13px;color:#64748B;margin-top:4px">A field officer has been assigned to your report "No Water Supply — Kicukiro Sector". Expected visit: 13 Jun 2026.</div><div style="margin-top:8px"><span class="badge" style="background:#E1F5FE;color:#0288D1">Status Update</span></div></div>
+      <div class="alert-time">8h ago<div style="width:8px;height:8px;border-radius:50%;background:#0288D1;margin:4px 0 0 auto"></div></div>
+    </div>
+    <div class="alert-card success unread">
+      <div class="alert-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Service Request Completed — SRQ-20260605-B3X1</div><div style="font-size:13px;color:#64748B;margin-top:4px">Your new water connection has been installed and activated. Please rate your experience.</div><div style="margin-top:8px"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span></div></div>
+      <div class="alert-time">1d ago<div style="width:8px;height:8px;border-radius:50%;background:#2E7D32;margin:4px 0 0 auto"></div></div>
+    </div>
+    <div class="alert-card info unread">
+      <div class="alert-icon" style="background:#EFF6FF"><i class="ti ti-calendar-check" style="color:#1565C0"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Appointment Confirmed — Jun 17, 10:00</div><div style="font-size:13px;color:#64748B;margin-top:4px">Your meter inspection appointment with WASAC is confirmed. Officer: Eric H.</div><div style="margin-top:8px"><span class="badge" style="background:#EFF6FF;color:#1565C0">Appointment</span></div></div>
+      <div class="alert-time">2d ago<div style="width:8px;height:8px;border-radius:50%;background:#1565C0;margin:4px 0 0 auto"></div></div>
+    </div>
+    <!-- Read alerts -->
+    <div style="font-size:12px;font-weight:700;color:#94A3B8;letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px">Earlier</div>
+    <div class="alert-card info" style="opacity:.6">
+      <div class="alert-icon" style="background:#F1F5F9"><i class="ti ti-info-circle" style="color:#94A3B8"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Water Quality Report — May Results Available</div><div style="font-size:13px;color:#64748B;margin-top:3px">Monthly water quality test results for your district are now available.</div></div>
+      <div class="alert-time">5d ago</div>
+    </div>
+    <div class="alert-card success" style="opacity:.6">
+      <div class="alert-icon" style="background:#F1F5F9"><i class="ti ti-circle-check" style="color:#94A3B8"></i></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Report Closed — RPT-20260528-Q8W2</div><div style="font-size:13px;color:#64748B;margin-top:3px">Pipe leak repair completed successfully. Report archived.</div></div>
+      <div class="alert-time">12d ago</div>
+    </div>
+  </main>
+</div>
+</body></html>

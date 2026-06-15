@@ -1,0 +1,141 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community — My Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;overflow-y:auto;padding:16px 0}
+.role-chip{margin:0 14px 18px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.sidebar-cta{margin:10px 14px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 28px);padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:800;color:#0A2540}
+.page-sub{font-size:13px;color:#64748B;margin-top:3px}
+.btn-primary{background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:10px 20px;border-radius:9px;border:none;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 3px 12px rgba(21,101,192,.28)}
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.filter-tabs{display:flex;background:#fff;border-radius:10px;border:1.5px solid #E2E8F0;overflow:hidden}
+.ft{padding:9px 16px;border:none;background:transparent;font-family:inherit;font-size:13.5px;font-weight:600;color:#64748B;cursor:pointer;border-right:1px solid #E2E8F0}
+.ft:last-child{border-right:none}
+.ft.active{background:#EFF6FF;color:#1565C0}
+.search-wrap{flex:1;max-width:280px;position:relative}
+.search-wrap input{width:100%;padding:9px 14px 9px 38px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;outline:none;background:#fff}
+.search-wrap input:focus{border-color:#1565C0}
+.s-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94A3B8;font-size:16px}
+.sort-btn{padding:9px 14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#64748B;display:flex;align-items:center;gap:6px}
+/* Report list */
+.report-card{background:#fff;border-radius:12px;box-shadow:0 1px 6px rgba(10,37,64,.07);margin-bottom:10px;display:flex;align-items:center;gap:14px;padding:16px 20px;border-left:3px solid transparent;cursor:pointer;transition:box-shadow .15s}
+.report-card:hover{box-shadow:0 4px 18px rgba(10,37,64,.10)}
+.report-card.urgent{border-left-color:#C62828}
+.report-card.moderate{border-left-color:#E65100}
+.report-card.low{border-left-color:#29B6F6}
+.report-card.resolved{border-left-color:#2E7D32}
+.ri-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.ri-body{flex:1;min-width:0}
+.ri-title{font-size:14px;font-weight:700;color:#1E293B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-meta{font-size:12px;color:#94A3B8;margin-top:3px;display:flex;gap:10px;align-items:center}
+.ri-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.ref{font-size:11px;font-family:monospace;color:#94A3B8}
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px}
+.empty-icon{width:80px;height:80px;border-radius:20px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;color:#CBD5E1}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">J</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-users" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#0A2540">Jean Mugisha</div><div style="font-size:11px;color:#64748B">Community Member</div></div></div>
+    <div class="sec-label">MAIN</div>
+    <div class="nav-item"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+    <div class="nav-item active"><i class="ti ti-report" style="font-size:16px"></i> My Reports <span class="nav-badge">3</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item"><i class="ti ti-bell" style="font-size:16px"></i> Alerts <span class="nav-badge">5</span></div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">EXPLORE</div>
+    <div class="nav-item"><i class="ti ti-building" style="font-size:16px"></i> Providers</div>
+    <div class="nav-item"><i class="ti ti-history" style="font-size:16px"></i> History</div>
+    <div class="sb-divider"></div>
+    <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div><div class="page-title">My Reports</div><div class="page-sub">24 total reports · 8 open · 16 resolved</div></div>
+      <button class="btn-primary"><i class="ti ti-plus"></i> New Report</button>
+    </div>
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="ft active">All (24)</button>
+        <button class="ft">Pending (3)</button>
+        <button class="ft">In Progress (5)</button>
+        <button class="ft">Resolved (16)</button>
+      </div>
+      <div class="search-wrap"><i class="ti ti-search s-icon"></i><input type="text" placeholder="Search reports…"></div>
+      <button class="sort-btn"><i class="ti ti-arrows-sort"></i> Sort: Newest</button>
+    </div>
+    <!-- Report rows -->
+    <div class="report-card urgent">
+      <div class="ri-icon" style="background:#FFEBEE"><i class="ti ti-droplet-off" style="color:#C62828"></i></div>
+      <div class="ri-body">
+        <div class="ri-title">No Water Supply — Kicukiro Sector</div>
+        <div class="ri-meta"><i class="ti ti-building" style="font-size:11px"></i>WASAC <i class="ti ti-map-pin" style="font-size:11px"></i>Kicukiro, Kigali <i class="ti ti-calendar" style="font-size:11px"></i>Jun 12, 2026</div>
+      </div>
+      <div class="ri-right"><span class="badge" style="background:#FFF3E0;color:#E65100">In Progress</span><div class="ref">RPT-20260612-K7M3</div><i class="ti ti-chevron-right" style="color:#CBD5E1"></i></div>
+    </div>
+    <div class="report-card moderate">
+      <div class="ri-icon" style="background:#FFF3E0"><i class="ti ti-flask" style="color:#E65100"></i></div>
+      <div class="ri-body">
+        <div class="ri-title">Water Quality Issue — Cloudy Water & Odour</div>
+        <div class="ri-meta"><i class="ti ti-building" style="font-size:11px"></i>IRIBA Water Group <i class="ti ti-map-pin" style="font-size:11px"></i>Gasabo <i class="ti ti-calendar" style="font-size:11px"></i>Jun 10, 2026</div>
+      </div>
+      <div class="ri-right"><span class="badge" style="background:#EFF6FF;color:#1565C0">Pending</span><div class="ref">RPT-20260610-A9Z2</div><i class="ti ti-chevron-right" style="color:#CBD5E1"></i></div>
+    </div>
+    <div class="report-card moderate">
+      <div class="ri-icon" style="background:#FFF3E0"><i class="ti ti-gauge" style="color:#E65100"></i></div>
+      <div class="ri-body">
+        <div class="ri-title">Low Water Pressure — Morning Hours</div>
+        <div class="ri-meta"><i class="ti ti-building" style="font-size:11px"></i>WASAC <i class="ti ti-map-pin" style="font-size:11px"></i>Kicukiro <i class="ti ti-calendar" style="font-size:11px"></i>Jun 8, 2026</div>
+      </div>
+      <div class="ri-right"><span class="badge" style="background:#FFF3E0;color:#E65100">In Progress</span><div class="ref">RPT-20260608-T3X9</div><i class="ti ti-chevron-right" style="color:#CBD5E1"></i></div>
+    </div>
+    <div class="report-card low">
+      <div class="ri-icon" style="background:#E8F5E9"><i class="ti ti-tool" style="color:#2E7D32"></i></div>
+      <div class="ri-body">
+        <div class="ri-title">Meter Reading Support Request</div>
+        <div class="ri-meta"><i class="ti ti-building" style="font-size:11px"></i>Pro Water Rwanda <i class="ti ti-map-pin" style="font-size:11px"></i>Nyarugenge <i class="ti ti-calendar" style="font-size:11px"></i>Jun 5, 2026</div>
+      </div>
+      <div class="ri-right"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span><div class="ref">RPT-20260605-B3M1</div><i class="ti ti-chevron-right" style="color:#CBD5E1"></i></div>
+    </div>
+    <div class="report-card resolved">
+      <div class="ri-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+      <div class="ri-body">
+        <div class="ri-title">Pipe Leak Near Market — Repaired</div>
+        <div class="ri-meta"><i class="ti ti-building" style="font-size:11px"></i>WASAC <i class="ti ti-map-pin" style="font-size:11px"></i>Kicukiro <i class="ti ti-calendar" style="font-size:11px"></i>May 28, 2026</div>
+      </div>
+      <div class="ri-right"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span><div class="ref">RPT-20260528-Q8W2</div><i class="ti ti-chevron-right" style="color:#CBD5E1"></i></div>
+    </div>
+    <div style="text-align:center;padding:16px;font-size:13px;color:#94A3B8">Showing 5 of 24 reports · <a href="#" style="color:#1565C0;font-weight:700">Load more</a></div>
+  </main>
+</div>
+</body></html>

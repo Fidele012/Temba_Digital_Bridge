@@ -1,0 +1,308 @@
+"""Celery tasks — background email/SMS sending and SLA enforcement."""
+import uuid
+from datetime import datetime, timedelta, timezone
+
+from app.services.notification_service import send_email_background, send_sms_background
+from app.worker import celery_app
+
+# Hours beyond the SLA deadline required to escalate each level
+_ESCALATION_HOURS = {
+    1: 0,   # Officer: notify as soon as overdue
+    2: 24,  # Supervisor: +24 h
+    3: 48,  # Regional Manager: +48 h
+    4: 72,  # Executive: +72 h
+}
+
+
+@celery_app.task(bind=True, max_retries=3, default_retry_delay=60)
+def send_email_task(self, to: str, subject: str, template: str, context: dict) -> None:
+    try:
+        send_email_background(to, subject, template, context)
+    except Exception as exc:
+        raise self.retry(exc=exc)
+
+
+@celery_app.task(bind=True, max_retries=3, default_retry_delay=30)
+def send_sms_task(self, to: str, message: str) -> None:
+    try:
+        send_sms_background(to, message)
+    except Exception as exc:
+        raise self.retry(exc=exc)
+
+
+@celery_app.task(name="app.tasks.auto_close_unverified")
+def auto_close_unverified() -> dict:
+    """Daily task: auto-close cases where provider submitted a resolution but
+    the community did not verify within 7 days.  These are marked
+    CLOSED_UNVERIFIED — the provider receives no verification credit."""
+    from datetime import timedelta
+
+    from sqlalchemy import and_, create_engine, select
+    from sqlalchemy.orm import Session
+
+    from app.core.config import settings
+    from app.models.appointment import Appointment, AppointmentStatus
+    from app.models.notification import Notification, NotificationType
+    from app.models.provider import Provider
+    from app.models.report import Report, ReportStatus
+    from app.models.service_request import ServiceRequest, ServiceRequestStatus
+
+    CUTOFF_DAYS = 7
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(days=CUTOFF_DAYS)
+    closed = {"reports": 0, "appointments": 0, "service_requests": 0}
+
+    engine = create_engine(settings.DATABASE_URL_SYNC)
+
+    def _close_notif(session, user_id, entity_label: str, ref_id: str, ref_type: str) -> None:
+        session.add(Notification(
+            user_id=user_id,
+            notification_type=NotificationType.SYSTEM,
+            title="Case auto-closed — no community response",
+            body=(f"{entity_label} was auto-closed after {CUTOFF_DAYS} days without community verification. "
+                  "No verification credit has been awarded."),
+            is_read=False,
+            reference_id=ref_id,
+            reference_type=ref_type,
+        ))
+
+    with Session(engine) as session:
+        # Reports
+        for report in session.execute(
+            select(Report).where(
+                and_(
+                    Report.status == ReportStatus.RESOLUTION_SUBMITTED,
+                    Report.resolution_submitted_at.isnot(None),
+                    Report.resolution_submitted_at < cutoff,
+                )
+            )
+        ).scalars().all():
+            report.status = ReportStatus.CLOSED_UNVERIFIED
+            closed["reports"] += 1
+            if report.provider_id:
+                prov = session.get(Provider, report.provider_id)
+                if prov:
+                    _close_notif(session, prov.user_id, f"Report '{report.title}'",
+                                 str(report.id), "report")
+
+        # Service requests
+        for sr in session.execute(
+            select(ServiceRequest).where(
+                and_(
+                    ServiceRequest.status == ServiceRequestStatus.RESOLUTION_SUBMITTED,
+                    ServiceRequest.resolution_submitted_at.isnot(None),
+                    ServiceRequest.resolution_submitted_at < cutoff,
+                )
+            )
+        ).scalars().all():
+            sr.status = ServiceRequestStatus.CLOSED_UNVERIFIED
+            closed["service_requests"] += 1
+            if sr.provider_id:
+                prov = session.get(Provider, sr.provider_id)
+                if prov:
+                    _close_notif(session, prov.user_id,
+                                 f"Service request ({sr.request_type.value})",
+                                 str(sr.id), "service_request")
+
+        # Appointments
+        for appt in session.execute(
+            select(Appointment).where(
+                and_(
+                    Appointment.status == AppointmentStatus.RESOLUTION_SUBMITTED,
+                    Appointment.resolution_submitted_at.isnot(None),
+                    Appointment.resolution_submitted_at < cutoff,
+                )
+            )
+        ).scalars().all():
+            appt.status = AppointmentStatus.CLOSED_UNVERIFIED
+            closed["appointments"] += 1
+            prov = session.get(Provider, appt.provider_id)
+            if prov:
+                _close_notif(session, prov.user_id,
+                             f"Appointment on {appt.appointment_date}",
+                             str(appt.id), "appointment")
+
+        session.commit()
+
+    return closed
+
+
+@celery_app.task(name="app.tasks.check_sla_deadlines")
+def check_sla_deadlines() -> dict:
+    """Hourly task: flag overdue items and escalate through the provider staff chain."""
+    from sqlalchemy import and_, create_engine, select
+    from sqlalchemy.orm import Session
+
+    from app.core.config import settings
+    from app.models.appointment import Appointment, AppointmentStatus
+    from app.models.notification import Notification, NotificationType
+    from app.models.provider import Provider, ProviderStaff, ProviderStaffRole
+    from app.models.report import Report, ReportStatus
+    from app.models.service_request import ServiceRequest, ServiceRequestStatus
+
+    CLOSED_REPORT = {ReportStatus.RESOLVED, ReportStatus.CLOSED}
+    CLOSED_APPT = {AppointmentStatus.COMPLETED, AppointmentStatus.CANCELLED, AppointmentStatus.REJECTED}
+    CLOSED_SR = {ServiceRequestStatus.COMPLETED, ServiceRequestStatus.CANCELLED, ServiceRequestStatus.REJECTED}
+
+    # Staff role → escalation level number
+    _ROLE_TO_LEVEL = {
+        ProviderStaffRole.SUPERVISOR: 2,
+        ProviderStaffRole.REGIONAL_MANAGER: 3,
+        ProviderStaffRole.EXECUTIVE: 4,
+    }
+
+    now = datetime.now(timezone.utc)
+    stats = {"reports": 0, "appointments": 0, "service_requests": 0, "escalations": 0}
+
+    engine = create_engine(settings.DATABASE_URL_SYNC)
+
+    def _hours_overdue(deadline: datetime) -> float:
+        if deadline.tzinfo is None:
+            deadline = deadline.replace(tzinfo=timezone.utc)
+        return max(0.0, (now - deadline).total_seconds() / 3600)
+
+    def _notif(session: Session, user_id: uuid.UUID, title: str, body: str,
+               ref_id: str, ref_type: str) -> None:
+        session.add(Notification(
+            user_id=user_id,
+            notification_type=NotificationType.SYSTEM,
+            title=title,
+            body=body,
+            is_read=False,
+            reference_id=ref_id,
+            reference_type=ref_type,
+        ))
+
+    def _escalate(session: Session, provider: Provider, current_level: int,
+                  hours_over: float, title: str, body: str,
+                  ref_id: str, ref_type: str) -> int:
+        """Send escalation notifications for all levels that should now be active.
+        Returns the highest level notified."""
+        highest = current_level
+        for level, threshold in _ESCALATION_HOURS.items():
+            if level <= current_level:
+                continue  # already notified
+            if hours_over < threshold:
+                continue  # not yet time
+
+            if level == 1:
+                # Officer = primary provider account
+                _notif(session, provider.user_id, title, body, ref_id, ref_type)
+                highest = 1
+                stats["escalations"] += 1
+            else:
+                # Look up staff at this level
+                role_map = {2: ProviderStaffRole.SUPERVISOR,
+                            3: ProviderStaffRole.REGIONAL_MANAGER,
+                            4: ProviderStaffRole.EXECUTIVE}
+                role = role_map.get(level)
+                if not role:
+                    continue
+                staff_rows = session.execute(
+                    select(ProviderStaff).where(
+                        ProviderStaff.provider_id == provider.id,
+                        ProviderStaff.staff_role == role,
+                    )
+                ).scalars().all()
+                for s in staff_rows:
+                    _notif(session, s.user_id, title, body, ref_id, ref_type)
+                    stats["escalations"] += 1
+                if staff_rows:
+                    highest = level
+
+        return highest
+
+    with Session(engine) as session:
+        # ── Reports ────────────────────────────────────────────────────────
+        overdue_reports = session.execute(
+            select(Report).where(
+                and_(
+                    Report.sla_deadline.isnot(None),
+                    Report.sla_deadline < now,
+                    Report.status.notin_(CLOSED_REPORT),
+                )
+            )
+        ).scalars().all()
+
+        for report in overdue_reports:
+            hours_over = _hours_overdue(report.sla_deadline)
+            if not report.overdue_flagged:
+                report.overdue_flagged = True
+                stats["reports"] += 1
+
+            prov = session.get(Provider, report.provider_id) if report.provider_id else None
+            if not prov:
+                continue
+
+            new_level = _escalate(
+                session, prov, report.escalation_level, hours_over,
+                title=f"SLA overdue — Report: {report.title}",
+                body=(f"Report '{report.title}' has been overdue for "
+                      f"{int(hours_over)}h. Immediate action required."),
+                ref_id=str(report.id), ref_type="report",
+            )
+            report.escalation_level = new_level
+
+        # ── Appointments ───────────────────────────────────────────────────
+        overdue_appts = session.execute(
+            select(Appointment).where(
+                and_(
+                    Appointment.sla_deadline.isnot(None),
+                    Appointment.sla_deadline < now,
+                    Appointment.status.notin_(CLOSED_APPT),
+                )
+            )
+        ).scalars().all()
+
+        for appt in overdue_appts:
+            hours_over = _hours_overdue(appt.sla_deadline)
+            if not appt.overdue_flagged:
+                appt.overdue_flagged = True
+                stats["appointments"] += 1
+
+            prov = session.get(Provider, appt.provider_id)
+            if not prov:
+                continue
+
+            new_level = _escalate(
+                session, prov, appt.escalation_level, hours_over,
+                title=f"SLA overdue — Appointment on {appt.appointment_date}",
+                body=(f"Appointment for {appt.appointment_date} at {appt.appointment_time} "
+                      f"has been overdue for {int(hours_over)}h."),
+                ref_id=str(appt.id), ref_type="appointment",
+            )
+            appt.escalation_level = new_level
+
+        # ── Service Requests ───────────────────────────────────────────────
+        overdue_srs = session.execute(
+            select(ServiceRequest).where(
+                and_(
+                    ServiceRequest.sla_deadline.isnot(None),
+                    ServiceRequest.sla_deadline < now,
+                    ServiceRequest.status.notin_(CLOSED_SR),
+                )
+            )
+        ).scalars().all()
+
+        for sr in overdue_srs:
+            hours_over = _hours_overdue(sr.sla_deadline)
+            if not sr.overdue_flagged:
+                sr.overdue_flagged = True
+                stats["service_requests"] += 1
+
+            prov = session.get(Provider, sr.provider_id) if sr.provider_id else None
+            if not prov:
+                continue
+
+            new_level = _escalate(
+                session, prov, sr.escalation_level, hours_over,
+                title=f"SLA overdue — {sr.request_type.value.replace('_', ' ').title()}",
+                body=(f"Service request ({sr.request_type.value}) has been overdue "
+                      f"for {int(hours_over)}h."),
+                ref_id=str(sr.id), ref_type="service_request",
+            )
+            sr.escalation_level = new_level
+
+        session.commit()
+
+    return stats

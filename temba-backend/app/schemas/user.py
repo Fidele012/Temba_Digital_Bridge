@@ -1,0 +1,66 @@
+from uuid import UUID
+from datetime import datetime
+
+from pydantic import EmailStr, Field, field_validator
+
+from app.models.user import UserRole
+from app.schemas.common import ORMModel
+
+
+class UserCreate(ORMModel):
+    email: EmailStr
+    phone: str | None = Field(None, pattern=r"^\+?[0-9]{9,15}$")
+    password: str = Field(min_length=8, max_length=128)
+    full_name: str = Field(min_length=2, max_length=255)
+    role: UserRole = UserRole.COMMUNITY
+
+    # Optional location
+    province: str | None = None
+    district: str | None = None
+    sector: str | None = None
+    cell: str | None = None
+    village: str | None = None
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one digit")
+        if not any(c in "!@#$%^&*()-_=+[]{}|;:',.<>?/" for c in v):
+            raise ValueError("Password must contain at least one special character")
+        return v
+
+
+class UserUpdate(ORMModel):
+    full_name: str | None = Field(None, min_length=2, max_length=255)
+    phone: str | None = Field(None, pattern=r"^\+?[0-9]{9,15}$")
+    province: str | None = None
+    district: str | None = None
+    sector: str | None = None
+    cell: str | None = None
+    village: str | None = None
+
+
+class UserPublic(ORMModel):
+    id: UUID
+    email: EmailStr
+    phone: str | None
+    full_name: str
+    role: UserRole
+    is_active: bool
+    is_verified: bool
+    avatar_url: str | None
+    province: str | None
+    district: str | None
+    sector: str | None
+    cell: str | None
+    village: str | None
+    created_at: datetime
+
+
+class UserAdminUpdate(ORMModel):
+    is_active: bool | None = None
+    is_verified: bool | None = None
+    role: UserRole | None = None

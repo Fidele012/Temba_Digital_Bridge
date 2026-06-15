@@ -1,0 +1,228 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report Submission</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 32px;gap:16px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-area{display:flex;align-items:center;gap:9px;margin-right:auto}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.nav-link{font-size:14px;font-weight:600;color:#475569;padding:8px 12px;border-radius:8px;text-decoration:none}
+.nav-link.active{color:#1565C0;background:#EFF6FF}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:24px;max-width:1100px;margin:0 auto;padding:28px 24px}
+.section-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#94A3B8;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07);padding:24px;margin-bottom:20px}
+.card-title{font-size:16px;font-weight:700;color:#0A2540;margin-bottom:6px}
+.card-sub{font-size:13px;color:#64748B;margin-bottom:20px}
+/* Issue chips */
+.issue-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.issue-chip{border:2px solid #E2E8F0;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.issue-chip.selected{border-color:#1565C0;background:#EFF6FF}
+.issue-chip-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto}
+.issue-chip-label{font-size:12px;font-weight:700;color:#334155}
+.issue-chip.selected .issue-chip-label{color:#1565C0}
+/* Urgency */
+.urg-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.urg-card{border:2px solid #E2E8F0;border-radius:12px;padding:16px;cursor:pointer;transition:all .18s;text-align:center}
+.urg-card.selected{border-color:#C62828;background:#FFEBEE}
+.urg-card.mod.selected{border-color:#E65100;background:#FFF3E0}
+.urg-card.low.selected{border-color:#0288D1;background:#F0FAFF}
+.urg-icon{font-size:24px;margin-bottom:8px}
+.urg-title{font-size:14px;font-weight:700;color:#334155}
+.urg-sub{font-size:11px;color:#94A3B8;margin-top:3px}
+/* Provider */
+.prov-opt{border:2px solid #E2E8F0;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.prov-opt.selected{border-color:#1565C0;background:#F0FAFF}
+.prov-avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.prov-name{font-size:14px;font-weight:700;color:#1E293B}
+.prov-sub{font-size:12px;color:#64748B;margin-top:2px}
+.prov-check{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center}
+.prov-opt.selected .prov-check{background:#1565C0;border-color:#1565C0;color:#fff}
+/* Evidence buttons */
+.ev-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ev-btn{display:flex;align-items:center;gap:6px;padding:9px 16px;border:1.5px solid #E2E8F0;border-radius:9px;background:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:#334155}
+/* Upload zone */
+.upload-zone{border:2px dashed #CBD5E1;border-radius:12px;padding:28px;text-align:center;background:#F8FAFB;cursor:pointer}
+/* Summary box */
+.summary-box{background:#F0FAFF;border:1.5px solid #B8DCF8;border-radius:12px;padding:18px;margin-bottom:16px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(21,101,192,.08)}
+.summary-row:last-child{border-bottom:none}
+.summary-key{color:#64748B;font-weight:600}
+.summary-val{font-weight:700;color:#1E293B}
+.field-wrap{position:relative;display:flex;align-items:center}
+.fi{position:absolute;left:14px;color:#94A3B8;font-size:17px;pointer-events:none}
+.field-wrap input,.field-wrap select{width:100%;padding:11px 14px 11px 42px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;color:#1E293B;outline:none}
+.field-wrap input:focus{border-color:#1565C0}
+.btn-submit{width:100%;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:15px;border-radius:12px;border:none;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 18px rgba(21,101,192,.32);margin-top:8px}
+</style></head><body>
+
+<nav class="navbar">
+  <div class="logo-area">
+    <div class="logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+    <span style="font-size:15px;font-weight:800;color:#0A2540">Temba Digital Bridge</span>
+  </div>
+  <a class="nav-link" href="#">Dashboard</a>
+  <a class="nav-link active" href="#">Report Issue</a>
+  <a class="nav-link" href="#">About</a>
+  <div style="display:flex;align-items:center;gap:3px;margin-left:12px">
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+    <span style="color:#CBD5E1">|</span>
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- LEFT FORM -->
+  <div>
+    <div class="card">
+      <div class="card-title">What's the issue?</div>
+      <div class="card-sub">Select the category that best describes your problem</div>
+      <div class="issue-grid">
+        <div class="issue-chip selected">
+          <div class="issue-chip-icon" style="background:#FFEBEE"><i class="ti ti-droplet-off" style="color:#C62828"></i></div>
+          <div class="issue-chip-label">No Water Supply</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#FFF3E0"><i class="ti ti-flask" style="color:#E65100"></i></div>
+          <div class="issue-chip-label">Water Quality</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#F0FAFF"><i class="ti ti-wave-saw-tool" style="color:#0288D1"></i></div>
+          <div class="issue-chip-label">Pipe Leak</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#EFF6FF"><i class="ti ti-gauge" style="color:#1565C0"></i></div>
+          <div class="issue-chip-label">Low Pressure</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#F3E5F5"><i class="ti ti-receipt" style="color:#7B1FA2"></i></div>
+          <div class="issue-chip-label">Billing Issue</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#E8F5E9"><i class="ti ti-tool" style="color:#2E7D32"></i></div>
+          <div class="issue-chip-label">Meter Problem</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#FFF3E0"><i class="ti ti-arrows-down" style="color:#E65100"></i></div>
+          <div class="issue-chip-label">Sewage/Drainage</div>
+        </div>
+        <div class="issue-chip">
+          <div class="issue-chip-icon" style="background:#F1F5F9"><i class="ti ti-dots" style="color:#64748B"></i></div>
+          <div class="issue-chip-label">Other</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">How urgent is this?</div>
+      <div class="card-sub">This helps providers prioritise their response</div>
+      <div class="urg-row">
+        <div class="urg-card selected">
+          <div class="urg-icon">🔴</div>
+          <div class="urg-title" style="color:#C62828">Urgent</div>
+          <div class="urg-sub">Immediate danger to health or safety</div>
+        </div>
+        <div class="urg-card mod">
+          <div class="urg-icon">🟡</div>
+          <div class="urg-title">Moderate</div>
+          <div class="urg-sub">Affecting daily use but not dangerous</div>
+        </div>
+        <div class="urg-card low">
+          <div class="urg-icon">🟢</div>
+          <div class="urg-title">Low</div>
+          <div class="urg-sub">Minor issue, not time-sensitive</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Select Provider</div>
+      <div class="card-sub">Choose the water provider responsible for your area</div>
+      <div class="prov-opt selected">
+        <div class="prov-avatar" style="background:linear-gradient(135deg,#1565C0,#0288D1)">W</div>
+        <div><div class="prov-name">WASAC</div><div class="prov-sub">Water and Sanitation Corporation · All Provinces</div></div>
+        <div class="prov-check"><i class="ti ti-check" style="font-size:12px"></i></div>
+      </div>
+      <div class="prov-opt">
+        <div class="prov-avatar" style="background:linear-gradient(135deg,#0288D1,#29B6F6)">I</div>
+        <div><div class="prov-name">IRIBA Water Group</div><div class="prov-sub">Private provider · Gasabo, Kicukiro, Nyarugenge</div></div>
+        <div class="prov-check"></div>
+      </div>
+      <div class="prov-opt">
+        <div class="prov-avatar" style="background:linear-gradient(135deg,#2E7D32,#4CAF50)">P</div>
+        <div><div class="prov-name">Pro Water Rwanda</div><div class="prov-sub">Private provider · Kigali City</div></div>
+        <div class="prov-check"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Add Evidence</div>
+      <div class="card-sub">Attach photos, videos, or documents to help the provider understand the issue</div>
+      <div class="ev-row">
+        <button class="ev-btn"><i class="ti ti-photo" style="color:#1565C0"></i> Photo</button>
+        <button class="ev-btn"><i class="ti ti-video" style="color:#7B1FA2"></i> Video</button>
+        <button class="ev-btn"><i class="ti ti-file-text" style="color:#2E7D32"></i> Document</button>
+        <button class="ev-btn"><i class="ti ti-microphone" style="color:#E65100"></i> Voice Note</button>
+      </div>
+      <div class="upload-zone">
+        <i class="ti ti-cloud-upload" style="font-size:32px;color:#94A3B8;margin-bottom:8px;display:block"></i>
+        <div style="font-size:14px;font-weight:700;color:#334155;margin-bottom:4px">Drag files here or click to upload</div>
+        <div style="font-size:12px;color:#94A3B8">Photos, videos, documents — max 10MB each</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Location</div>
+      <div class="card-sub">Where is the issue located?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div><div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:6px">Sector</div><div class="field-wrap"><i class="ti ti-map-pin fi"></i><input type="text" value="Kicukiro"></div></div>
+        <div><div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:6px">Cell</div><div class="field-wrap"><i class="ti ti-map-2 fi"></i><input type="text" value="Niboye"></div></div>
+      </div>
+      <div><div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:6px">Specific Location Description</div><textarea style="width:100%;padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;resize:vertical;min-height:80px;outline:none" placeholder="e.g. Near the primary school, behind the market…">Near Kicukiro Primary School, the main pipe junction on Avenue des Poids Lourds.</textarea></div>
+    </div>
+
+    <button class="btn-submit"><i class="ti ti-send"></i> Submit Report</button>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div>
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:#0A2540;margin-bottom:14px">Your Submission Summary</div>
+      <div class="summary-box">
+        <div class="summary-row"><span class="summary-key">Category</span><span class="summary-val" style="color:#C62828">No Water Supply</span></div>
+        <div class="summary-row"><span class="summary-key">Urgency</span><span class="summary-val"><span style="background:#FFEBEE;color:#C62828;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px">Urgent</span></span></div>
+        <div class="summary-row"><span class="summary-key">Provider</span><span class="summary-val">WASAC</span></div>
+        <div class="summary-row"><span class="summary-key">Location</span><span class="summary-val">Kicukiro, Kigali</span></div>
+        <div class="summary-row"><span class="summary-key">Evidence</span><span class="summary-val">0 files</span></div>
+      </div>
+      <div style="font-size:12px;color:#64748B;line-height:1.6;background:#F8FAFB;border-radius:10px;padding:12px">
+        <i class="ti ti-info-circle" style="color:#1565C0"></i> After submitting, you'll receive a <strong>reference code</strong> (e.g. <span style="font-family:monospace;color:#1565C0">RPT-20260612-XXXX</span>) to track your report status anytime.
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:#0A2540;margin-bottom:14px">Nearby Recent Reports</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <i class="ti ti-map-pin" style="color:#94A3B8;flex-shrink:0"></i>
+          <div><div style="font-weight:700;color:#334155">Water Outage — Nyarugunga</div><div style="color:#94A3B8;font-size:11px;margin-top:1px">0.3 km away · In Progress · WASAC</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+          <i class="ti ti-map-pin" style="color:#94A3B8;flex-shrink:0"></i>
+          <div><div style="font-weight:700;color:#334155">Low Pressure — Gikondo</div><div style="color:#94A3B8;font-size:11px;margin-top:1px">0.8 km away · Pending · WASAC</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:15px;font-weight:700;color:#0A2540;margin-bottom:10px">Tips</div>
+      <div style="font-size:13px;color:#64748B;line-height:1.7">
+        <div style="margin-bottom:6px">📷 <strong>Add photos</strong> to speed up resolution</div>
+        <div style="margin-bottom:6px">📍 <strong>Be specific</strong> about the location</div>
+        <div>⏱ <strong>Urgent issues</strong> are responded to within 24 hours</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

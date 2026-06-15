@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Detail — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+  <style>
+    .detail-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start;}
+    .status-banner{display:flex;align-items:center;gap:14px;border:1px solid #B3E5FC;border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+    .sb-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--sky));display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+    .dg-item{padding:0.6rem 0;border-bottom:1px solid var(--gray-100);}
+    .dg-full{grid-column:1/-1;}
+    .dg-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;}
+    .dg-val{font-size:14px;font-weight:600;color:var(--navy);line-height:1.5;}
+    .tl-item{display:flex;gap:14px;position:relative;padding-bottom:1.5rem;}
+    .tl-item:last-child{padding-bottom:0;}
+    .tl-item:not(:last-child)::before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:2px;background:var(--gray-200);z-index:0;}
+    .tl-item.done:not(:last-child)::before{background:var(--sky);}
+    .tl-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0;z-index:1;box-shadow:0 0 0 3px var(--white);}
+    .add-note-panel{display:none;margin-top:1rem;background:var(--sky-pale);border:1px solid #B3E5FC;border-radius:var(--radius-md);padding:1rem;}
+    .add-note-panel textarea{width:100%;padding:9px 12px;border:1.5px solid #B3E5FC;border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;outline:none;resize:vertical;transition:border-color 0.2s;}
+    .add-note-panel textarea:focus{border-color:var(--sky);}
+    @media(max-width:900px){.detail-layout{grid-template-columns:1fr;}.detail-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="mainNav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/temba-logo.png" alt="Temba Digital Bridge" style="height:38px;width:auto;display:block;">
+      <span style="font-size:15px;font-weight:800;color:var(--navy,#0A2540);white-space:nowrap;letter-spacing:-0.01em;">Temba Digital Bridge</span>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard-community.html" data-i18n="nav_dashboard">Dashboard</a>
+      <a href="report.html" data-i18n="nav_report">Report Issue</a>
+    </div>
+    <div class="nav-actions">
+      <button data-lang-btn="en" onclick="setLang('en')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;padding:4px 6px;">EN</button>
+      <span style="color:var(--gray-300);">|</span>
+      <button data-lang-btn="rw" onclick="setLang('rw')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;padding:4px 6px;">RW</button>
+      <button class="btn-ghost" onclick="signOut()" data-i18n="nav_signout">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div style="background:linear-gradient(135deg,var(--navy),var(--blue));padding:2rem;">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="font-size:12.5px;color:rgba(255,255,255,0.6);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+      <a href="dashboard-community.html" style="color:rgba(255,255,255,0.7);" data-i18n="dash_overview">Dashboard</a>
+      <i class="ti ti-chevron-right" style="font-size:11px;"></i>
+      <span id="breadRef">Report Detail</span>
+    </div>
+    <h1 style="font-size:24px;font-weight:800;color:#fff;" id="pageTitle">Loading…</h1>
+    <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:3px;" id="pageSub"></p>
+  </div>
+</div>
+
+<div style="max-width:1280px;margin:0 auto;padding:2rem;">
+  <div class="detail-layout">
+
+    <div>
+      <!-- Status banner -->
+      <div class="status-banner" id="statusBanner" style="background:var(--sky-pale);">
+        <div class="sb-icon" id="sbIcon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+        <div style="flex:1;">
+          <div style="font-size:16px;font-weight:800;color:var(--navy);" id="sbTitle">Loading…</div>
+          <div style="font-size:13px;color:var(--gray-600);" id="sbDesc"></div>
+        </div>
+        <span class="badge" id="sbBadge"></span>
+      </div>
+
+      <!-- Details card -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card-header">
+          <span class="card-title"><i class="ti ti-clipboard-list" style="color:var(--blue);" aria-hidden="true"></i> Report Details</span>
+          <span id="refDisplay" style="font-size:13px;font-weight:700;color:var(--blue);"></span>
+        </div>
+        <div class="detail-grid">
+          <div class="dg-item"><div class="dg-label">Issue</div><div class="dg-val" id="dIssue">—</div></div>
+          <div class="dg-item"><div class="dg-label">Urgency</div><div class="dg-val" id="dUrgency"></div></div>
+          <div class="dg-item"><div class="dg-label">Submitted</div><div class="dg-val" id="dTime">—</div></div>
+          <div class="dg-item"><div class="dg-label">Provider</div><div class="dg-val" id="dProvider">—</div></div>
+          <div class="dg-item dg-full"><div class="dg-label">Location</div><div class="dg-val" id="dLocation">—</div></div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div class="card-header"><span class="card-title"><i class="ti ti-timeline" style="color:var(--sky);" aria-hidden="true"></i> Progress Timeline</span></div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card">
+        <div class="card-header"><span class="card-title"><i class="ti ti-settings" style="color:var(--blue);" aria-hidden="true"></i> Actions</span></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a id="callProviderBtn" href="#" class="btn-primary" style="width:auto;text-decoration:none;"><i class="ti ti-phone" aria-hidden="true"></i> Call Provider</a>
+          <a id="smsProviderBtn" href="#" class="btn-secondary" style="text-decoration:none;"><i class="ti ti-message" aria-hidden="true"></i> Send SMS</a>
+          <button class="btn-secondary" onclick="document.getElementById('addNotePanel').style.display='block'"><i class="ti ti-note" aria-hidden="true"></i> Add Note</button>
+          <button class="btn-resolve" id="resolveBtn" onclick="resolveReport()"><i class="ti ti-check-double" aria-hidden="true"></i> Mark as Resolved</button>
+        </div>
+        <div class="add-note-panel" id="addNotePanel">
+          <textarea id="noteText" rows="3" placeholder="Add a note or update for this report…"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn-primary" style="width:auto;" onclick="addNote()"><i class="ti ti-plus" aria-hidden="true"></i> Add Note</button>
+            <button class="btn-secondary" onclick="document.getElementById('addNotePanel').style.display='none'">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" style="margin-bottom:1rem;"><i class="ti ti-building" style="color:var(--blue);" aria-hidden="true"></i> Assigned Provider</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+          <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--sky));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;"><i class="ti ti-building" aria-hidden="true"></i></div>
+          <div><div style="font-weight:800;font-size:14px;color:var(--navy);" id="sideProvName">—</div><div style="font-size:12px;color:var(--gray-400);">Water Service Provider</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--gray-600);display:flex;align-items:center;gap:7px;margin-bottom:5px;"><i class="ti ti-phone" style="color:var(--blue);" aria-hidden="true"></i> <span id="sideProvPhone">—</span></div>
+        <div style="font-size:13px;color:var(--gray-600);display:flex;align-items:center;gap:7px;"><i class="ti ti-mail" style="color:var(--blue);" aria-hidden="true"></i> <span id="sideProvEmail">—</span></div>
+        <div style="display:flex;gap:7px;margin-top:0.75rem;">
+          <a id="sideCallBtn" href="#" class="btn-call" style="text-decoration:none;"><i class="ti ti-phone" aria-hidden="true"></i> <span data-i18n="btn_call">Call</span></a>
+          <a id="sideSmsBtn" href="#" class="btn-sms" style="text-decoration:none;"><i class="ti ti-message" aria-hidden="true"></i> <span data-i18n="btn_sms">SMS</span></a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:0.75rem;"><i class="ti ti-bell" style="color:var(--sky);" aria-hidden="true"></i> Notifications</div>
+        <label class="check-item" style="margin-bottom:8px;"><input type="checkbox" checked /> SMS updates for this report</label>
+        <label class="check-item"><input type="checkbox" checked /> Platform alerts</label>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="temba-toast"></div>
+<script src="temba-i18n.js"></script>
+<script src="temba-chatbot.js"></script>
+<script>
+const _s = JSON.parse(localStorage.getItem('temba_session')||'{}');
+if(!_s.loggedIn) window.location.href='signin.html';
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('shadow',window.scrollY>8));
+
+const DEMO={
+  '#TDB-4291':{ref:'#TDB-4291',issue:'Broken Pipe',urgency:'urgent',loc:'Kimisagara → Nyarugenge → Kigali',provider:'WASAC',status:'in-progress',time:'2025-06-10T08:12:00Z'},
+  '#TDB-4250':{ref:'#TDB-4250',issue:'No Water Supply',urgency:'moderate',loc:'Gasabo cell → Gasabo → Kigali',provider:'Pro Water Rwanda',status:'submitted',time:'2025-06-09T14:30:00Z'},
+  '#TDB-4199':{ref:'#TDB-4199',issue:'Contamination',urgency:'urgent',loc:'Kicukiro → Kicukiro → Kigali',provider:'IRIBA Water Group',status:'resolved',time:'2025-06-08T09:00:00Z'},
+};
+const TIMELINES={
+  submitted:[{title:'Report Submitted',desc:'Received by Temba.',color:'var(--sky)',icon:'ti-send',done:true},{title:'Awaiting Assignment',desc:'Will be assigned shortly.',color:'var(--gray-300)',icon:'ti-building',done:false},{title:'Work In Progress',desc:'Team will be dispatched.',color:'var(--gray-300)',icon:'ti-tool',done:false},{title:'Resolved',desc:'You will be notified when complete.',color:'var(--gray-300)',icon:'ti-circle-check',done:false}],
+  'in-progress':[{title:'Report Submitted',desc:'Received.',color:'var(--green)',icon:'ti-send',done:true},{title:'Assigned',desc:'Provider assigned a team.',color:'var(--green)',icon:'ti-building',done:true},{title:'Work In Progress',desc:'Team on site.',color:'var(--orange)',icon:'ti-tool',done:true},{title:'Awaiting Resolution',desc:'Repairs ongoing.',color:'var(--gray-300)',icon:'ti-circle-check',done:false}],
+  resolved:[{title:'Report Submitted',desc:'Received.',color:'var(--green)',icon:'ti-send',done:true},{title:'Assigned',desc:'Team assigned.',color:'var(--green)',icon:'ti-building',done:true},{title:'Work Completed',desc:'Repairs done.',color:'var(--green)',icon:'ti-tool',done:true},{title:'Issue Resolved ✓',desc:'Water supply restored.',color:'var(--green)',icon:'ti-circle-check',done:true}],
+};
+const STATUS_META={
+  submitted:{title:'Submitted — Awaiting Assignment',desc:'Queued and will be assigned to a team shortly.',bg:'var(--sky-pale)',badgeCls:'badge-active',badgeTxt:'Submitted',icon:'ti-clock'},
+  'in-progress':{title:'In Progress',desc:'A provider team is actively working on the issue.',bg:'var(--orange-light)',badgeCls:'badge-moderate',badgeTxt:'In Progress',icon:'ti-loader-2'},
+  resolved:{title:'Resolved ✓',desc:'This issue has been fully resolved.',bg:'var(--green-light)',badgeCls:'badge-resolved',badgeTxt:'Resolved',icon:'ti-circle-check'},
+};
+let currentReport=null;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const params=new URLSearchParams(window.location.search);
+  const ref=params.get('ref')||'#TDB-4291';
+  const session=JSON.parse(sessionStorage.getItem('temba_reports')||'[]');
+  const fromSession=session.find(r=>r.ref===ref);
+  currentReport=fromSession?{...fromSession}:(DEMO[ref]||DEMO['#TDB-4291']);
+  render(currentReport);
+});
+
+function render(r){
+  document.getElementById('breadRef').textContent=r.ref;
+  document.getElementById('pageTitle').textContent=`Report ${r.ref}`;
+  document.getElementById('pageSub').textContent=`${r.issue} — ${r.loc||''}`;
+  document.getElementById('refDisplay').textContent=r.ref;
+  document.getElementById('dIssue').textContent=r.issue;
+  document.getElementById('dLocation').textContent=r.loc||'—';
+  document.getElementById('dProvider').textContent=r.provider;
+  document.getElementById('sideProvName').textContent=r.provider;
+  const _allProvs = JSON.parse(localStorage.getItem('temba_providers_cache')||'[]');
+  const _prov = _allProvs.find(p=>p.organization_name===r.provider)||{};
+  const _ph = (_prov.phone||'').replace(/[\s\-]/g,'');
+  const _em = _prov.email||'—';
+  document.getElementById('sideProvPhone').textContent = _prov.phone||'—';
+  document.getElementById('sideProvEmail').textContent = _em;
+  ['sideCallBtn','callProviderBtn'].forEach(id=>{ const el=document.getElementById(id); if(el) el.href=_ph?`tel:${_ph}`:'#'; });
+  ['sideSmsBtn','smsProviderBtn'].forEach(id=>{ const el=document.getElementById(id); if(el) el.href=_ph?`sms:${_ph}`:'#'; });
+  document.getElementById('dTime').textContent=new Date(r.time).toLocaleString('en-RW',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const ubMap={urgent:'badge-urgent',moderate:'badge-moderate',low:'badge-active'};
+  document.getElementById('dUrgency').innerHTML=`<span class="badge ${ubMap[r.urgency]||'badge-active'}">${r.urgency}</span>`;
+  updateBanner(r.status);
+  renderTimeline(r.status);
+  if(r.status==='resolved') document.getElementById('resolveBtn').style.display='none';
+}
+
+function updateBanner(status){
+  const m=STATUS_META[status]||STATUS_META.submitted;
+  const b=document.getElementById('statusBanner'); b.style.background=m.bg;
+  document.getElementById('sbIcon').innerHTML=`<i class="ti ${m.icon}"></i>`;
+  document.getElementById('sbTitle').textContent=m.title;
+  document.getElementById('sbDesc').textContent=m.desc;
+  const badge=document.getElementById('sbBadge'); badge.className=`badge ${m.badgeCls}`; badge.textContent=m.badgeTxt;
+}
+
+function renderTimeline(status){
+  const steps=TIMELINES[status]||TIMELINES.submitted;
+  document.getElementById('timeline').innerHTML=steps.map(s=>`
+  <div class="tl-item ${s.done?'done':''}">
+    <div class="tl-dot" style="background:${s.done?s.color:'var(--gray-200)'}"><i class="ti ${s.icon}" style="font-size:10px;"></i></div>
+    <div style="flex:1;">
+      <div style="font-size:13.5px;font-weight:700;color:${s.done?'var(--navy)':'var(--gray-400)'};">${s.title}</div>
+      <div style="font-size:12.5px;color:var(--gray-600);line-height:1.6;">${s.desc}</div>
+    </div>
+  </div>`).join('');
+}
+
+function addNote(){
+  const text=document.getElementById('noteText').value.trim();
+  if(!text){toast('Please type a note first','error');return;}
+  const tl=document.getElementById('timeline');
+  const item=document.createElement('div');
+  item.className='tl-item done';
+  item.innerHTML=`<div class="tl-dot" style="background:var(--blue)"><i class="ti ti-note" style="font-size:10px;"></i></div><div><div style="font-size:13.5px;font-weight:700;color:var(--navy);">Your note</div><div style="font-size:12.5px;color:var(--gray-600);">${text}</div><div style="font-size:11.5px;color:var(--gray-400);margin-top:3px;">Just now</div></div>`;
+  tl.appendChild(item);
+  document.getElementById('noteText').value='';
+  document.getElementById('addNotePanel').style.display='none';
+  toast('Note added','success');
+}
+
+function resolveReport(){
+  updateBanner('resolved'); renderTimeline('resolved');
+  document.getElementById('resolveBtn').style.display='none';
+  if(currentReport){
+    const s=JSON.parse(sessionStorage.getItem('temba_reports')||'[]');
+    const idx=s.findIndex(r=>r.ref===currentReport.ref);
+    if(idx>-1){s[idx].status='resolved';sessionStorage.setItem('temba_reports',JSON.stringify(s));}
+  }
+  toast('Report marked as resolved!','success');
+}
+
+function signOut(){localStorage.removeItem('temba_session');window.location.href='index.html';}
+function toast(msg,type='info'){const t=document.getElementById('temba-toast');if(!t)return;const bg={success:'#2E7D32',error:'#C62828',info:'#1565C0'};t.style.background=bg[type]||bg.info;t.textContent=msg;t.style.opacity='1';clearTimeout(t._tm);t._tm=setTimeout(()=>{t.style.opacity='0';},2800);}
+</script>
+</body>
+</html>

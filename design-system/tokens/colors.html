@@ -1,0 +1,77 @@
+<!-- @dsCard group="Tokens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Color Tokens</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:40px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.swatch{border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(10,37,64,.08)}
+.swatch-color{height:80px}
+.swatch-info{background:#fff;padding:12px}
+.swatch-name{font-size:12px;font-weight:700;color:#334155}
+.swatch-hex{font-size:11px;color:#94A3B8;font-weight:600;margin-top:2px;font-family:monospace}
+.gradient-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grad-swatch{border-radius:12px;height:80px;box-shadow:0 2px 8px rgba(10,37,64,.08);display:flex;align-items:flex-end;padding:12px}
+.grad-label{color:rgba(255,255,255,.9);font-size:12px;font-weight:700}
+</style></head><body>
+<h1>Color Tokens</h1>
+<p class="sub">Temba Digital Bridge — complete color palette and gradient system</p>
+
+<div class="section">
+  <div class="section-title">Primary Palette</div>
+  <div class="grid">
+    <div class="swatch"><div class="swatch-color" style="background:#0A2540"></div><div class="swatch-info"><div class="swatch-name">Navy</div><div class="swatch-hex">#0A2540</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1565C0"></div><div class="swatch-info"><div class="swatch-name">Blue (Primary)</div><div class="swatch-hex">#1565C0</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1251A0"></div><div class="swatch-info"><div class="swatch-name">Blue Hover</div><div class="swatch-hex">#1251A0</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1976D2"></div><div class="swatch-info"><div class="swatch-name">Mid Blue</div><div class="swatch-hex">#1976D2</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#29B6F6"></div><div class="swatch-info"><div class="swatch-name">Sky</div><div class="swatch-hex">#29B6F6</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E1F5FE"></div><div class="swatch-info"><div class="swatch-name">Sky Light</div><div class="swatch-hex">#E1F5FE</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0FAFF"></div><div class="swatch-info"><div class="swatch-name">Sky Pale</div><div class="swatch-hex">#F0FAFF</div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Neutrals</div>
+  <div class="grid">
+    <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border:1px solid #E2E8F0"></div><div class="swatch-info"><div class="swatch-name">White</div><div class="swatch-hex">#FFFFFF</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F2F6FA"></div><div class="swatch-info"><div class="swatch-name">BG</div><div class="swatch-hex">#F2F6FA</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F8FAFB"></div><div class="swatch-info"><div class="swatch-name">Gray 50</div><div class="swatch-hex">#F8FAFB</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F1F5F9"></div><div class="swatch-info"><div class="swatch-name">Gray 100</div><div class="swatch-hex">#F1F5F9</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E2E8F0"></div><div class="swatch-info"><div class="swatch-name">Gray 200</div><div class="swatch-hex">#E2E8F0</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#CBD5E1"></div><div class="swatch-info"><div class="swatch-name">Gray 300</div><div class="swatch-hex">#CBD5E1</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#94A3B8"></div><div class="swatch-info"><div class="swatch-name">Gray 400</div><div class="swatch-hex">#94A3B8</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#64748B"></div><div class="swatch-info"><div class="swatch-name">Gray 500</div><div class="swatch-hex">#64748B</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#475569"></div><div class="swatch-info"><div class="swatch-name">Gray 600</div><div class="swatch-hex">#475569</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#334155"></div><div class="swatch-info"><div class="swatch-name">Gray 700</div><div class="swatch-hex">#334155</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1E293B"></div><div class="swatch-info"><div class="swatch-name">Gray 800</div><div class="swatch-hex">#1E293B</div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Semantic Colors</div>
+  <div class="grid">
+    <div class="swatch"><div class="swatch-color" style="background:#2E7D32"></div><div class="swatch-info"><div class="swatch-name">Green</div><div class="swatch-hex">#2E7D32</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E8F5E9"></div><div class="swatch-info"><div class="swatch-name">Green Light</div><div class="swatch-hex">#E8F5E9</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#C62828"></div><div class="swatch-info"><div class="swatch-name">Red</div><div class="swatch-hex">#C62828</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFEBEE"></div><div class="swatch-info"><div class="swatch-name">Red Light</div><div class="swatch-hex">#FFEBEE</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E65100"></div><div class="swatch-info"><div class="swatch-name">Orange</div><div class="swatch-hex">#E65100</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFF3E0"></div><div class="swatch-info"><div class="swatch-name">Orange Light</div><div class="swatch-hex">#FFF3E0</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#7B1FA2"></div><div class="swatch-info"><div class="swatch-name">Purple</div><div class="swatch-hex">#7B1FA2</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F3E5F5"></div><div class="swatch-info"><div class="swatch-name">Purple Light</div><div class="swatch-hex">#F3E5F5</div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Gradients</div>
+  <div class="gradient-row">
+    <div class="grad-swatch" style="background:linear-gradient(135deg,#0A2540,#1565C0,#0288D1)"><span class="grad-label">Hero / Page Background</span></div>
+    <div class="grad-swatch" style="background:linear-gradient(135deg,#071E38,#0A2540,#1565C0)"><span class="grad-label">Auth Background</span></div>
+    <div class="grad-swatch" style="background:linear-gradient(135deg,#1565C0,#0288D1)"><span class="grad-label">Blue Accent</span></div>
+    <div class="grad-swatch" style="background:linear-gradient(135deg,#E65100,#F57C00)"><span class="grad-label">Provider Badge</span></div>
+  </div>
+</div>
+</body></html>

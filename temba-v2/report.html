@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report a Problem — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+  <style>
+    .report-layout { display:grid; grid-template-columns:1fr 320px; gap:1.5rem; align-items:start; }
+    .issue-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:4px; }
+    .issue-chip { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:12px 8px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-200); background:var(--white); font-size:12.5px; font-weight:600; color:var(--gray-600); cursor:pointer; transition:all 0.2s; text-align:center; }
+    .issue-chip i { font-size:22px; color:var(--gray-400); transition:color 0.2s; }
+    .issue-chip:hover,.issue-chip.active { border-color:var(--blue); background:var(--sky-pale); color:var(--blue); }
+    .issue-chip.active i,.issue-chip:hover i { color:var(--blue); }
+    .urgency-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .urg-opt input { display:none; }
+    .urg-card { display:flex; flex-direction:column; align-items:center; gap:4px; padding:12px 8px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-200); cursor:pointer; transition:all 0.2s; text-align:center; }
+    .urg-card i { font-size:22px; }
+    .urg-card strong { font-size:13px; }
+    .urg-card small { font-size:10.5px; color:var(--gray-400); line-height:1.3; }
+    .urg-opt input:checked + .urg-card.urg-urgent   { border-color:var(--red);    background:var(--red-light); }
+    .urg-opt input:checked + .urg-card.urg-moderate { border-color:var(--orange); background:var(--orange-light); }
+    .urg-opt input:checked + .urg-card.urg-low      { border-color:var(--blue);   background:var(--sky-pale); }
+    .urg-card.urg-urgent i   { color:var(--red); }
+    .urg-card.urg-moderate i { color:var(--orange); }
+    .urg-card.urg-low i      { color:var(--blue); }
+    .provider-list { display:flex; flex-direction:column; gap:8px; }
+    .prov-opt { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-200); cursor:pointer; transition:all 0.2s; }
+    .prov-opt:hover,.prov-opt.active { border-color:var(--blue); background:var(--sky-pale); }
+    .prov-icon { width:36px; height:36px; border-radius:8px; background:linear-gradient(135deg,var(--blue),var(--sky)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:15px; flex-shrink:0; }
+    .prov-check { margin-left:auto; color:var(--gray-200); font-size:17px; transition:color 0.2s; }
+    .prov-opt.active .prov-check { color:var(--blue); }
+    .ev-btns { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .btn-evidence { display:flex; align-items:center; gap:6px; padding:9px 16px; border:1.5px solid var(--gray-300); border-radius:var(--radius-md); background:#fff; color:var(--navy); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.18s; }
+    .btn-evidence:hover { border-color:var(--blue); color:var(--blue); background:var(--sky-pale); }
+    .btn-evidence i { font-size:16px; }
+    .upload-zone { border:2px dashed var(--gray-300); border-radius:var(--radius-md); padding:1.5rem 2rem; text-align:center; transition:all 0.2s; }
+    .upload-zone i { font-size:32px; color:var(--gray-400); margin-bottom:0.4rem; display:block; }
+    .upload-zone.dragover { border-color:var(--blue); background:var(--sky-pale); }
+    .upload-zone.dragover i { color:var(--blue); }
+    .file-previews { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    .file-thumb { width:80px; height:80px; border-radius:8px; border:1px solid var(--gray-200); object-fit:cover; display:block; }
+    .ev-wrap { position:relative; width:80px; flex-shrink:0; }
+    .ev-video-wrap { width:80px; height:80px; border-radius:8px; border:1px solid var(--gray-200); overflow:hidden; background:#000; position:relative; }
+    .ev-video-wrap video { width:100%; height:100%; object-fit:cover; display:block; }
+    .ev-video-wrap .ev-play-icon { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px; pointer-events:none; background:rgba(0,0,0,0.25); }
+    .ev-file-card { width:80px; height:80px; border-radius:8px; border:1px solid var(--gray-200); background:var(--gray-50,#f8fafc); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:6px; text-align:center; overflow:hidden; }
+    .ev-file-card i { font-size:22px; color:var(--blue); }
+    .ev-file-card span { font-size:9.5px; color:var(--gray-500); word-break:break-all; max-width:72px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block; }
+    .ev-remove { position:absolute; top:-7px; right:-7px; width:20px; height:20px; border-radius:50%; background:var(--red,#ef4444); color:#fff; border:2px solid #fff; cursor:pointer; font-size:10px; display:flex; align-items:center; justify-content:center; padding:0; line-height:1; }
+    .summary-box { background:var(--sky-pale); border:1px solid #B3E5FC; border-radius:var(--radius-md); padding:1.25rem; margin-top:1.25rem; }
+    .summary-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(41,182,246,0.15); }
+    .summary-row:last-child { border-bottom:none; }
+    .summary-row span { color:var(--gray-600); }
+    .summary-row strong { color:var(--navy); }
+    .sidebar-box { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:1rem; }
+    .sb-title { font-size:13.5px; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:7px; margin-bottom:0.75rem; }
+    .nearby-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--gray-200); }
+    .nearby-item:last-child { border-bottom:none; }
+    .step-bar { display:flex; align-items:center; margin-bottom:1.75rem; }
+    @media(max-width:900px) { .report-layout{grid-template-columns:1fr;} .issue-grid{grid-template-columns:repeat(2,1fr);} .urgency-row{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="mainNav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="assets/temba-logo.png" alt="Temba Digital Bridge" style="height:38px;width:auto;display:block;">
+      <span style="font-size:15px;font-weight:800;color:var(--navy,#0A2540);white-space:nowrap;letter-spacing:-0.01em;">Temba Digital Bridge</span>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard-community.html" data-i18n="nav_dashboard">Dashboard</a>
+      <a href="report.html" class="active" data-i18n="nav_report">Report Issue</a>
+      <a href="#" onclick="openAboutModal();return false;" data-i18n="nav_about">About</a>
+    </div>
+    <div class="nav-actions">
+      <button data-lang-btn="en" onclick="setLang('en')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;padding:4px 6px;">EN</button>
+      <span style="color:var(--gray-300);">|</span>
+      <button data-lang-btn="rw" onclick="setLang('rw')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;padding:4px 6px;">RW</button>
+      <a href="signin.html" class="btn-ghost" data-i18n="nav_signin">Sign In</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page header -->
+<div style="background:linear-gradient(135deg,var(--navy),var(--blue));padding:2.5rem 2rem;">
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="font-size:12.5px;color:rgba(255,255,255,0.6);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+      <a href="index.html" style="color:rgba(255,255,255,0.7);">Home</a>
+      <i class="ti ti-chevron-right" style="font-size:11px;"></i>
+      <span data-i18n="report_title">Report a Water Problem</span>
+    </div>
+    <h1 style="font-size:26px;font-weight:800;color:#fff;" data-i18n="report_title">Report a Water Problem</h1>
+    <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-top:4px;" data-i18n="report_sub">Describe the issue and we'll connect you with the right service provider.</p>
+  </div>
+</div>
+
+<div style="max-width:1280px;margin:0 auto;padding:2rem;">
+  <div class="report-layout">
+
+    <!-- FORM -->
+    <div>
+      <!-- Step bar -->
+      <div class="step-bar" id="reportSteps">
+        <div class="auth-step active" id="rs1"><div class="auth-step-dot">1</div><div class="auth-step-label" data-i18n="step_issue">Issue</div></div>
+        <div class="auth-step-line" id="rline1"></div>
+        <div class="auth-step" id="rs2"><div class="auth-step-dot">2</div><div class="auth-step-label" data-i18n="step_loc2">Location</div></div>
+        <div class="auth-step-line" id="rline2"></div>
+        <div class="auth-step" id="rs3"><div class="auth-step-dot">3</div><div class="auth-step-label" data-i18n="step_provider">Provider</div></div>
+        <div class="auth-step-line" id="rline3"></div>
+        <div class="auth-step" id="rs4"><div class="auth-step-dot">4</div><div class="auth-step-label" data-i18n="step_evidence">Evidence</div></div>
+      </div>
+
+      <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:2rem;">
+
+        <!-- STEP 1 -->
+        <div class="form-step active" id="rStep1">
+          <div class="step-section"><i class="ti ti-flag" aria-hidden="true"></i><span data-i18n="sec_issue">Issue Details</span></div>
+          <div class="field">
+            <label class="field-label" data-i18n="lbl_issue_type">Issue Type</label>
+            <div class="issue-grid" id="issueGrid">
+              <div class="issue-chip active" onclick="selectIssue(this,'broken_pipe')"><i class="ti ti-pipe" aria-hidden="true"></i><span data-i18n="issue_broken_pipe">Broken Pipe</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'no_water')"><i class="ti ti-droplet-off" aria-hidden="true"></i><span data-i18n="issue_no_water">No Water Supply</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'contam')"><i class="ti ti-flask" aria-hidden="true"></i><span data-i18n="issue_contam">Contamination</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'pressure')"><i class="ti ti-gauge" aria-hidden="true"></i><span data-i18n="issue_pressure">Low Pressure</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'flooding')"><i class="ti ti-waves" aria-hidden="true"></i><span data-i18n="issue_flooding">Flooding</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'billing')"><i class="ti ti-receipt" aria-hidden="true"></i><span data-i18n="issue_billing">Billing Issue</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'sanitation')"><i class="ti ti-toilet-paper" aria-hidden="true"></i><span data-i18n="issue_sanitation">Sanitation</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'long_distance')"><i class="ti ti-walk" aria-hidden="true"></i><span data-i18n="issue_long_distance">Long Distance to Water</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'high_cost')"><i class="ti ti-coin" aria-hidden="true"></i><span data-i18n="issue_high_cost">High Cost of Water</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'seasonal')"><i class="ti ti-sun" aria-hidden="true"></i><span data-i18n="issue_seasonal">Seasonal Shortage</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'system_failure')"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span data-i18n="issue_system_failure">System Failure</span></div>
+              <div class="issue-chip" onclick="selectIssue(this,'other')"><i class="ti ti-help-circle" aria-hidden="true"></i><span data-i18n="issue_other">Other</span></div>
+            </div>
+            <div id="rOtherIssueReveal" style="display:none;margin-top:10px;">
+              <div class="field-wrap">
+                <i class="ti ti-pencil field-icon" aria-hidden="true"></i>
+                <input type="text" id="rOtherIssue" placeholder="Please describe the issue type (e.g. sewage overflow, meter tampering…)" maxlength="150" style="padding-left:42px;" />
+              </div>
+              <div class="field-hint" data-i18n="hint_other_issue">Help us route your report correctly by describing the issue.</div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label" data-i18n="lbl_urgency">Urgency Level</label>
+            <div class="urgency-row">
+              <label class="urg-opt"><input type="radio" name="urgency" value="urgent" checked />
+                <div class="urg-card urg-urgent"><i class="ti ti-alert-circle" aria-hidden="true"></i><strong data-i18n="urg_urgent">Urgent</strong><small data-i18n="urg_urgent_desc">Immediate health risk</small></div>
+              </label>
+              <label class="urg-opt"><input type="radio" name="urgency" value="moderate" />
+                <div class="urg-card urg-moderate"><i class="ti ti-alert-triangle" aria-hidden="true"></i><strong data-i18n="urg_moderate">Moderate</strong><small data-i18n="urg_moderate_desc">Significant inconvenience</small></div>
+              </label>
+              <label class="urg-opt"><input type="radio" name="urgency" value="low" />
+                <div class="urg-card urg-low"><i class="ti ti-info-circle" aria-hidden="true"></i><strong data-i18n="urg_low">Non-urgent</strong><small data-i18n="urg_low_desc">Can wait a few days</small></div>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_description">Describe the Problem</span> <span class="req">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-pencil field-icon" style="top:14px;bottom:auto;" aria-hidden="true"></i>
+              <textarea id="rDesc" rows="4" data-i18n-placeholder="lbl_description" placeholder="Describe what is happening..." style="padding-left:42px;height:auto;"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_households">Affected Households</span> <span class="opt" data-i18n="lbl_email_opt">Optional</span></label>
+            <div class="field-wrap sel-wrap">
+              <i class="ti ti-home field-icon" aria-hidden="true"></i>
+              <select id="rHouseholds">
+                <option value="" disabled selected>Select estimate</option>
+                <option>Just my household</option>
+                <option>2–5 households</option>
+                <option>6–20 households</option>
+                <option>Entire street / cell</option>
+                <option>Entire village / sector</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="rGoTo(1,2)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step" id="rStep2">
+          <div class="step-section"><i class="ti ti-map-pin" aria-hidden="true"></i><span data-i18n="sec_loc2">Location of the Problem</span></div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_province">Province</span> <span class="req">*</span></label>
+            <div class="field-wrap sel-wrap">
+              <i class="ti ti-map field-icon" aria-hidden="true"></i>
+              <select id="rProvince" onchange="rCascadeDistrict()"><option value="" disabled selected>Select province</option></select>
+              <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label"><span data-i18n="lbl_district">District</span> <span class="req">*</span></label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-map-2 field-icon" aria-hidden="true"></i>
+                <select id="rDistrict" disabled onchange="rCascadeSector()"><option value="" disabled selected>Select province first</option></select>
+                <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label"><span data-i18n="lbl_sector">Sector</span> <span class="req">*</span></label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-location field-icon" aria-hidden="true"></i>
+                <select id="rSector" disabled><option value="" disabled selected>Select district first</option></select>
+                <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_landmark">Nearest Landmark</span> <span class="opt" data-i18n="lbl_email_opt">Optional</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-signs-right field-icon" aria-hidden="true"></i>
+              <input type="text" id="rLandmark" data-i18n-placeholder="lbl_landmark" placeholder="e.g. Near Kimironko market" />
+            </div>
+            <div class="field-hint">The more specific, the faster providers can locate the issue.</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="rGoTo(2,1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+            <button class="btn-primary" style="flex:1;margin-top:0;" onclick="rGoTo(2,3)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step" id="rStep3">
+          <div class="step-section"><i class="ti ti-building" aria-hidden="true"></i><span data-i18n="sec_provider">Select Provider</span></div>
+          <div class="provider-list" id="providerList">
+            <div class="prov-opt active" onclick="selectProvider(this,'wasac','WASAC')">
+              <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">WASAC</div><div style="font-size:12.5px;color:var(--gray-400);">Water & Sanitation Corporation — national</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+            <div class="prov-opt" onclick="selectProvider(this,'water-access','Water Access Rwanda')">
+              <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">Water Access Rwanda</div><div style="font-size:12.5px;color:var(--gray-400);">Rural water supply</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+            <div class="prov-opt" onclick="selectProvider(this,'iriba','IRIBA Water Group')">
+              <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">IRIBA Water Group</div><div style="font-size:12.5px;color:var(--gray-400);">Urban & peri-urban distribution</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+            <div class="prov-opt" onclick="selectProvider(this,'aquasan','Aquasan Limited')">
+              <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">Aquasan Limited</div><div style="font-size:12.5px;color:var(--gray-400);">Sanitation services</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+            <div class="prov-opt" onclick="selectProvider(this,'pro-water','Pro Water Rwanda')">
+              <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">Pro Water Rwanda</div><div style="font-size:12.5px;color:var(--gray-400);">Commercial water services</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+            <div class="prov-opt" onclick="selectProvider(this,'unsure','Unsure — route automatically')">
+              <div class="prov-icon" style="background:var(--gray-200);"><i class="ti ti-help-circle" style="color:var(--gray-600);" aria-hidden="true"></i></div>
+              <div><div style="font-weight:700;font-size:14px;color:var(--navy);">I'm not sure</div><div style="font-size:12.5px;color:var(--gray-400);">Temba will route to the right provider</div></div>
+              <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="field" style="margin-top:1.25rem;">
+            <label class="field-label"><span data-i18n="lbl_phone">Phone Number</span> <span class="req">*</span></label>
+            <div class="phone-wrap">
+              <select class="phone-code-sel"><option value="+250">🇷🇼 +250</option></select>
+              <input type="tel" class="phone-num-input" id="rPhone" placeholder="788 123 456" />
+            </div>
+            <div class="field-hint">Providers will contact you at this number.</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="rGoTo(3,2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+            <button class="btn-primary" style="flex:1;margin-top:0;" onclick="rGoTo(3,4)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="form-step" id="rStep4">
+          <div class="step-section"><i class="ti ti-camera" aria-hidden="true"></i><span data-i18n="sec_evidence">Evidence & Submit</span></div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_evidence">Evidence</span> <span class="opt" data-i18n="lbl_email_opt">Optional</span></label>
+            <p style="font-size:13px;color:var(--gray-500);margin:0 0 12px;">
+              Attach photos, videos, or documents that show the severity of the issue. This helps providers respond faster and prioritise correctly.
+            </p>
+
+            <!-- Capture / upload buttons -->
+            <div class="ev-btns">
+              <button type="button" class="btn-evidence" onclick="document.getElementById('evCamInput').click()" title="Take a photo with your camera">
+                <i class="ti ti-camera" aria-hidden="true"></i> <span data-i18n="btn_take_photo">Take Photo</span>
+              </button>
+              <button type="button" class="btn-evidence" onclick="document.getElementById('evVidInput').click()" title="Record a short video">
+                <i class="ti ti-video" aria-hidden="true"></i> <span data-i18n="btn_record_video">Record Video</span>
+              </button>
+              <button type="button" class="btn-evidence" onclick="document.getElementById('evFileInput').click()" title="Choose files from your device">
+                <i class="ti ti-folder-open" aria-hidden="true"></i> <span data-i18n="btn_browse_files">Browse Files</span>
+              </button>
+            </div>
+
+            <!-- Drag-and-drop zone -->
+            <div class="upload-zone" id="evDropZone"
+                 ondrop="evDrop(event)" ondragover="evDragOver(event)" ondragleave="evDragLeave(event)">
+              <i class="ti ti-cloud-upload" aria-hidden="true"></i>
+              <p style="font-size:13.5px;font-weight:600;color:var(--gray-600);margin:0 0 4px;" data-i18n="ev_drop_hint">Drag &amp; drop files here</p>
+              <small style="color:var(--gray-400);" data-i18n="ev_drop_sub">Photos, Videos, Documents · Max 20 MB each · Up to 5 files</small>
+            </div>
+
+            <!-- Hidden file inputs -->
+            <input type="file" id="evCamInput"  accept="image/*" capture="environment" style="display:none;" onchange="evAddFiles(this.files,this)" />
+            <input type="file" id="evVidInput"  accept="video/*" capture="environment" style="display:none;" onchange="evAddFiles(this.files,this)" />
+            <input type="file" id="evFileInput" accept="image/*,video/*,.pdf,.doc,.docx,.txt" multiple style="display:none;" onchange="evAddFiles(this.files,this)" />
+
+            <!-- Preview grid -->
+            <div class="file-previews" id="evPreviews"></div>
+            <div id="evCountLabel" style="font-size:12px;color:var(--gray-400);margin-top:6px;display:none;"></div>
+          </div>
+          <div class="field">
+            <label class="field-label">Additional Notes <span class="opt" data-i18n="lbl_email_opt">Optional</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-note field-icon" style="top:14px;bottom:auto;" aria-hidden="true"></i>
+              <textarea id="rNotes" rows="3" placeholder="Any other information that might help the provider..." style="padding-left:42px;height:auto;"></textarea>
+            </div>
+          </div>
+          <div class="summary-box">
+            <div style="font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:7px;margin-bottom:0.75rem;"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Report Summary</div>
+            <div class="summary-row"><span>Issue</span><strong id="sumIssue">Broken Pipe</strong></div>
+            <div class="summary-row"><span>Urgency</span><strong id="sumUrgency"><span class="badge badge-urgent">Urgent</span></strong></div>
+            <div class="summary-row"><span>Location</span><strong id="sumLocation">—</strong></div>
+            <div class="summary-row"><span>Provider</span><strong id="sumProvider">WASAC</strong></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="rGoTo(4,3)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+            <button class="btn-primary" style="flex:1;margin-top:0;" onclick="submitReport()"><i class="ti ti-send" aria-hidden="true"></i> <span data-i18n="btn_submit_report">Submit Report</span></button>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div id="reportSuccess" style="display:none;text-align:center;padding:2rem 0;">
+          <div style="font-size:60px;color:var(--green);margin-bottom:1rem;animation:popIn 0.4s ease;"><i class="ti ti-circle-check-filled" aria-hidden="true"></i></div>
+          <h2 style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:0.5rem;" data-i18n="report_success">Report Submitted!</h2>
+          <p style="color:var(--gray-600);margin-bottom:0.5rem;">Your report has been sent to <strong id="successProv">WASAC</strong>.</p>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:20px;padding:6px 16px;font-size:13.5px;font-weight:700;margin-bottom:0.5rem;">
+            <i class="ti ti-circle-check"></i> <span data-i18n="report_delivered">Delivered to Provider</span>
+          </div>
+          <div style="display:inline-block;background:var(--sky-light);color:var(--blue);border:1px solid #B3E5FC;border-radius:20px;padding:6px 18px;font-size:14px;font-weight:600;margin-bottom:1rem;display:block;">Reference: <strong id="reportRef">#TDB-0000</strong></div>
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:2rem;">You will receive an SMS update at your registered phone number.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <a href="dashboard-community.html" class="btn-primary" style="text-decoration:none;width:auto;"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> <span data-i18n="dash_my_reports">My Reports</span></a>
+            <a href="report.html" class="btn-secondary" style="text-decoration:none;"><i class="ti ti-plus" aria-hidden="true"></i> Submit Another</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+      <div class="sidebar-box">
+        <div class="sb-title"><i class="ti ti-info-circle" style="color:var(--blue);" aria-hidden="true"></i> How it works</div>
+        <ol style="padding-left:1.2rem;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-600);line-height:1.55;">
+          <li><strong>Submit</strong> — Fill in your issue, location, and provider.</li>
+          <li><strong>Assigned</strong> — Your report reaches the provider instantly.</li>
+          <li><strong>Follow-up</strong> — Provider contacts you within their SLA.</li>
+          <li><strong>Resolved</strong> — You confirm resolution and close the report.</li>
+        </ol>
+      </div>
+      <div class="sidebar-box" style="background:var(--sky-pale);border-color:#B3E5FC;">
+        <div class="sb-title" style="color:var(--blue);"><i class="ti ti-device-mobile" aria-hidden="true"></i> <span data-i18n="ussd_phone_title">Using a basic phone?</span></div>
+        <p style="font-size:13px;color:var(--gray-600);line-height:1.65;" data-i18n="ussd_phone_desc">Dial *XXX# on any phone — no internet needed.</p>
+      </div>
+      <div class="sidebar-box">
+        <div class="sb-title"><i class="ti ti-map-pin" style="color:var(--sky);" aria-hidden="true"></i> <span data-i18n="area_reports">Reports Near You</span></div>
+        <div class="nearby-item"><div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;"></div><div style="flex:1;font-size:13px;color:var(--navy);">Broken pipe — Nyarugenge</div><div style="font-size:11.5px;color:var(--gray-400);">8 min ago</div></div>
+        <div class="nearby-item"><div style="width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;"></div><div style="flex:1;font-size:13px;color:var(--navy);">Dry tap — Gasabo</div><div style="font-size:11.5px;color:var(--gray-400);">1 hr ago</div></div>
+        <div class="nearby-item"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div><div style="flex:1;font-size:13px;color:var(--navy);">Water restored — Kimisagara</div><div style="font-size:11.5px;color:var(--gray-400);">3 hrs ago</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="temba-toast"></div>
+<script src="rwanda_data.js"></script>
+<script src="temba-i18n.js"></script>
+<script src="temba-about.js"></script>
+<script src="temba-chatbot.js"></script>
+<script>
+/* Session guard */
+const _s = JSON.parse(localStorage.getItem('temba_session')||'{}');
+if (!_s.loggedIn) window.location.href = 'signin.html';
+
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('shadow',window.scrollY>8));
+
+const API_BASE = 'http://127.0.0.1:8000/api/v1';
+
+async function apiGet(path) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+async function apiPost(path, body) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+const ISSUE_CATEGORY_MAP = {
+  broken_pipe:'pipe_burst', no_water:'no_supply', contam:'contamination',
+  pressure:'low_pressure', flooding:'other', billing:'billing', sanitation:'other',
+  long_distance:'other', high_cost:'billing', seasonal:'no_supply', system_failure:'other',
+  other:'other',
+};
+const URGENCY_API_MAP = { urgent:'high', moderate:'medium', low:'low' };
+
+window._reportProviders = [];
+
+async function loadReportProviders() {
+  const data = await apiGet('/providers?size=50');
+  if (!data || !data.items || !data.items.length) return;
+  window._reportProviders = data.items;
+  const list = document.getElementById('providerList');
+  if (!list) return;
+  list.innerHTML = data.items.map((p, i) => `
+    <div class="prov-opt${i===0?' active':''}" onclick="selectProvider(this,'${p.id}','${p.organization_name.replace(/'/g,"\\'")}')">
+      <div class="prov-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+      <div><div style="font-weight:700;font-size:14px;color:var(--navy);">${p.organization_name}</div><div style="font-size:12.5px;color:var(--gray-400);">${p.service_area||'Rwanda'}</div></div>
+      <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+    </div>`).join('') + `
+    <div class="prov-opt" onclick="selectProvider(this,'','I\\'m not sure — route automatically')">
+      <div class="prov-icon" style="background:var(--gray-200);"><i class="ti ti-help-circle" style="color:var(--gray-600);" aria-hidden="true"></i></div>
+      <div><div style="font-weight:700;font-size:14px;color:var(--navy);">I'm not sure</div><div style="font-size:12.5px;color:var(--gray-400);">Temba will route to the right provider</div></div>
+      <i class="ti ti-circle-check prov-check" aria-hidden="true"></i>
+    </div>`;
+  // set first provider as default
+  if (data.items.length) {
+    rState.provider = data.items[0].organization_name;
+    rState.providerId = data.items[0].id;
+  }
+}
+
+/* State */
+let rCurrentStep = 1;
+let rState = { issueKey:'broken_pipe', issueLabel:'Broken Infrastructure', urgency:'urgent', provider:'WASAC', providerId:null, location:'' };
+
+/* Step nav */
+function rGoTo(from, to) {
+  if (from === 1 && to === 2 && rState.issueKey === 'other') {
+    const otherVal = (document.getElementById('rOtherIssue')?.value || '').trim();
+    if (!otherVal) {
+      document.getElementById('rOtherIssue').focus();
+      showTembaToast('Please describe the issue type before continuing.', 'error');
+      return;
+    }
+    rState.issueLabel = otherVal;
+  }
+  document.getElementById('rStep'+from).classList.remove('active');
+  document.getElementById('rStep'+to).classList.add('active');
+  for(let i=1;i<=4;i++){
+    const d=document.getElementById('rs'+i); d.classList.remove('active','done');
+    if(i<to) d.classList.add('done'); if(i===to) d.classList.add('active');
+  }
+  ['rline1','rline2','rline3'].forEach((id,idx)=>{ const el=document.getElementById(id); if(el) el.classList.toggle('done',to>idx+1); });
+  rCurrentStep = to;
+  updateSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* Issue chips */
+function selectIssue(el, key) {
+  document.querySelectorAll('.issue-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  rState.issueKey = key;
+  rState.issueLabel = el.querySelector('span').textContent;
+  const rev = document.getElementById('rOtherIssueReveal');
+  if (rev) rev.style.display = key === 'other' ? 'block' : 'none';
+  if (key !== 'other') { const inp = document.getElementById('rOtherIssue'); if (inp) inp.value = ''; }
+}
+
+/* Provider */
+function selectProvider(el, idOrKey, name) {
+  document.querySelectorAll('.prov-opt').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  rState.provider = name;
+  // idOrKey is UUID if loaded from API, legacy string key otherwise
+  rState.providerId = (idOrKey && idOrKey.includes('-')) ? idOrKey : null;
+}
+
+/* Location cascade */
+document.addEventListener('DOMContentLoaded', async ()=>{
+  const el=document.getElementById('rProvince');
+  if(el && typeof RWANDA!=='undefined') Object.keys(RWANDA).sort().forEach(p=>el.appendChild(new Option(p,p)));
+  await loadReportProviders();
+});
+function rCascadeDistrict(){
+  const prov=document.getElementById('rProvince').value;
+  const d=document.getElementById('rDistrict');
+  d.innerHTML='<option value="" disabled selected>Select district</option>';
+  d.disabled=false;
+  document.getElementById('rSector').innerHTML='<option value="" disabled selected>Select district first</option>';
+  document.getElementById('rSector').disabled=true;
+  if(RWANDA[prov]) Object.keys(RWANDA[prov]).sort().forEach(k=>d.appendChild(new Option(k,k)));
+  rState.location='';
+}
+function rCascadeSector(){
+  const prov=document.getElementById('rProvince').value;
+  const dist=document.getElementById('rDistrict').value;
+  const s=document.getElementById('rSector');
+  s.innerHTML='<option value="" disabled selected>Select sector</option>';
+  s.disabled=false;
+  if(RWANDA[prov]&&RWANDA[prov][dist]) Object.keys(RWANDA[prov][dist]).sort().forEach(k=>s.appendChild(new Option(k,k)));
+  rState.location=[dist,prov].filter(Boolean).join(' → ');
+}
+
+/* Summary */
+function updateSummary(){
+  const urgMap={urgent:'badge-urgent',moderate:'badge-moderate',low:'badge-active'};
+  const urgency=document.querySelector('input[name="urgency"]:checked')?.value||'urgent';
+  rState.urgency=urgency;
+  document.getElementById('sumIssue').textContent=rState.issueLabel;
+  document.getElementById('sumUrgency').innerHTML=`<span class="badge ${urgMap[urgency]}">${urgency}</span>`;
+  document.getElementById('sumLocation').textContent=rState.location||'—';
+  document.getElementById('sumProvider').textContent=rState.provider;
+}
+
+/* ── Evidence upload ── */
+const EV_MAX_FILES = 5;
+const EV_MAX_MB    = 20;
+let rEvidenceFiles = [];
+
+function evDragOver(e) {
+  e.preventDefault();
+  document.getElementById('evDropZone').classList.add('dragover');
+}
+function evDragLeave() {
+  document.getElementById('evDropZone').classList.remove('dragover');
+}
+function evDrop(e) {
+  e.preventDefault();
+  document.getElementById('evDropZone').classList.remove('dragover');
+  evAddFiles(e.dataTransfer.files, null);
+}
+
+function evAddFiles(fileList, inputEl) {
+  const remaining = EV_MAX_FILES - rEvidenceFiles.length;
+  if (remaining <= 0) {
+    showTembaToast(`Maximum ${EV_MAX_FILES} files allowed. Remove one to add more.`, 'error');
+    if (inputEl) inputEl.value = '';
+    return;
+  }
+  let added = 0;
+  Array.from(fileList).slice(0, remaining).forEach(f => {
+    if (f.size > EV_MAX_MB * 1024 * 1024) {
+      showTembaToast(`"${f.name}" exceeds the ${EV_MAX_MB} MB limit and was skipped.`, 'error');
+      return;
+    }
+    rEvidenceFiles.push(f);
+    added++;
+  });
+  if (inputEl) inputEl.value = '';
+  evRenderPreviews();
+}
+
+function evRemove(idx) {
+  rEvidenceFiles.splice(idx, 1);
+  evRenderPreviews();
+}
+
+function evRenderPreviews() {
+  const row      = document.getElementById('evPreviews');
+  const countEl  = document.getElementById('evCountLabel');
+  row.innerHTML  = '';
+
+  rEvidenceFiles.forEach((f, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'ev-wrap';
+
+    if (f.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.className = 'file-thumb';
+      img.alt = f.name;
+      const reader = new FileReader();
+      reader.onload = e => { img.src = e.target.result; };
+      reader.readAsDataURL(f);
+      wrap.appendChild(img);
+
+    } else if (f.type.startsWith('video/')) {
+      const vWrap = document.createElement('div');
+      vWrap.className = 'ev-video-wrap';
+      const vid = document.createElement('video');
+      vid.src = URL.createObjectURL(f);
+      vid.muted = true;
+      vid.preload = 'metadata';
+      vid.onmouseover = () => vid.play().catch(()=>{});
+      vid.onmouseleave = () => { vid.pause(); vid.currentTime = 0; };
+      const playIcon = document.createElement('div');
+      playIcon.className = 'ev-play-icon';
+      playIcon.innerHTML = '<i class="ti ti-player-play-filled"></i>';
+      vWrap.appendChild(vid);
+      vWrap.appendChild(playIcon);
+      wrap.appendChild(vWrap);
+
+    } else {
+      const card = document.createElement('div');
+      card.className = 'ev-file-card';
+      const ext = f.name.includes('.') ? f.name.split('.').pop().toUpperCase() : 'FILE';
+      card.innerHTML = `<i class="ti ti-file-description" aria-hidden="true"></i><span style="font-weight:700;font-size:10px;">${ext}</span><span>${f.name}</span>`;
+      wrap.appendChild(card);
+    }
+
+    const rmBtn = document.createElement('button');
+    rmBtn.type = 'button';
+    rmBtn.className = 'ev-remove';
+    rmBtn.title = 'Remove file';
+    rmBtn.innerHTML = '<i class="ti ti-x"></i>';
+    rmBtn.onclick = () => evRemove(i);
+    wrap.appendChild(rmBtn);
+
+    row.appendChild(wrap);
+  });
+
+  const n = rEvidenceFiles.length;
+  if (n > 0) {
+    countEl.style.display = 'block';
+    countEl.textContent = `${n} of ${EV_MAX_FILES} file${n !== 1 ? 's' : ''} selected`;
+  } else {
+    countEl.style.display = 'none';
+  }
+}
+
+/* Submit */
+async function submitReport(){
+  const desc = (document.getElementById('rDesc').value||'').trim();
+  const notes = (document.getElementById('rNotes').value||'').trim();
+  const province = document.getElementById('rProvince').value||null;
+  const district = document.getElementById('rDistrict').value||null;
+  const sector   = document.getElementById('rSector').value||null;
+  const landmark = (document.getElementById('rLandmark').value||'').trim();
+
+  const submitBtn = document.querySelector('#rStep4 .btn-primary');
+  if (submitBtn) { submitBtn.disabled=true; submitBtn.innerHTML='<i class="ti ti-loader-2 ti-spin"></i> Submitting…'; }
+
+  const otherIssueDetail = rState.issueKey === 'other' ? (document.getElementById('rOtherIssue')?.value || '').trim() : '';
+  const finalLabel = otherIssueDetail || rState.issueLabel;
+  const finalDesc = desc
+    ? (otherIssueDetail ? `Issue type: ${otherIssueDetail}\n\n${desc}` : desc)
+    : `${finalLabel} reported${rState.location?' at '+rState.location:''}${landmark?' near '+landmark:''}.`;
+
+  const apiResult = await apiPost('/reports', {
+    category: ISSUE_CATEGORY_MAP[rState.issueKey] || 'other',
+    urgency: URGENCY_API_MAP[rState.urgency] || 'medium',
+    title: `${finalLabel}${district?' in '+district:''}${province?', '+province:''}`,
+    description: finalDesc,
+    provider_id: rState.providerId || null,
+    province, district, sector,
+    cell: null, village: null,
+  });
+
+  if (submitBtn) { submitBtn.disabled=false; submitBtn.innerHTML='<i class="ti ti-send"></i> Submit Report'; }
+
+  const ref = apiResult ? '#'+String(apiResult.id).slice(0,8).toUpperCase() : '#TDB-'+Math.floor(1000+Math.random()*9000);
+  document.getElementById('reportRef').textContent=ref;
+  document.getElementById('successProv').textContent=rState.provider;
+  document.querySelector('#rStep4').style.display='none';
+  document.getElementById('reportSuccess').style.display='block';
+
+  if (!apiResult) {
+    // Fallback: store locally so community dashboard still shows it
+    const reports=JSON.parse(sessionStorage.getItem('temba_reports')||'[]');
+    reports.unshift({ref,issue:rState.issueLabel,urgency:rState.urgency,loc:rState.location,provider:rState.provider,status:'submitted',time:new Date().toISOString()});
+    sessionStorage.setItem('temba_reports',JSON.stringify(reports));
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toast(msg,type='info'){const t=document.getElementById('temba-toast');if(!t)return;const bg={success:'#2E7D32',error:'#C62828',info:'#1565C0'};t.style.background=bg[type]||bg.info;t.textContent=msg;t.style.opacity='1';clearTimeout(t._tm);t._tm=setTimeout(()=>{t.style.opacity='0';},2800);}
+</script>
+</body>
+</html>

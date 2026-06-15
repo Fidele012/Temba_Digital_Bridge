@@ -1,0 +1,137 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign Up — Community Member</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;background:linear-gradient(135deg,#071E38 0%,#0A2540 40%,#1565C0 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 20px 60px}
+.logo-link{display:flex;align-items:center;gap:12px;margin-bottom:20px;text-decoration:none}
+.logo-box{background:#fff;border-radius:14px;padding:9px 18px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:9px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:15px;font-weight:800;color:#0A2540}
+.brand-name{font-size:18px;font-weight:800;color:#fff}
+.tabs{display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:4px;gap:4px;margin-bottom:20px;width:100%;max-width:480px}
+.tab{flex:1;padding:10px;border:none;border-radius:9px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:7px}
+.tab.active{background:#fff;color:#1565C0}
+.card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+/* Steps */
+.steps-row{display:flex;align-items:center;margin-bottom:28px}
+.step-wrap{display:flex;flex-direction:column;align-items:center}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.step-dot.done{background:#1565C0;color:#fff}
+.step-dot.active{background:#fff;border:2.5px solid #1565C0;color:#1565C0}
+.step-dot.todo{background:#E2E8F0;color:#94A3B8}
+.step-label{font-size:11px;font-weight:700;margin-top:4px;color:#94A3B8}
+.step-label.active{color:#1565C0}
+.step-line{flex:1;height:2px;background:#E2E8F0;margin:0 4px;padding-bottom:14px}
+.step-line.done{background:#1565C0}
+/* Field */
+.field{margin-bottom:16px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fl{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:flex;gap:4px}
+.req{color:#C62828}
+.fw{position:relative;display:flex;align-items:center}
+.fi{position:absolute;left:13px;color:#94A3B8;font-size:16px;pointer-events:none}
+.fw input,.fw select{width:100%;padding:11px 13px 11px 40px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;color:#1E293B;outline:none}
+.fw input:focus,.fw select:focus{border-color:#1565C0;box-shadow:0 0 0 3px rgba(21,101,192,.1)}
+.fw input.no-icon,.fw select.no-icon{padding-left:13px}
+/* Gender pills */
+.gender-row{display:flex;gap:8px}
+.gender-btn{flex:1;padding:10px 6px;border:1.5px solid #E2E8F0;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:#64748B;cursor:pointer;text-align:center}
+.gender-btn.active{border-color:#1565C0;background:#EFF6FF;color:#1565C0}
+/* Phone prefix */
+.phone-wrap{display:flex;gap:8px}
+.prefix{padding:11px 12px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFB;font-size:14px;font-weight:700;color:#334155;white-space:nowrap}
+/* Submit btn */
+.btn-next{width:100%;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:13px;border-radius:10px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(21,101,192,.3);margin-top:8px}
+.btn-back{width:100%;background:#fff;color:#64748B;padding:12px;border-radius:10px;border:1.5px solid #E2E8F0;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.step-title{font-size:18px;font-weight:800;color:#0A2540;margin-bottom:4px}
+.step-sub{font-size:13px;color:#64748B;margin-bottom:20px}
+.section-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.section-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.section-label{font-size:13px;font-weight:700;color:#334155}
+</style></head><body>
+
+<div class="logo-link">
+  <div class="logo-box">
+    <div class="logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+    <span class="logo-text">Temba Digital Bridge</span>
+  </div>
+</div>
+
+<div class="tabs" style="max-width:480px">
+  <button class="tab active"><i class="ti ti-users"></i> Community Member</button>
+  <button class="tab"><i class="ti ti-building"></i> Water Provider</button>
+</div>
+
+<!-- STEP 1 — Personal Info -->
+<div class="card" style="margin-bottom:16px">
+  <div class="steps-row">
+    <div class="step-wrap"><div class="step-dot active">1</div><div class="step-label active">Personal</div></div>
+    <div class="step-line"></div>
+    <div class="step-wrap"><div class="step-dot todo">2</div><div class="step-label">Location</div></div>
+    <div class="step-line"></div>
+    <div class="step-wrap"><div class="step-dot todo">3</div><div class="step-label">Account</div></div>
+  </div>
+  <div class="section-head"><div class="section-icon" style="background:#EFF6FF"><i class="ti ti-user" style="color:#1565C0"></i></div><span class="section-label">Personal Information</span></div>
+  <div class="field field-row">
+    <div><div class="fl">First Name <span class="req">*</span></div><div class="fw"><i class="ti ti-user fi"></i><input type="text" value="Jean"></div></div>
+    <div><div class="fl">Last Name <span class="req">*</span></div><div class="fw"><i class="ti ti-user fi"></i><input type="text" value="Mugisha"></div></div>
+  </div>
+  <div class="field"><div class="fl">Phone Number <span class="req">*</span></div>
+    <div class="phone-wrap"><div class="prefix">🇷🇼 +250</div><div class="fw" style="flex:1"><input class="no-icon" type="tel" placeholder="788 123 456" value="788 123 456"></div></div>
+  </div>
+  <div class="field"><div class="fl">Gender <span class="req">*</span></div>
+    <div class="gender-row">
+      <button class="gender-btn active">Male</button>
+      <button class="gender-btn">Female</button>
+      <button class="gender-btn">Prefer not to say</button>
+    </div>
+  </div>
+  <button class="btn-next"><i class="ti ti-arrow-right"></i> Continue to Location</button>
+</div>
+
+<!-- STEP 2 — Location (filled) -->
+<div class="card" style="margin-bottom:16px">
+  <div class="steps-row">
+    <div class="step-wrap"><div class="step-dot done"><i class="ti ti-check" style="font-size:12px"></i></div><div class="step-label active">Personal</div></div>
+    <div class="step-line done"></div>
+    <div class="step-wrap"><div class="step-dot active">2</div><div class="step-label active">Location</div></div>
+    <div class="step-line"></div>
+    <div class="step-wrap"><div class="step-dot todo">3</div><div class="step-label">Account</div></div>
+  </div>
+  <div class="section-head"><div class="section-icon" style="background:#E8F5E9"><i class="ti ti-map-pin" style="color:#2E7D32"></i></div><span class="section-label">Your Location</span></div>
+  <div class="field field-row">
+    <div><div class="fl">Province <span class="req">*</span></div><div class="fw"><i class="ti ti-map fi"></i><select><option>Kigali City</option><option>Eastern Province</option><option>Southern Province</option><option>Western Province</option><option>Northern Province</option></select></div></div>
+    <div><div class="fl">District <span class="req">*</span></div><div class="fw"><i class="ti ti-map-2 fi"></i><select><option>Kicukiro</option><option>Gasabo</option><option>Nyarugenge</option></select></div></div>
+  </div>
+  <div class="field field-row">
+    <div><div class="fl">Sector <span class="req">*</span></div><div class="fw"><input class="no-icon" type="text" value="Kicukiro"></div></div>
+    <div><div class="fl">Cell</div><div class="fw"><input class="no-icon" type="text" value="Niboye"></div></div>
+  </div>
+  <button class="btn-next"><i class="ti ti-arrow-right"></i> Continue to Account</button>
+  <button class="btn-back">← Back</button>
+</div>
+
+<!-- STEP 3 — Account -->
+<div class="card">
+  <div class="steps-row">
+    <div class="step-wrap"><div class="step-dot done"><i class="ti ti-check" style="font-size:12px"></i></div><div class="step-label active">Personal</div></div>
+    <div class="step-line done"></div>
+    <div class="step-wrap"><div class="step-dot done"><i class="ti ti-check" style="font-size:12px"></i></div><div class="step-label active">Location</div></div>
+    <div class="step-line done"></div>
+    <div class="step-wrap"><div class="step-dot active">3</div><div class="step-label active">Account</div></div>
+  </div>
+  <div class="section-head"><div class="section-icon" style="background:#FFF3E0"><i class="ti ti-lock" style="color:#E65100"></i></div><span class="section-label">Create Your Account</span></div>
+  <div class="field"><div class="fl">Email Address <span class="req">*</span></div><div class="fw"><i class="ti ti-mail fi"></i><input type="email" value="jean.mugisha@example.com"></div></div>
+  <div class="field"><div class="fl">Password <span class="req">*</span></div><div class="fw"><i class="ti ti-lock fi"></i><input type="password" value="••••••••••"><button style="position:absolute;right:12px;background:none;border:none;cursor:pointer;color:#94A3B8"><i class="ti ti-eye"></i></button></div>
+    <div style="margin-top:6px;height:5px;background:#E2E8F0;border-radius:3px;overflow:hidden"><div style="width:75%;height:100%;background:linear-gradient(90deg,#2E7D32,#4CAF50);border-radius:3px"></div></div>
+    <div style="font-size:11px;color:#2E7D32;font-weight:600;margin-top:3px">Strong password</div>
+  </div>
+  <div class="field"><div class="fl">Confirm Password <span class="req">*</span></div><div class="fw"><i class="ti ti-lock fi"></i><input type="password" value="••••••••••"><button style="position:absolute;right:12px;background:none;border:none;cursor:pointer;color:#94A3B8"><i class="ti ti-eye"></i></button></div></div>
+  <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#334155;cursor:pointer;margin-bottom:16px"><input type="checkbox" checked style="accent-color:#1565C0;width:16px;height:16px;margin-top:1px;flex-shrink:0"> I agree to the <a href="#" style="color:#1565C0;font-weight:700">Terms of Use</a> and <a href="#" style="color:#1565C0;font-weight:700">Privacy Policy</a></label>
+  <button class="btn-next"><i class="ti ti-user-plus"></i> Create Account</button>
+  <button class="btn-back">← Back</button>
+  <p style="text-align:center;font-size:13px;color:#94A3B8;margin-top:14px">Already have an account? <a href="#" style="color:#1565C0;font-weight:700">Sign In</a></p>
+</div>
+</body></html>

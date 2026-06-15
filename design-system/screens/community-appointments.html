@@ -1,0 +1,146 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community — Appointments</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.sidebar-cta{margin:10px 14px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 28px);padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.content-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07)}
+.card-header{padding:16px 20px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Mini Calendar */
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F1F5F9}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:12px}
+.cal-day-name{text-align:center;font-size:11px;font-weight:700;color:#94A3B8;padding:4px 0}
+.cal-day{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#334155;cursor:pointer;margin:0 auto}
+.cal-day:hover{background:#F1F5F9}
+.cal-day.today{background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;box-shadow:0 2px 8px rgba(21,101,192,.3)}
+.cal-day.has-apt{position:relative}
+.cal-day.has-apt::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:#E65100}
+.cal-day.past{color:#CBD5E1}
+/* Appointment cards */
+.apt-card{padding:16px 20px;border-bottom:1px solid #F8FAFB;display:flex;gap:14px;cursor:pointer}
+.apt-card:last-child{border-bottom:none}
+.apt-card:hover{background:#F8FAFB}
+.apt-date-box{width:48px;flex-shrink:0;text-align:center;background:linear-gradient(135deg,#1565C0,#0288D1);border-radius:10px;padding:8px 4px;color:#fff}
+.apt-date-box .month{font-size:10px;font-weight:700;text-transform:uppercase;opacity:.8}
+.apt-date-box .day{font-size:22px;font-weight:800;line-height:1}
+.apt-body{flex:1}
+.apt-title{font-size:14px;font-weight:700;color:#1E293B}
+.apt-meta{font-size:12px;color:#94A3B8;margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.past-apt-card{padding:14px 20px;border-bottom:1px solid #F8FAFB;display:flex;gap:14px;opacity:.6}
+.past-date-box{width:48px;flex-shrink:0;text-align:center;background:#E2E8F0;border-radius:10px;padding:8px 4px}
+.past-date-box .month{font-size:10px;font-weight:700;text-transform:uppercase;color:#94A3B8}
+.past-date-box .day{font-size:22px;font-weight:800;color:#94A3B8;line-height:1}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#0A2540;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">J</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-users" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#0A2540">Jean Mugisha</div><div style="font-size:11px;color:#64748B">Community Member</div></div></div>
+    <div class="sec-label">MAIN</div>
+    <div class="nav-item"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-report" style="font-size:16px"></i> My Reports <span class="nav-badge">3</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+    <div class="nav-item active"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments <span class="nav-badge">1</span></div>
+    <div class="nav-item"><i class="ti ti-bell" style="font-size:16px"></i> Alerts <span class="nav-badge">5</span></div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">EXPLORE</div>
+    <div class="nav-item"><i class="ti ti-building" style="font-size:16px"></i> Providers</div>
+    <div class="nav-item"><i class="ti ti-history" style="font-size:16px"></i> History</div>
+    <div class="sb-divider"></div>
+    <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Appointments</div><div style="font-size:13px;color:#64748B;margin-top:3px">Schedule and manage technician visits</div></div>
+      <button style="background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:10px 20px;border-radius:9px;border:none;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 3px 12px rgba(21,101,192,.28)"><i class="ti ti-calendar-plus"></i> Book Appointment</button>
+    </div>
+    <div class="content-grid">
+      <!-- Left: Appointments list -->
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Upcoming</span><span class="badge" style="background:#EFF6FF;color:#1565C0">1 scheduled</span></div>
+          <div class="apt-card">
+            <div class="apt-date-box"><div class="month">JUN</div><div class="day">17</div></div>
+            <div class="apt-body">
+              <div class="apt-title">Meter Inspection & Calibration</div>
+              <div class="apt-meta"><i class="ti ti-clock" style="font-size:11px"></i>10:00 – 12:00 <i class="ti ti-building" style="font-size:11px"></i>WASAC <i class="ti ti-map-pin" style="font-size:11px"></i>Kicukiro</div>
+              <div style="margin-top:8px;display:flex;gap:6px"><span class="badge" style="background:#E8F5E9;color:#2E7D32">Confirmed</span><span class="badge" style="background:#EFF6FF;color:#1565C0">Field Officer: Eric H.</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+              <button style="background:#EFF6FF;border:none;color:#1565C0;border-radius:8px;padding:7px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Reschedule</button>
+              <button style="background:#FFEBEE;border:none;color:#C62828;border-radius:8px;padding:7px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span style="font-size:15px;font-weight:700;color:#0A2540">Past Appointments</span></div>
+          <div class="past-apt-card">
+            <div class="past-date-box"><div class="month">JUN</div><div class="day">5</div></div>
+            <div><div style="font-size:14px;font-weight:700;color:#94A3B8">Meter Reading Support</div><div style="font-size:12px;color:#94A3B8;margin-top:3px">WASAC · 09:00–10:00 · Resolved</div></div>
+          </div>
+          <div class="past-apt-card">
+            <div class="past-date-box"><div class="month">MAY</div><div class="day">22</div></div>
+            <div><div style="font-size:14px;font-weight:700;color:#94A3B8">Pipe Inspection</div><div style="font-size:12px;color:#94A3B8;margin-top:3px">Pro Water Rwanda · 14:00–15:30 · Completed</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Calendar -->
+      <div>
+        <div class="card">
+          <div class="cal-header">
+            <button style="background:none;border:none;cursor:pointer;color:#64748B;font-size:18px"><i class="ti ti-chevron-left"></i></button>
+            <span style="font-size:14px;font-weight:700;color:#0A2540">June 2026</span>
+            <button style="background:none;border:none;cursor:pointer;color:#64748B;font-size:18px"><i class="ti ti-chevron-right"></i></button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div><div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div><div class="cal-day-name">Su</div>
+            <div class="cal-day past">1</div><div class="cal-day past">2</div><div class="cal-day past">3</div><div class="cal-day past">4</div><div class="cal-day past has-apt">5</div><div class="cal-day past">6</div><div class="cal-day past">7</div>
+            <div class="cal-day past">8</div><div class="cal-day past">9</div><div class="cal-day past">10</div><div class="cal-day past">11</div><div class="cal-day past">12</div><div class="cal-day past">13</div><div class="cal-day today">13</div>
+            <div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day has-apt">17</div><div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+            <div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div>
+            <div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+          </div>
+          <div style="padding:12px 16px;background:#F8FAFB;border-top:1px solid #F1F5F9;font-size:12px;color:#94A3B8;display:flex;gap:12px">
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#E65100;display:inline-block"></span>Has appointment</span>
+            <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#1565C0;display:inline-block"></span>Today</span>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;padding:18px 20px">
+          <div style="font-size:14px;font-weight:700;color:#0A2540;margin-bottom:12px">Available Time Slots</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid #E2E8F0;border-radius:9px;cursor:pointer"><span style="font-size:13px;font-weight:600;color:#334155">08:00 – 10:00</span><span class="badge" style="background:#E8F5E9;color:#2E7D32">Available</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid #1565C0;border-radius:9px;background:#F0FAFF;cursor:pointer"><span style="font-size:13px;font-weight:700;color:#1565C0">10:00 – 12:00</span><span class="badge" style="background:#EFF6FF;color:#1565C0">Selected</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid #E2E8F0;border-radius:9px;background:#F8FAFB;cursor:not-allowed"><span style="font-size:13px;font-weight:600;color:#CBD5E1">14:00 – 16:00</span><span class="badge" style="background:#F1F5F9;color:#94A3B8">Booked</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body></html>

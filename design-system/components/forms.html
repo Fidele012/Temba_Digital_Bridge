@@ -1,0 +1,141 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Form Elements</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:44px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.field{margin-bottom:20px}
+.field-label{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.req{color:#C62828}
+.field-wrap{position:relative;display:flex;align-items:center}
+.field-icon{position:absolute;left:14px;color:#94A3B8;font-size:17px;pointer-events:none}
+.field-wrap input,.field-wrap select,.field-wrap textarea{width:100%;padding:12px 14px 12px 42px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;transition:border-color .18s,box-shadow .18s}
+.field-wrap input:focus,.field-wrap select:focus,.field-wrap textarea:focus{border-color:#1565C0;box-shadow:0 0 0 3px rgba(21,101,192,.12)}
+.field-wrap textarea{padding-top:14px;resize:vertical;min-height:100px}
+.field-error input{border-color:#C62828!important}
+.field-error-msg{font-size:12px;color:#C62828;margin-top:5px;display:flex;align-items:center;gap:4px}
+.field-hint{font-size:12px;color:#94A3B8;margin-top:5px}
+.eye-btn{position:absolute;right:12px;background:none;border:none;cursor:pointer;color:#94A3B8;font-size:17px;display:flex;align-items:center}
+.check-row{display:flex;align-items:center;gap:10px;font-size:14px;color:#334155}
+.check-row input[type=checkbox]{width:18px;height:18px;accent-color:#1565C0;cursor:pointer}
+/* Tab pills */
+.tab-group{display:flex;background:#F1F5F9;border-radius:12px;padding:4px;gap:4px;margin-bottom:20px}
+.tab-pill{flex:1;padding:10px;border:none;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:#64748B;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .18s}
+.tab-pill.active{background:#fff;color:#1565C0;box-shadow:0 1px 4px rgba(10,37,64,.09)}
+/* Steps */
+.steps-row{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;z-index:1}
+.step-dot.done{background:#1565C0;color:#fff}
+.step-dot.active{background:#fff;border:2.5px solid #1565C0;color:#1565C0}
+.step-dot.todo{background:#E2E8F0;color:#94A3B8}
+.step-label{font-size:12px;font-weight:700;margin-top:4px;text-align:center}
+.step-line{flex:1;height:2px;background:#E2E8F0;margin:0 -2px}
+.step-line.done{background:#1565C0}
+.step-wrap{display:flex;flex-direction:column;align-items:center}
+/* Upload zone */
+.upload-zone{border:2px dashed #CBD5E1;border-radius:12px;padding:32px;text-align:center;background:#F8FAFB;cursor:pointer;transition:border-color .18s}
+.upload-zone:hover{border-color:#1565C0;background:#F0FAFF}
+</style></head><body>
+<h1>Form Elements</h1>
+<p class="sub">Inputs, selects, textareas, checkboxes, tabs, and upload zones</p>
+
+<div class="section">
+  <div class="section-title">Input States</div>
+  <div class="grid-2">
+    <div class="field">
+      <div class="field-label">Default Input <span class="req">*</span></div>
+      <div class="field-wrap"><i class="ti ti-user field-icon"></i><input type="text" placeholder="e.g. Jean Mugisha"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Focused (active)</div>
+      <div class="field-wrap"><i class="ti ti-mail field-icon"></i><input type="text" value="jean@example.com" style="border-color:#1565C0;box-shadow:0 0 0 3px rgba(21,101,192,.12)"></div>
+    </div>
+    <div class="field field-error">
+      <div class="field-label">Error State <span class="req">*</span></div>
+      <div class="field-wrap"><i class="ti ti-lock field-icon"></i><input type="password" value="abc"></div>
+      <div class="field-error-msg"><i class="ti ti-alert-circle"></i>Password must be at least 8 characters</div>
+    </div>
+    <div class="field">
+      <div class="field-label">With Hint</div>
+      <div class="field-wrap"><i class="ti ti-phone field-icon"></i><input type="text" placeholder="+250 788 123 456"></div>
+      <div class="field-hint">Enter the phone number you registered with</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Password with Toggle</div>
+      <div class="field-wrap">
+        <i class="ti ti-lock field-icon"></i>
+        <input type="password" placeholder="Enter your password" value="secret123">
+        <button class="eye-btn"><i class="ti ti-eye"></i></button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Select / Dropdown</div>
+      <div class="field-wrap"><i class="ti ti-map-pin field-icon"></i>
+        <select style="appearance:none"><option>Kigali Province</option><option>Eastern Province</option><option>Southern Province</option></select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Textarea</div>
+  <div class="field" style="max-width:560px">
+    <div class="field-label">Additional Notes</div>
+    <div class="field-wrap"><i class="ti ti-notes field-icon" style="top:14px;position:absolute"></i>
+      <textarea placeholder="Describe the issue in more detail…">The water supply has been completely cut off in our sector since yesterday morning. About 200 households are affected.</textarea>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Role Tab Switcher</div>
+  <div style="max-width:420px">
+    <div class="tab-group">
+      <button class="tab-pill active"><i class="ti ti-users"></i> Community Member</button>
+      <button class="tab-pill"><i class="ti ti-building"></i> Water Provider</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Multi-Step Progress</div>
+  <div style="max-width:400px">
+    <div class="steps-row">
+      <div class="step-wrap"><div class="step-dot done"><i class="ti ti-check" style="font-size:13px"></i></div><div class="step-label" style="color:#1565C0">Personal</div></div>
+      <div class="step-line done"></div>
+      <div class="step-wrap"><div class="step-dot active">2</div><div class="step-label" style="color:#1565C0">Location</div></div>
+      <div class="step-line"></div>
+      <div class="step-wrap"><div class="step-dot todo">3</div><div class="step-label" style="color:#94A3B8">Account</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Checkbox</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <label class="check-row"><input type="checkbox" checked> I agree to the <a href="#" style="color:#1565C0;font-weight:700">Terms of Use</a> and <a href="#" style="color:#1565C0;font-weight:700">Privacy Policy</a></label>
+    <label class="check-row"><input type="checkbox"> Remember me</label>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">File Upload Zone</div>
+  <div class="upload-zone" style="max-width:520px">
+    <i class="ti ti-cloud-upload" style="font-size:36px;color:#94A3B8;margin-bottom:12px;display:block"></i>
+    <div style="font-size:15px;font-weight:700;color:#334155;margin-bottom:4px">Drag files here or click to upload</div>
+    <div style="font-size:13px;color:#94A3B8">Photos, videos, documents — max 10MB each</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
+      <span style="background:#EFF6FF;color:#1565C0;font-size:12px;font-weight:700;padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:5px"><i class="ti ti-photo"></i> Photo</span>
+      <span style="background:#F3E5F5;color:#7B1FA2;font-size:12px;font-weight:700;padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:5px"><i class="ti ti-video"></i> Video</span>
+      <span style="background:#E8F5E9;color:#2E7D32;font-size:12px;font-weight:700;padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:5px"><i class="ti ti-file-text"></i> Document</span>
+      <span style="background:#FFF3E0;color:#E65100;font-size:12px;font-weight:700;padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:5px"><i class="ti ti-microphone"></i> Audio</span>
+    </div>
+  </div>
+</div>
+</body></html>

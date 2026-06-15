@@ -1,0 +1,102 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Buttons</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:44px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+.row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.label{font-size:12px;color:#94A3B8;font-weight:600;min-width:80px}
+/* Button styles */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;border:none;cursor:pointer;transition:all .18s;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:12px 24px;border-radius:10px;font-size:15px;box-shadow:0 4px 18px rgba(21,101,192,.32)}
+.btn-primary:hover{background:linear-gradient(135deg,#1251A0,#0277BD);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:#1565C0;padding:11px 22px;border-radius:10px;font-size:15px;border:1.5px solid #1565C0}
+.btn-danger{background:#C62828;color:#fff;padding:12px 24px;border-radius:10px;font-size:15px}
+.btn-light{background:#fff;color:#1565C0;padding:12px 24px;border-radius:10px;font-size:15px;box-shadow:0 2px 8px rgba(10,37,64,.1)}
+.btn-sm{padding:8px 16px;font-size:13px;border-radius:8px}
+.btn-lg{padding:16px 32px;font-size:17px;border-radius:12px}
+.btn-pill{border-radius:999px}
+.btn-icon-only{width:44px;height:44px;padding:0;justify-content:center;border-radius:10px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff}
+.btn-loading{opacity:.75;cursor:not-allowed}
+.btn-disabled{opacity:.45;cursor:not-allowed}
+.dark-bg{background:linear-gradient(135deg,#0A2540,#1565C0);padding:24px;border-radius:12px}
+</style></head><body>
+<h1>Buttons</h1>
+<p class="sub">All button variants, sizes, and states used across the platform</p>
+
+<div class="section">
+  <div class="section-title">Variants</div>
+  <div class="row">
+    <button class="btn btn-primary"><i class="ti ti-plus"></i> Primary</button>
+    <button class="btn btn-ghost"><i class="ti ti-eye"></i> Ghost</button>
+    <button class="btn btn-danger"><i class="ti ti-trash"></i> Danger</button>
+    <button class="btn btn-light">Light</button>
+  </div>
+  <div class="dark-bg">
+    <div class="row">
+      <button class="btn btn-primary">Get Started →</button>
+      <button class="btn btn-ghost" style="border-color:rgba(255,255,255,.5);color:#fff">Learn More</button>
+      <button class="btn btn-light">Sign In</button>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:8px">Buttons on dark hero/auth backgrounds</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Sizes</div>
+  <div class="row" style="align-items:flex-end">
+    <div><button class="btn btn-primary btn-sm">Small</button><div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">SM · 13px</div></div>
+    <div><button class="btn btn-primary">Default</button><div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">MD · 15px</div></div>
+    <div><button class="btn btn-primary btn-lg">Large</button><div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">LG · 17px</div></div>
+    <div><button class="btn btn-primary" style="width:100%;justify-content:center;min-width:200px">Full Width</button><div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">Full</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Pill Shape</div>
+  <div class="row">
+    <button class="btn btn-primary btn-pill"><i class="ti ti-report"></i> Report Issue</button>
+    <button class="btn btn-ghost btn-pill">Track Issue</button>
+    <button class="btn btn-primary btn-pill btn-sm">New Request</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">With Icons</div>
+  <div class="row">
+    <button class="btn btn-primary"><i class="ti ti-arrow-right-to-bracket"></i> Sign In</button>
+    <button class="btn btn-primary"><i class="ti ti-report-analytics"></i> Submit Report</button>
+    <button class="btn btn-ghost"><i class="ti ti-download"></i> Export</button>
+    <button class="btn btn-danger"><i class="ti ti-x"></i> Reject</button>
+    <button class="btn btn-icon-only"><i class="ti ti-bell"></i></button>
+    <button class="btn btn-icon-only" style="background:#E8F5E9"><i class="ti ti-check" style="color:#2E7D32"></i></button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">States</div>
+  <div class="row">
+    <div>
+      <button class="btn btn-primary">Default</button>
+      <div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">Default</div>
+    </div>
+    <div>
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#1251A0,#0277BD);transform:translateY(-1px)">Hover</button>
+      <div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">Hover</div>
+    </div>
+    <div>
+      <button class="btn btn-primary btn-loading"><i class="ti ti-loader-2"></i> Loading…</button>
+      <div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">Loading</div>
+    </div>
+    <div>
+      <button class="btn btn-primary btn-disabled" disabled>Disabled</button>
+      <div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:6px">Disabled</div>
+    </div>
+  </div>
+</div>
+</body></html>

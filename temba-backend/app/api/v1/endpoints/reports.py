@@ -1,0 +1,240 @@
+"""
+Report endpoints.
+POST   /reports              → create (community)
+GET    /reports              → list (filtered by role)
+GET    /reports/{id}
+PUT    /reports/{id}         → update status/notes (provider/admin)
+DELETE /reports/{id}         → soft-close (admin)
+POST   /reports/{id}/media   → attach files
+"""
+from datetime import datetime, timezone
+from typing import Annotated
+from uuid import UUID
+
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Request, UploadFile, status
+from sqlalchemy import func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
+from app.core.dependencies import get_current_user, require_admin, require_staff, write_audit
+from app.core.provider_utils import get_provider_for_user
+from app.core.sla import sla_deadline_for
+from app.db.session import get_db
+from app.models.provider import Provider
+from app.models.report import Report, ReportMedia, ReportStatus
+from app.models.user import User, UserRole
+from app.schemas.common import PaginatedResponse, PaginationParams
+from app.schemas.report import ReportCreate, ReportPublic, ReportUpdate, VerificationVerdict
+from app.services.file_service import upload_report_media
+from app.services.notification_service import notify_user
+
+_PROVIDER_REPORT_STATUSES = {
+    ReportStatus.ACKNOWLEDGED,
+    ReportStatus.UNDER_REVIEW,
+    ReportStatus.IN_PROGRESS,
+    ReportStatus.RESOLUTION_SUBMITTED,
+}
+_CLOSED_REPORT = {
+    ReportStatus.VERIFIED, ReportStatus.CLOSED_UNVERIFIED,
+    ReportStatus.RESOLVED, ReportStatus.CLOSED,
+}
+
+router = APIRouter(prefix="/reports", tags=["reports"])
+
+
+def _with_media(q):
+    return q.options(selectinload(Report.media))
+
+
+def _with_relations(q):
+    return q.options(selectinload(Report.media), selectinload(Report.user), selectinload(Report.provider))
+
+
+@router.post("", response_model=ReportPublic, status_code=status.HTTP_201_CREATED)
+async def create_report(
+    body: ReportCreate,
+    current_user: Annotated[User, Depends(get_current_user)],
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> Report:
+    report = Report(
+        user_id=current_user.id,
+        **body.model_dump(),
+    )
+    db.add(report)
+    await db.flush()
+    report.sla_deadline = sla_deadline_for(body.category.value, report.created_at)
+    await write_audit(db, request, "report.create", "report", str(report.id), actor=current_user)
+    await db.refresh(report, ["media"])
+    return report
+
+
+@router.get("", response_model=PaginatedResponse[ReportPublic])
+async def list_reports(
+    params: Annotated[PaginationParams, Depends()],
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    status_filter: ReportStatus | None = None,
+) -> dict:
+    q = select(Report)
+
+    if current_user.role == UserRole.COMMUNITY:
+        q = q.where(Report.user_id == current_user.id)
+    elif current_user.role == UserRole.PROVIDER:
+        prov = await get_provider_for_user(current_user, db)
+        if prov:
+            q = q.where(Report.provider_id == prov.id)
+        else:
+            q = q.where(False)
+
+    if status_filter:
+        q = q.where(Report.status == status_filter)
+
+    total = (await db.execute(select(func.count()).select_from(q.subquery()))).scalar_one()
+    result = await db.execute(
+        _with_relations(q).order_by(Report.created_at.desc()).offset(params.offset).limit(params.size)
+    )
+    return {
+        "items": result.scalars().all(),
+        "total": total,
+        "page": params.page,
+        "size": params.size,
+        "pages": -(-total // params.size),
+    }
+
+
+@router.get("/{report_id}", response_model=ReportPublic)
+async def get_report(
+    report_id: UUID,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> Report:
+    result = await db.execute(_with_relations(select(Report).where(Report.id == report_id)))
+    report = result.scalar_one_or_none()
+    if not report:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found")
+
+    # Community can only view their own
+    if current_user.role == UserRole.COMMUNITY and report.user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
+
+    return report
+
+
+@router.put("/{report_id}", response_model=ReportPublic)
+async def update_report(
+    report_id: UUID,
+    body: ReportUpdate,
+    current_user: Annotated[User, Depends(require_staff)],
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> Report:
+    result = await db.execute(_with_relations(select(Report).where(Report.id == report_id)))
+    report = result.scalar_one_or_none()
+    if not report:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found")
+
+    if body.status:
+        if current_user.role == UserRole.PROVIDER and body.status not in _PROVIDER_REPORT_STATUSES:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Providers may only set status to: {', '.join(s.value for s in _PROVIDER_REPORT_STATUSES)}. "
+                       "To close a case, submit a resolution and let the community verify it.",
+            )
+        now = datetime.now(timezone.utc)
+        if report.first_responded_at is None:
+            report.first_responded_at = now
+        if body.status == ReportStatus.RESOLUTION_SUBMITTED:
+            report.resolution_submitted_at = now
+
+    for field, value in body.model_dump(exclude_none=True).items():
+        setattr(report, field, value)
+
+    await write_audit(db, request, "report.update", "report", str(report_id), actor=current_user)
+
+    if body.status:
+        await notify_user(
+            db,
+            user_id=report.user_id,
+            notification_type="report_update",
+            title=f"Report #{str(report_id)[:8]} updated",
+            body=f"Your report status changed to: {body.status.value.replace('_', ' ').title()}",
+            reference_id=str(report_id),
+            reference_type="report",
+        )
+    return report
+
+
+@router.post("/{report_id}/verify", response_model=ReportPublic)
+async def verify_report(
+    report_id: UUID,
+    body: VerificationVerdict,
+    current_user: Annotated[User, Depends(get_current_user)],
+    request: Request,
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> Report:
+    result = await db.execute(_with_relations(select(Report).where(Report.id == report_id)))
+    report = result.scalar_one_or_none()
+    if not report:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found")
+    if report.user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the report owner can verify")
+    if report.status != ReportStatus.RESOLUTION_SUBMITTED:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This report has no pending resolution to verify",
+        )
+
+    now = datetime.now(timezone.utc)
+
+    if body.verdict == "verified":
+        report.status = ReportStatus.VERIFIED
+        report.verified_at = now
+        notif_title = "Resolution verified"
+        notif_body = (body.comment or "The community member confirmed the issue has been resolved.")
+    elif body.verdict == "partial":
+        report.reopen_count += 1
+        report.status = ReportStatus.MANAGEMENT_REVIEW if report.reopen_count >= 2 else ReportStatus.FOLLOW_UP_REQUIRED
+        notif_title = "Resolution disputed — follow-up required"
+        notif_body = (body.comment or "The community member reported the issue is only partially resolved.")
+    else:  # not_resolved
+        report.reopen_count += 1
+        report.status = ReportStatus.MANAGEMENT_REVIEW if report.reopen_count >= 2 else ReportStatus.IN_PROGRESS
+        notif_title = "Resolution rejected — case reopened"
+        notif_body = (body.comment or "The community member reported the issue was not resolved.")
+
+    await write_audit(db, request, f"report.verify.{body.verdict}", "report", str(report_id), actor=current_user)
+
+    if report.provider_id:
+        prov = (await db.execute(select(Provider).where(Provider.id == report.provider_id))).scalar_one_or_none()
+        if prov:
+            await notify_user(
+                db, user_id=prov.user_id,
+                notification_type="report_update",
+                title=notif_title,
+                body=f"Report '{report.title}': {notif_body}",
+                reference_id=str(report_id), reference_type="report",
+            )
+    return report
+
+
+@router.post("/{report_id}/media", response_model=ReportPublic)
+async def attach_media(
+    report_id: UUID,
+    files: list[UploadFile] = File(...),
+    current_user: Annotated[User, Depends(get_current_user)] = None,
+    db: Annotated[AsyncSession, Depends(get_db)] = None,
+) -> Report:
+    result = await db.execute(_with_relations(select(Report).where(Report.id == report_id)))
+    report = result.scalar_one_or_none()
+    if not report:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found")
+    if report.user_id != current_user.id and current_user.role not in (UserRole.PROVIDER, UserRole.ADMIN):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
+
+    for f in files:
+        url, media_type = await upload_report_media(f, str(report_id))
+        db.add(ReportMedia(report_id=report_id, url=url, media_type=media_type, file_name=f.filename))
+
+    await db.refresh(report, ["media"])
+    return report

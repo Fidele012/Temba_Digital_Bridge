@@ -1,0 +1,133 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Provider — Staff Availability</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#0A2540;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 24px;gap:14px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.7)}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#0F2F4F;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);position:relative}
+.nav-item.active{background:rgba(230,81,0,.2);color:#F57C00}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#E65100;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:10px 14px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Availability grid */
+.avail-grid{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07);overflow:hidden;margin-bottom:20px}
+.grid-header{display:grid;grid-template-columns:180px repeat(7,1fr);background:#F8FAFB;border-bottom:1px solid #F1F5F9}
+.gh-cell{padding:10px 6px;text-align:center;font-size:12px;font-weight:700;color:#64748B;border-right:1px solid #F1F5F9}
+.gh-cell:last-child{border-right:none}
+.gh-cell.today{background:#FFF3E0;color:#E65100}
+.grid-row{display:grid;grid-template-columns:180px repeat(7,1fr);border-bottom:1px solid #F8FAFB}
+.grid-row:last-child{border-bottom:none}
+.member-cell{padding:12px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #F1F5F9}
+.ma{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.slot-cell{padding:8px 6px;text-align:center;border-right:1px solid #F8FAFB;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center}
+.slot{border-radius:6px;padding:4px 8px;font-size:11px;font-weight:700;width:100%;text-align:center}
+.slot.available{background:#E8F5E9;color:#2E7D32}
+.slot.booked{background:#FFF3E0;color:#E65100}
+.slot.off{background:#F1F5F9;color:#94A3B8}
+/* Status strip -->
+.status-strip{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.stat-card-h{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 1px 6px rgba(10,37,64,.07);display:flex;align-items:center;gap:12px;flex:1;min-width:140px}
+.sh-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#fff;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i></div>
+  <div class="avatar">A</div>
+  <button style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-building" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#fff">WASAC</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Admin · Water Provider</div></div></div>
+    <div class="sec-label">OPERATIONS</div>
+    <div class="nav-item"><i class="ti ti-inbox" style="font-size:16px"></i> Reports Inbox <span class="nav-badge">12</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests <span class="nav-badge">4</span></div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item"><i class="ti ti-speakerphone" style="font-size:16px"></i> Announcements</div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">MANAGEMENT</div>
+    <div class="nav-item"><i class="ti ti-users" style="font-size:16px"></i> Team</div>
+    <div class="nav-item"><i class="ti ti-building-community" style="font-size:16px"></i> Community</div>
+    <div class="nav-item"><i class="ti ti-flask" style="font-size:16px"></i> Water Quality</div>
+    <div class="nav-item active"><i class="ti ti-calendar-event" style="font-size:16px"></i> Availability</div>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Staff Availability</div><div style="font-size:13px;color:#64748B;margin-top:3px">Week of Jun 9 – 15, 2026</div></div>
+      <div style="display:flex;gap:10px"><button style="background:#fff;border:1.5px solid #E2E8F0;color:#64748B;padding:9px 14px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-chevron-left"></i> Prev</button><button style="background:#fff;border:1.5px solid #E2E8F0;color:#64748B;padding:9px 14px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px">Next <i class="ti ti-chevron-right"></i></button></div>
+    </div>
+    <!-- Status strip -->
+    <div class="status-strip">
+      <div class="stat-card-h"><div class="sh-icon" style="background:#E8F5E9"><i class="ti ti-users" style="color:#2E7D32"></i></div><div><div style="font-size:20px;font-weight:800;color:#2E7D32">7</div><div style="font-size:12px;color:#64748B;font-weight:600">Available Today</div></div></div>
+      <div class="stat-card-h"><div class="sh-icon" style="background:#EFF6FF"><i class="ti ti-map-pin" style="color:#1565C0"></i></div><div><div style="font-size:20px;font-weight:800;color:#1565C0">4</div><div style="font-size:12px;color:#64748B;font-weight:600">On Field</div></div></div>
+      <div class="stat-card-h"><div class="sh-icon" style="background:#F1F5F9"><i class="ti ti-moon" style="color:#94A3B8"></i></div><div><div style="font-size:20px;font-weight:800;color:#94A3B8">2</div><div style="font-size:12px;color:#64748B;font-weight:600">Off Duty</div></div></div>
+      <div class="stat-card-h"><div class="sh-icon" style="background:#FFEBEE"><i class="ti ti-calendar-off" style="color:#C62828"></i></div><div><div style="font-size:20px;font-weight:800;color:#C62828">1</div><div style="font-size:12px;color:#64748B;font-weight:600">On Leave</div></div></div>
+    </div>
+    <!-- Availability grid -->
+    <div class="avail-grid">
+      <div class="grid-header">
+        <div class="gh-cell" style="text-align:left;padding-left:14px">Staff Member</div>
+        <div class="gh-cell">Mon 9</div>
+        <div class="gh-cell">Tue 10</div>
+        <div class="gh-cell">Wed 11</div>
+        <div class="gh-cell today">Thu 12</div>
+        <div class="gh-cell">Fri 13</div>
+        <div class="gh-cell">Sat 14</div>
+        <div class="gh-cell">Sun 15</div>
+      </div>
+      <!-- Eric -->
+      <div class="grid-row">
+        <div class="member-cell"><div class="ma" style="background:linear-gradient(135deg,#1565C0,#0288D1)">E</div><div style="min-width:0"><div style="font-size:13px;font-weight:700;color:#1E293B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Eric Habimana</div><div style="font-size:11px;color:#94A3B8">Kicukiro</div></div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot booked">AM ⊘</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot booked">PM ⊘</div></div>
+        <div class="slot-cell"><div class="slot booked">AM ⊘</div><div class="slot booked">PM ⊘</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot off">OFF</div></div>
+        <div class="slot-cell"><div class="slot off">OFF</div></div>
+      </div>
+      <!-- Sandra -->
+      <div class="grid-row">
+        <div class="member-cell"><div class="ma" style="background:linear-gradient(135deg,#2E7D32,#4CAF50)">S</div><div style="min-width:0"><div style="font-size:13px;font-weight:700;color:#1E293B">Sandra Mutesi</div><div style="font-size:11px;color:#94A3B8">Gasabo</div></div></div>
+        <div class="slot-cell"><div class="slot booked">AM ⊘</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot off">OFF</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot available">PM ✓</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot booked">PM ⊘</div></div>
+        <div class="slot-cell"><div class="slot available">AM ✓</div><div class="slot off">—</div></div>
+        <div class="slot-cell"><div class="slot off">OFF</div></div>
+      </div>
+      <!-- Robert -->
+      <div class="grid-row">
+        <div class="member-cell"><div class="ma" style="background:linear-gradient(135deg,#E65100,#F57C00)">R</div><div style="min-width:0"><div style="font-size:13px;font-weight:700;color:#1E293B">Robert Nkusi</div><div style="font-size:11px;color:#94A3B8">Nyarugenge</div></div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+        <div class="slot-cell"><div class="slot off">LEAVE</div></div>
+      </div>
+    </div>
+    <!-- Legend -->
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#64748B"><span style="background:#E8F5E9;color:#2E7D32;border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700">AM ✓</span> Available</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#64748B"><span style="background:#FFF3E0;color:#E65100;border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700">AM ⊘</span> Booked</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#64748B"><span style="background:#F1F5F9;color:#94A3B8;border-radius:5px;padding:3px 8px;font-size:11px;font-weight:700">OFF</span> Off Duty / Leave</span>
+    </div>
+  </main>
+</div>
+</body></html>

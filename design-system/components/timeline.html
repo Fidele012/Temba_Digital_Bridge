@@ -1,0 +1,139 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Timeline & Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:44px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+/* Timeline */
+.timeline{position:relative;padding-left:0}
+.tl-item{display:flex;gap:16px;position:relative;padding-bottom:24px}
+.tl-item:last-child{padding-bottom:0}
+.tl-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:24px}
+.tl-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:12px;font-weight:800}
+.tl-dot.done{background:#1565C0;color:#fff}
+.tl-dot.active{background:#fff;border:2.5px solid #1565C0;color:#1565C0}
+.tl-dot.todo{background:#E2E8F0;color:#94A3B8}
+.tl-line{width:2px;flex:1;background:#E2E8F0;margin-top:4px}
+.tl-line.done{background:#1565C0}
+.tl-content{flex:1;padding-top:2px}
+.tl-title{font-size:14px;font-weight:700;color:#1E293B}
+.tl-title.todo{color:#94A3B8}
+.tl-desc{font-size:13px;color:#64748B;margin-top:3px;line-height:1.5}
+.tl-time{font-size:11px;color:#94A3B8;margin-top:5px;display:flex;align-items:center;gap:4px}
+/* SLA progress */
+.sla-bar{height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;margin:10px 0}
+.sla-fill{height:100%;border-radius:4px;transition:width .3s}
+/* Steps horizontal */
+.hsteps{display:flex;align-items:flex-start;gap:0}
+.hstep{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.hstep-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;border:3px solid transparent}
+.hstep-dot.done{background:#1565C0;color:#fff;border-color:#1565C0}
+.hstep-dot.active{background:#fff;border-color:#1565C0;color:#1565C0}
+.hstep-dot.todo{background:#fff;border-color:#E2E8F0;color:#94A3B8}
+.hstep-label{font-size:12px;font-weight:700;margin-top:8px}
+.hstep-sublabel{font-size:11px;color:#94A3B8;margin-top:2px}
+.hstep-connector{position:absolute;top:18px;left:calc(50% + 18px);right:calc(-50% + 18px);height:3px;background:#E2E8F0}
+.hstep-connector.done{background:#1565C0}
+</style></head><body>
+<h1>Timeline & Progress</h1>
+<p class="sub">Report timeline, SLA progress bars, and multi-step indicators</p>
+
+<div class="section">
+  <div class="section-title">Report Progress Timeline</div>
+  <div class="grid-2">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:16px">In Progress State</div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Report Submitted</div><div class="tl-desc">Your report was received and logged</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 12, 2026 — 09:14</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Assigned to WASAC</div><div class="tl-desc">Report forwarded to the responsible provider</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 12, 2026 — 10:30</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot active">3</div><div class="tl-line"></div></div>
+        <div class="tl-content"><div class="tl-title" style="color:#1565C0">Investigation Underway</div><div class="tl-desc" style="color:#1565C0">Field officer dispatched to location</div><div class="tl-time"><i class="ti ti-loader-2" style="font-size:11px;color:#1565C0"></i> <span style="color:#1565C0;font-weight:600">In progress…</span></div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot todo">4</div><div class="tl-line"></div></div>
+        <div class="tl-content"><div class="tl-title todo">Resolution Submitted</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Pending</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot todo">5</div></div>
+        <div class="tl-content"><div class="tl-title todo">Verified & Closed</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Pending</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:16px">Fully Resolved State</div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Report Submitted</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 5, 2026 — 08:00</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Assigned to Provider</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 5, 2026 — 09:15</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Investigation Complete</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 6, 2026 — 14:00</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div><div class="tl-line done"></div></div>
+        <div class="tl-content"><div class="tl-title">Resolution Submitted</div><div class="tl-time"><i class="ti ti-clock" style="font-size:11px"></i> Jun 7, 2026 — 11:20</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot done"><i class="ti ti-check" style="font-size:11px"></i></div></div>
+        <div class="tl-content"><div class="tl-title" style="color:#2E7D32">Verified & Closed ✓</div><div class="tl-time" style="color:#2E7D32"><i class="ti ti-circle-check" style="font-size:11px"></i> Jun 7, 2026 — 15:05</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">SLA Progress Bar</div>
+  <div style="max-width:480px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px"><span style="color:#334155">SLA Progress</span><span style="color:#2E7D32">2 days remaining (of 5)</span></div>
+    <div class="sla-bar"><div class="sla-fill" style="width:60%;background:linear-gradient(90deg,#2E7D32,#4CAF50)"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:#94A3B8;margin-top:4px"><span>Jun 12</span><span>Deadline: Jun 17</span></div>
+
+    <div style="margin-top:24px;display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px"><span style="color:#334155">SLA Breached</span><span style="color:#C62828">1 day overdue</span></div>
+    <div class="sla-bar"><div class="sla-fill" style="width:100%;background:linear-gradient(90deg,#C62828,#EF5350)"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Horizontal Step Flow (How It Works)</div>
+  <div class="hsteps" style="max-width:640px">
+    <div class="hstep">
+      <div class="hstep-connector done" style="left:calc(50% + 18px);right:-50%"></div>
+      <div class="hstep-dot done"><i class="ti ti-report" style="font-size:15px"></i></div>
+      <div class="hstep-label" style="color:#1565C0">Report Issue</div>
+      <div class="hstep-sublabel">Via web or USSD</div>
+    </div>
+    <div class="hstep">
+      <div class="hstep-connector done"></div>
+      <div class="hstep-dot done"><i class="ti ti-bell" style="font-size:15px"></i></div>
+      <div class="hstep-label" style="color:#1565C0">Provider Alerted</div>
+      <div class="hstep-sublabel">SLA timer starts</div>
+    </div>
+    <div class="hstep">
+      <div class="hstep-connector"></div>
+      <div class="hstep-dot active">3</div>
+      <div class="hstep-label" style="color:#1565C0">Investigation</div>
+      <div class="hstep-sublabel">Field officer sent</div>
+    </div>
+    <div class="hstep">
+      <div class="hstep-dot todo">4</div>
+      <div class="hstep-label" style="color:#94A3B8">Resolution</div>
+      <div class="hstep-sublabel">Community notified</div>
+    </div>
+  </div>
+</div>
+</body></html>

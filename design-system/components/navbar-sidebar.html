@@ -1,0 +1,136 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Navigation</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:48px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+/* Landing Nav */
+.nav{height:68px;background:#fff;border-radius:14px;display:flex;align-items:center;padding:0 28px;box-shadow:0 2px 12px rgba(10,37,64,.08);gap:32px}
+.nav-logo-area{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.nav-brand-text{font-size:16px;font-weight:800;color:#0A2540}
+.nav-links{display:flex;gap:6px;flex:1;justify-content:center}
+.nav-link{font-size:14px;font-weight:600;color:#475569;padding:8px 12px;border-radius:8px;text-decoration:none;transition:all .15s}
+.nav-link:hover,.nav-link.active{color:#1565C0;background:#EFF6FF}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-nav-ghost{background:transparent;border:1.5px solid #E2E8F0;color:#334155;padding:8px 18px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.btn-nav-primary{background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;padding:9px 20px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 3px 10px rgba(21,101,192,.28)}
+/* Dashboard nav */
+.dash-nav{height:68px;background:#fff;border-radius:14px;display:flex;align-items:center;padding:0 24px;box-shadow:0 2px 8px rgba(10,37,64,.07);gap:16px}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff}
+.icon-btn{width:38px;height:38px;border-radius:9px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;color:#64748B}
+.notif-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+/* Sidebar */
+.sidebar{width:260px;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(10,37,64,.07);padding:20px 0;overflow:hidden}
+.sidebar-role{margin:0 16px 20px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.sidebar-role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.sidebar-role-name{font-size:13px;font-weight:800;color:#0A2540}
+.sidebar-role-label{font-size:11px;color:#64748B;margin-top:1px}
+.sidebar-section{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 20px;margin-bottom:4px;margin-top:16px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative;transition:all .15s}
+.nav-item:hover{background:#F8FAFB;color:#334155}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:22px;background:#1565C0;border-radius:2px}
+.nav-count{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sidebar-divider{height:1px;background:#F1F5F9;margin:12px 16px}
+.sidebar-cta{margin:12px 16px 0;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 32px);padding:12px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(21,101,192,.28)}
+</style></head><body>
+<h1>Navigation Components</h1>
+<p class="sub">Landing navbar, dashboard navbar, and sidebar navigation</p>
+
+<div class="section">
+  <div class="section-title">Landing Page Navbar</div>
+  <div class="nav">
+    <div class="nav-logo-area">
+      <div class="nav-logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:18px"></i></div>
+      <span class="nav-brand-text">Temba Digital Bridge</span>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" href="#">Features</a>
+      <a class="nav-link" href="#">How It Works</a>
+      <a class="nav-link" href="#">USSD</a>
+      <a class="nav-link" href="#">Providers</a>
+      <a class="nav-link" href="#">Track</a>
+      <a class="nav-link" href="#">About</a>
+    </div>
+    <div class="nav-right">
+      <div style="display:flex;align-items:center;gap:3px">
+        <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+        <span style="color:#CBD5E1">|</span>
+        <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+      </div>
+      <button class="btn-nav-ghost">Sign In</button>
+      <button class="btn-nav-primary">Get Started →</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Dashboard Navbar</div>
+  <div class="dash-nav">
+    <div class="nav-logo-area" style="margin-right:auto">
+      <div class="nav-logo-mark" style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center"><i class="ti ti-droplet" style="color:#fff;font-size:18px"></i></div>
+      <span style="font-size:15px;font-weight:800;color:#0A2540">Temba</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:3px">
+      <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+      <span style="color:#CBD5E1">|</span>
+      <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+    </div>
+    <div class="icon-btn"><i class="ti ti-moon"></i></div>
+    <div class="icon-btn"><i class="ti ti-bell"></i><div class="notif-dot"></div></div>
+    <div class="avatar">J</div>
+    <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:8px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ti ti-logout"></i> Sign Out</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Community Sidebar</div>
+  <div class="sidebar">
+    <div class="sidebar-role">
+      <div class="sidebar-role-icon"><i class="ti ti-users" style="color:#fff;font-size:16px"></i></div>
+      <div><div class="sidebar-role-name">Jean Mugisha</div><div class="sidebar-role-label">Community Member</div></div>
+    </div>
+    <div class="sidebar-section">MAIN</div>
+    <div class="nav-item active"><i class="ti ti-layout-dashboard"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-report"></i> My Reports <span class="nav-count">3</span></div>
+    <div class="nav-item"><i class="ti ti-tools"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar"></i> Appointments <span class="nav-count">1</span></div>
+    <div class="nav-item"><i class="ti ti-bell"></i> Alerts <span class="nav-count">5</span></div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">EXPLORE</div>
+    <div class="nav-item"><i class="ti ti-building"></i> Providers</div>
+    <div class="nav-item"><i class="ti ti-history"></i> History</div>
+    <div class="sidebar-divider"></div>
+    <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <div class="section-title">Provider Sidebar</div>
+  <div class="sidebar">
+    <div class="sidebar-role" style="background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-color:rgba(230,81,0,.15)">
+      <div class="sidebar-role-icon" style="background:linear-gradient(135deg,#E65100,#F57C00)"><i class="ti ti-building" style="color:#fff;font-size:16px"></i></div>
+      <div><div class="sidebar-role-name">WASAC</div><div class="sidebar-role-label">Water Provider</div></div>
+    </div>
+    <div class="sidebar-section">OPERATIONS</div>
+    <div class="nav-item active"><i class="ti ti-layout-dashboard"></i> Overview</div>
+    <div class="nav-item"><i class="ti ti-inbox"></i> Reports Inbox <span class="nav-count">5</span></div>
+    <div class="nav-item"><i class="ti ti-tools"></i> Service Requests</div>
+    <div class="nav-item"><i class="ti ti-calendar"></i> Appointments</div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">COMMUNITY</div>
+    <div class="nav-item"><i class="ti ti-speakerphone"></i> Announcements</div>
+    <div class="nav-item"><i class="ti ti-users"></i> Community</div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">TEAM</div>
+    <div class="nav-item"><i class="ti ti-user-plus"></i> My Team</div>
+    <div class="nav-item"><i class="ti ti-calendar-event"></i> My Availability</div>
+  </div>
+</div>
+</body></html>

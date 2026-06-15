@@ -1,0 +1,93 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Provider — Service Requests</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#0A2540;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 24px;gap:14px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.7);position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #0A2540}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#0F2F4F;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);position:relative}
+.nav-item.active{background:rgba(230,81,0,.2);color:#F57C00}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#E65100;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:10px 14px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Stats */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 1px 6px rgba(10,37,64,.07);display:flex;align-items:center;gap:12px}
+.stat-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+/* Table */
+.table-wrap{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead{background:#F8FAFB}
+th{text-align:left;padding:12px 18px;font-size:12px;font-weight:700;color:#64748B;border-bottom:1px solid #F1F5F9}
+td{padding:14px 18px;font-size:13px;color:#334155;border-bottom:1px solid #F8FAFB;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#F8FAFB}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#fff;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">A</div>
+  <button style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-building" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#fff">WASAC</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Admin · Water Provider</div></div></div>
+    <div class="sec-label">OPERATIONS</div>
+    <div class="nav-item"><i class="ti ti-inbox" style="font-size:16px"></i> Reports Inbox <span class="nav-badge">12</span></div>
+    <div class="nav-item active"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests <span class="nav-badge">4</span></div>
+    <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item"><i class="ti ti-speakerphone" style="font-size:16px"></i> Announcements</div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">MANAGEMENT</div>
+    <div class="nav-item"><i class="ti ti-users" style="font-size:16px"></i> Team</div>
+    <div class="nav-item"><i class="ti ti-building-community" style="font-size:16px"></i> Community</div>
+    <div class="nav-item"><i class="ti ti-flask" style="font-size:16px"></i> Water Quality</div>
+    <div class="nav-item"><i class="ti ti-calendar-event" style="font-size:16px"></i> Availability</div>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Service Requests</div><div style="font-size:13px;color:#64748B;margin-top:3px">Manage connection requests, deliveries, and support</div></div>
+      <div style="display:flex;gap:10px"><select style="padding:9px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:13px;font-family:inherit;color:#334155;outline:none;background:#fff;font-weight:600"><option>All Types</option><option>New Connection</option><option>Tank Delivery</option></select><button style="background:linear-gradient(135deg,#E65100,#F57C00);color:#fff;padding:9px 18px;border-radius:9px;border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(230,81,0,.3)"><i class="ti ti-download"></i> Export</button></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-icon" style="background:#FFF3E0"><i class="ti ti-tools" style="color:#E65100"></i></div><div><div style="font-size:20px;font-weight:800;color:#0A2540">18</div><div style="font-size:12px;color:#64748B;font-weight:600">Total</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#FFEBEE"><i class="ti ti-clock" style="color:#C62828"></i></div><div><div style="font-size:20px;font-weight:800;color:#C62828">4</div><div style="font-size:12px;color:#64748B;font-weight:600">Pending</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#EFF6FF"><i class="ti ti-refresh" style="color:#1565C0"></i></div><div><div style="font-size:20px;font-weight:800;color:#1565C0">7</div><div style="font-size:12px;color:#64748B;font-weight:600">In Progress</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div><div><div style="font-size:20px;font-weight:800;color:#2E7D32">7</div><div style="font-size:12px;color:#64748B;font-weight:600">Completed</div></div></div>
+    </div>
+    <div class="table-wrap">
+      <div style="padding:14px 18px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;gap:12px">
+        <div style="position:relative;flex:1;max-width:280px"><i class="ti ti-search" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#94A3B8;font-size:15px"></i><input type="text" placeholder="Search requests…" style="width:100%;padding:9px 14px 9px 36px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:13px;font-family:inherit;outline:none"></div>
+        <div style="display:flex;background:#F8FAFB;border-radius:9px;overflow:hidden;border:1.5px solid #E2E8F0">
+          <button style="padding:8px 14px;border:none;background:#E65100;font-family:inherit;font-size:13px;font-weight:600;color:#fff;cursor:pointer">All</button>
+          <button style="padding:8px 14px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:#64748B;cursor:pointer">Pending</button>
+          <button style="padding:8px 14px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:600;color:#64748B;cursor:pointer;border-right:none">Done</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Reference</th><th>Type</th><th>Community Member</th><th>Area</th><th>Date</th><th>Assigned To</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:monospace;font-size:12px;color:#64748B">SRQ-20260612-A9Z2</td><td><span class="badge" style="background:#FFF3E0;color:#E65100"><i class="ti ti-truck" style="font-size:10px"></i> Tank Delivery</span></td><td style="font-weight:600">Jean Mugisha</td><td>Kicukiro</td><td>Jun 12</td><td style="color:#C62828;font-weight:700">Unassigned</td><td><span class="badge" style="background:#FFF3E0;color:#E65100">Pending</span></td><td><button style="background:#E65100;color:#fff;border:none;border-radius:7px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">Assign</button></td></tr>
+          <tr><td style="font-family:monospace;font-size:12px;color:#64748B">SRQ-20260611-C4T8</td><td><span class="badge" style="background:#EFF6FF;color:#1565C0"><i class="ti ti-plug" style="font-size:10px"></i> New Connection</span></td><td style="font-weight:600">Marie Nyirahabimana</td><td>Gasabo</td><td>Jun 11</td><td style="font-weight:600;color:#334155">Eric Habimana</td><td><span class="badge" style="background:#EFF6FF;color:#1565C0">In Progress</span></td><td><button style="background:#F1F5F9;color:#64748B;border:none;border-radius:7px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">View</button></td></tr>
+          <tr><td style="font-family:monospace;font-size:12px;color:#64748B">SRQ-20260605-B3X1</td><td><span class="badge" style="background:#EFF6FF;color:#1565C0"><i class="ti ti-plug" style="font-size:10px"></i> New Connection</span></td><td style="font-weight:600">Jean Mugisha</td><td>Gasabo</td><td>Jun 5</td><td style="font-weight:600;color:#334155">Aline M.</td><td><span class="badge" style="background:#E8F5E9;color:#2E7D32">Completed</span></td><td><button style="background:#F1F5F9;color:#64748B;border:none;border-radius:7px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">View</button></td></tr>
+          <tr><td style="font-family:monospace;font-size:12px;color:#64748B">SRQ-20260604-D7K2</td><td><span class="badge" style="background:#E8F5E9;color:#2E7D32"><i class="ti ti-gauge" style="font-size:10px"></i> Meter Support</span></td><td style="font-weight:600">Amina Kagabo</td><td>Nyarugenge</td><td>Jun 4</td><td style="font-weight:600;color:#334155">Eric H.</td><td><span class="badge" style="background:#E8F5E9;color:#2E7D32">Completed</span></td><td><button style="background:#F1F5F9;color:#64748B;border:none;border-radius:7px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer">View</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+</body></html>

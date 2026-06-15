@@ -1,0 +1,162 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cards & List Items</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:44px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+/* Stat card */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(10,37,64,.07);position:relative;overflow:hidden}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;position:absolute;top:16px;right:16px}
+.stat-num{font-size:32px;font-weight:800;color:#0A2540;line-height:1}
+.stat-label{font-size:13px;color:#64748B;font-weight:600;margin-top:6px}
+.stat-trend{font-size:12px;font-weight:700;margin-top:10px;display:flex;align-items:center;gap:4px}
+/* Report card */
+.report-card{background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(10,37,64,.07);display:flex;align-items:center;gap:16px;margin-bottom:10px;border-left:3px solid transparent;transition:box-shadow .18s}
+.report-card:hover{box-shadow:0 4px 20px rgba(10,37,64,.10)}
+.report-card.urgent{border-left-color:#C62828}
+.report-card.moderate{border-left-color:#E65100}
+.report-card.low{border-left-color:#29B6F6}
+.report-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.report-body{flex:1;min-width:0}
+.report-title{font-size:15px;font-weight:700;color:#1E293B}
+.report-meta{font-size:12px;color:#94A3B8;margin-top:3px;display:flex;align-items:center;gap:8px}
+.report-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Provider card */
+.provider-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(10,37,64,.07);border-left:4px solid #1565C0;display:flex;align-items:flex-start;gap:16px;margin-bottom:12px}
+.provider-avatar{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
+/* Alert card */
+.alert-card{border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
+</style></head><body>
+<h1>Cards & List Items</h1>
+<p class="sub">Stat cards, report list items, provider cards, and alert cards</p>
+
+<div class="section">
+  <div class="section-title">Stat Cards</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#EFF6FF"><i class="ti ti-report" style="color:#1565C0"></i></div>
+      <div class="stat-num">24</div>
+      <div class="stat-label">My Reports</div>
+      <div class="stat-trend" style="color:#2E7D32"><i class="ti ti-trending-up"></i> +3 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#FFF3E0"><i class="ti ti-clock" style="color:#E65100"></i></div>
+      <div class="stat-num" style="color:#E65100">8</div>
+      <div class="stat-label">Open Issues</div>
+      <div class="stat-trend" style="color:#E65100"><i class="ti ti-alert-triangle"></i> 2 overdue</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+      <div class="stat-num" style="color:#2E7D32">16</div>
+      <div class="stat-label">Resolved</div>
+      <div class="stat-trend" style="color:#2E7D32"><i class="ti ti-trending-up"></i> 67% rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#F3E5F5"><i class="ti ti-tools" style="color:#7B1FA2"></i></div>
+      <div class="stat-num">5</div>
+      <div class="stat-label">Service Requests</div>
+      <div class="stat-trend" style="color:#64748B"><i class="ti ti-minus"></i> No change</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Report List Items (with urgency indicator)</div>
+  <div class="report-card urgent">
+    <div class="report-icon" style="background:#FFEBEE"><i class="ti ti-droplet-off" style="color:#C62828"></i></div>
+    <div class="report-body">
+      <div class="report-title">No Water Supply — Kicukiro Sector</div>
+      <div class="report-meta">
+        <i class="ti ti-building" style="font-size:11px"></i> WASAC
+        <i class="ti ti-map-pin" style="font-size:11px"></i> Kicukiro, Kigali
+        <i class="ti ti-calendar" style="font-size:11px"></i> Jun 12, 2026
+      </div>
+    </div>
+    <div class="report-right">
+      <span class="badge" style="background:#FFF3E0;color:#E65100">In Progress</span>
+      <span style="font-size:11px;font-family:monospace;color:#94A3B8">RPT-20260612-K7M3</span>
+      <i class="ti ti-chevron-right" style="color:#CBD5E1"></i>
+    </div>
+  </div>
+  <div class="report-card moderate">
+    <div class="report-icon" style="background:#FFF3E0"><i class="ti ti-flask" style="color:#E65100"></i></div>
+    <div class="report-body">
+      <div class="report-title">Water Quality Issue — Cloudy & Smell</div>
+      <div class="report-meta">
+        <i class="ti ti-building" style="font-size:11px"></i> IRIBA Water Group
+        <i class="ti ti-map-pin" style="font-size:11px"></i> Gasabo, Kigali
+        <i class="ti ti-calendar" style="font-size:11px"></i> Jun 10, 2026
+      </div>
+    </div>
+    <div class="report-right">
+      <span class="badge" style="background:#EFF6FF;color:#1565C0">Pending</span>
+      <span style="font-size:11px;font-family:monospace;color:#94A3B8">RPT-20260610-A9Z2</span>
+      <i class="ti ti-chevron-right" style="color:#CBD5E1"></i>
+    </div>
+  </div>
+  <div class="report-card low">
+    <div class="report-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+    <div class="report-body">
+      <div class="report-title">Meter Reading Support Request</div>
+      <div class="report-meta">
+        <i class="ti ti-building" style="font-size:11px"></i> Pro Water Rwanda
+        <i class="ti ti-map-pin" style="font-size:11px"></i> Nyarugenge, Kigali
+        <i class="ti ti-calendar" style="font-size:11px"></i> Jun 5, 2026
+      </div>
+    </div>
+    <div class="report-right">
+      <span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span>
+      <span style="font-size:11px;font-family:monospace;color:#94A3B8">RPT-20260605-B3M1</span>
+      <i class="ti ti-chevron-right" style="color:#CBD5E1"></i>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Provider Cards</div>
+  <div class="provider-card">
+    <div class="provider-avatar" style="background:linear-gradient(135deg,#1565C0,#0288D1)">W</div>
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:800;color:#0A2540">WASAC</div>
+      <div style="font-size:12px;color:#64748B;margin-top:2px">Water and Sanitation Corporation · Kigali & all provinces</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="background:#EFF6FF;color:#1565C0;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Water Supply</span>
+        <span style="background:#EFF6FF;color:#1565C0;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Meter Support</span>
+        <span style="background:#EFF6FF;color:#1565C0;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Billing</span>
+      </div>
+    </div>
+    <span style="background:#E8F5E9;color:#2E7D32;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:5px;align-self:flex-start"><i class="ti ti-circle-check" style="font-size:13px"></i> Approved</span>
+  </div>
+  <div class="provider-card" style="border-left-color:#0288D1">
+    <div class="provider-avatar" style="background:linear-gradient(135deg,#0288D1,#29B6F6)">I</div>
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:800;color:#0A2540">IRIBA Water Group</div>
+      <div style="font-size:12px;color:#64748B;margin-top:2px">Private water provider · Gasabo, Kicukiro, Nyarugenge</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="background:#F0FAFF;color:#0288D1;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Tank Delivery</span>
+        <span style="background:#F0FAFF;color:#0288D1;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px">Water Connection</span>
+      </div>
+    </div>
+    <span style="background:#E8F5E9;color:#2E7D32;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:5px;align-self:flex-start"><i class="ti ti-circle-check" style="font-size:13px"></i> Approved</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Alert Cards</div>
+  <div class="alert-card" style="background:#FFEBEE">
+    <div style="width:40px;height:40px;border-radius:10px;background:#C62828;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-alert-triangle" style="color:#fff;font-size:18px"></i></div>
+    <div><div style="font-size:14px;font-weight:700;color:#C62828">Water Outage — Kicukiro Sector</div><div style="font-size:13px;color:#64748B;margin-top:3px">Scheduled maintenance from 08:00 – 16:00 on June 15, 2026</div><div style="font-size:11px;color:#94A3B8;margin-top:5px">2 hours ago · WASAC</div></div>
+  </div>
+  <div class="alert-card" style="background:#E8F5E9">
+    <div style="width:40px;height:40px;border-radius:10px;background:#2E7D32;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-circle-check" style="color:#fff;font-size:18px"></i></div>
+    <div><div style="font-size:14px;font-weight:700;color:#2E7D32">Your report has been resolved</div><div style="font-size:13px;color:#64748B;margin-top:3px">RPT-20260605-B3M1 — Meter Reading Support was resolved by Pro Water Rwanda</div><div style="font-size:11px;color:#94A3B8;margin-top:5px">Yesterday · Pro Water Rwanda</div></div>
+  </div>
+</div>
+</body></html>

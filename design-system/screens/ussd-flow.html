@@ -1,0 +1,305 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>USSD Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0D1B2A;color:#fff;padding:40px;min-height:100vh}
+h1{font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:48px}
+.flow-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px}
+/* Phone frame */
+.flow-row{display:flex;align-items:flex-start;gap:20px;margin-bottom:40px;flex-wrap:wrap}
+.phone{background:#1a1a2e;border-radius:20px;border:3px solid #2a2a4e;box-shadow:0 12px 48px rgba(0,0,0,.5);overflow:hidden;flex-shrink:0}
+.phone-top-bar{background:#111;padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.phone-carrier{font-size:11px;color:rgba(255,255,255,.4);font-weight:600}
+.phone-time{font-size:11px;color:rgba(255,255,255,.4);font-weight:600}
+.phone-screen{background:#000;padding:16px;font-family:'Courier New',monospace;font-size:13px;color:#4ade80;line-height:1.85;min-height:190px;width:220px;white-space:pre-wrap}
+.phone-bottom{background:#111;padding:10px;display:flex;justify-content:center}
+.phone-btn{background:#222;border-radius:6px;padding:6px 16px;font-size:12px;color:rgba(255,255,255,.5);font-weight:600}
+/* Arrow */
+.arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:60px;color:rgba(255,255,255,.3)}
+.arrow-line{width:2px;height:40px;background:rgba(255,255,255,.15)}
+.arrow-head{font-size:20px;color:rgba(255,255,255,.3)}
+.flow-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:12px;color:rgba(255,255,255,.7);font-family:'Courier New',monospace;margin-top:6px;align-self:flex-start;margin-top:70px}
+/* Branch headers */
+.branch{margin-bottom:52px}
+.branch-label{display:inline-flex;align-items:center;gap:8px;background:rgba(41,182,246,.12);border:1px solid rgba(41,182,246,.2);color:#29B6F6;font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;margin-bottom:20px}
+/* END screens */
+.phone-screen.end{color:#FFD700}
+.phone-screen.err{color:#ff6b6b}
+/* legend */
+.legend{display:flex;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.7)}
+.legend-dot{width:12px;height:12px;border-radius:3px}
+</style></head><body>
+
+<h1>USSD Flow — *XXX#</h1>
+<p class="sub">Complete menu tree for community members on any mobile phone · English & Kinyarwanda</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div> CON screen (continues)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFD700"></div> END screen (terminates)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#29B6F6"></div> User input</div>
+</div>
+
+<!-- MAIN MENU -->
+<div class="flow-label">Entry Point</div>
+<div class="flow-row">
+  <div class="phone">
+    <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:30</span></div>
+    <div class="phone-screen">TEMBA DIGITAL
+BRIDGE
+
+Welcome! / Murakaza neza!
+
+1. Report a Problem
+2. Request a Service
+3. Book Appointment
+4. Check Status
+5. Change Language
+
+Enter choice:</div>
+    <div class="phone-bottom"><div class="phone-btn">*XXX# Dialled</div></div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+  <div class="flow-input">User types: 5</div>
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+
+  <div class="phone">
+    <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:30</span></div>
+    <div class="phone-screen">TEMBA DIGITAL
+BRIDGE
+
+Select Language:
+Hitamo Ururimi:
+
+1. English
+2. Kinyarwanda
+
+Enter choice:</div>
+    <div class="phone-bottom"><div class="phone-btn">Language Select</div></div>
+  </div>
+</div>
+
+<!-- BRANCH 1: REPORT -->
+<div class="branch">
+  <div class="branch-label"><i class="ti ti-report"></i> Branch 1 — Report a Problem</div>
+  <div class="flow-row">
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:31</span></div>
+      <div class="phone-screen">Select Provider:
+
+1. WASAC
+2. IRIBA Water Group
+3. Pro Water Rwanda
+
+0. Back
+Enter choice:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 1/5</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: 1</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:31</span></div>
+      <div class="phone-screen">Provider: WASAC
+
+Select Issue Type:
+
+1. No Water Supply
+2. Water Quality
+3. Pipe Leak
+4. Low Pressure
+5. Billing Issue
+6. Meter Problem
+
+Enter choice:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 2/5</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: 1</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:32</span></div>
+      <div class="phone-screen">Issue: No Water Supply
+
+Select Urgency:
+
+1. Urgent
+   (immediate danger)
+2. Moderate
+   (affecting daily use)
+3. Low
+   (minor issue)
+
+Enter choice:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 3/5</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: 1</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:32</span></div>
+      <div class="phone-screen">Enter your location:
+
+Type your sector or
+cell name, then press
+Send/OK.
+
+Example:
+"Kicukiro Niboye"
+
+Location:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 4/5</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: Kicukiro</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:33</span></div>
+      <div class="phone-screen end">✓ Report Submitted!
+
+Reference Code:
+RPT-20260612-K7M3
+
+Save this code to
+track your report.
+
+Track anytime:
+Dial *XXX*4#
+or visit temba.rw
+
+WASAC will respond
+within 24 hours.</div>
+      <div class="phone-bottom"><div class="phone-btn">END — Session closes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BRANCH 2: SERVICE REQUEST -->
+<div class="branch">
+  <div class="branch-label"><i class="ti ti-tools"></i> Branch 2 — Request a Service</div>
+  <div class="flow-row">
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:35</span></div>
+      <div class="phone-screen">Select Provider:
+
+1. WASAC
+2. IRIBA Water Group
+3. Pro Water Rwanda
+
+0. Back
+Enter choice:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 1/4</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: 1</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:35</span></div>
+      <div class="phone-screen">Select Service Type:
+
+1. New Connection
+2. Tank Delivery
+3. Meter Support
+4. Pipe Repair
+5. Quality Inspection
+
+Enter choice:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 2/4</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: 2</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:36</span></div>
+      <div class="phone-screen">Enter your location:
+
+Type your sector or
+cell name.
+
+Location:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 3/4</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: Gasabo</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:36</span></div>
+      <div class="phone-screen end">✓ Request Submitted!
+
+Reference Code:
+SRQ-20260612-A9Z2
+
+Service: Tank Delivery
+Provider: WASAC
+Location: Gasabo
+
+Track at temba.rw
+or dial *XXX*4#
+
+You will be contacted
+within 48 hours.</div>
+      <div class="phone-bottom"><div class="phone-btn">END — Session closes</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BRANCH 4: CHECK STATUS -->
+<div class="branch">
+  <div class="branch-label"><i class="ti ti-search"></i> Branch 4 — Check Status</div>
+  <div class="flow-row">
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:40</span></div>
+      <div class="phone-screen">Check Issue Status:
+
+Enter your reference
+code below.
+
+Example:
+RPT-20260612-K7M3
+SRQ-20260612-A9Z2
+
+Code:</div>
+      <div class="phone-bottom"><div class="phone-btn">Step 1/2</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="flow-input">User types: RPT-20260612-K7M3</div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:40</span></div>
+      <div class="phone-screen end">Status Report:
+
+Code: RPT-20260612-K7M3
+Status: IN PROGRESS
+
+Provider: WASAC
+Issue: No Water Supply
+Location: Kicukiro
+Submitted: 12 Jun 2026
+SLA Deadline: 15 Jun
+
+Field officer assigned.
+Response expected soon.</div>
+      <div class="phone-bottom"><div class="phone-btn">END — Session closes</div></div>
+    </div>
+    <div class="arrow"><div class="arrow-line"></div><div class="arrow-head">▼</div></div>
+    <div class="phone">
+      <div class="phone-top-bar"><span class="phone-carrier">MTN RW</span><span class="phone-time">14:41</span></div>
+      <div class="phone-screen err">Code Not Found:
+
+RPT-20260699-ZZZZ
+
+Please check your
+reference code and
+try again.
+
+Dial *XXX# to return
+to main menu.</div>
+      <div class="phone-bottom"><div class="phone-btn">END — Code not found</div></div>
+    </div>
+  </div>
+</div>
+</body></html>

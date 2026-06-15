@@ -1,0 +1,109 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign Up — Water Provider</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;background:linear-gradient(135deg,#071E38 0%,#0A2540 40%,#1565C0 100%);display:flex;flex-direction:column;align-items:center;padding:32px 20px 60px}
+.logo-link{display:flex;align-items:center;gap:12px;margin-bottom:20px;text-decoration:none}
+.logo-box{background:#fff;border-radius:14px;padding:9px 18px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:9px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:15px;font-weight:800;color:#0A2540}
+.tabs{display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:4px;gap:4px;margin-bottom:20px;width:100%;max-width:520px}
+.tab{flex:1;padding:10px;border:none;border-radius:9px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:7px}
+.tab.active{background:linear-gradient(135deg,#E65100,#F57C00);color:#fff}
+.card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #F1F5F9}
+.section-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.section-label{font-size:14px;font-weight:800;color:#0A2540}
+.field{margin-bottom:14px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fl{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:flex;gap:4px}
+.req{color:#C62828}
+.fw{position:relative;display:flex;align-items:center}
+.fi{position:absolute;left:13px;color:#94A3B8;font-size:16px;pointer-events:none}
+.fw input,.fw select,.fw textarea{width:100%;padding:11px 13px 11px 40px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;color:#1E293B;outline:none}
+.fw input:focus,.fw select:focus{border-color:#E65100;box-shadow:0 0 0 3px rgba(230,81,0,.1)}
+.fw input.ni,.fw select.ni{padding-left:13px}
+/* Services chips */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.svc-chip{border:1.5px solid #E2E8F0;border-radius:9px;padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;color:#64748B;display:flex;flex-direction:column;align-items:center;gap:5px}
+.svc-chip.selected{border-color:#E65100;background:#FFF3E0;color:#E65100}
+.svc-chip-icon{font-size:18px}
+/* Coverage */
+.coverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cov-chip{border:1.5px solid #E2E8F0;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:13px;font-weight:600;color:#64748B;display:flex;align-items:center;gap:6px}
+.cov-chip.selected{border-color:#1565C0;background:#EFF6FF;color:#1565C0}
+.btn-submit{width:100%;background:linear-gradient(135deg,#E65100,#F57C00);color:#fff;padding:14px;border-radius:10px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(230,81,0,.3);margin-top:12px}
+.approval-note{background:#FFF3E0;border:1.5px solid rgba(230,81,0,.2);border-radius:10px;padding:12px 14px;font-size:13px;color:#64748B;line-height:1.6;margin-top:12px;display:flex;gap:10px}
+</style></head><body>
+
+<div class="logo-link">
+  <div class="logo-box">
+    <div class="logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+    <span class="logo-text">Temba Digital Bridge</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab"><i class="ti ti-users"></i> Community Member</button>
+  <button class="tab active"><i class="ti ti-building"></i> Water Provider</button>
+</div>
+
+<div class="card">
+  <!-- Organization -->
+  <div class="section-head">
+    <div class="section-icon" style="background:linear-gradient(135deg,#E65100,#F57C00)"><i class="ti ti-building" style="color:#fff"></i></div>
+    <div><div class="section-label">Organization Details</div><div style="font-size:12px;color:#64748B">Official water service provider information</div></div>
+  </div>
+  <div class="field"><div class="fl">Organization Name <span class="req">*</span></div><div class="fw"><i class="ti ti-building fi"></i><input type="text" value="WASAC — Water and Sanitation Corporation"></div></div>
+  <div class="field field-row">
+    <div><div class="fl">Licence / Reg. Number <span class="req">*</span></div><div class="fw"><i class="ti ti-certificate fi"></i><input type="text" value="RURA/WS/2021/0042"></div></div>
+    <div><div class="fl">Year Established</div><div class="fw"><i class="ti ti-calendar fi"></i><input type="text" value="2010"></div></div>
+  </div>
+
+  <!-- Services -->
+  <div style="margin-bottom:14px">
+    <div class="fl" style="margin-bottom:10px">Services Provided <span class="req">*</span></div>
+    <div class="services-grid">
+      <div class="svc-chip selected"><div class="svc-chip-icon"><i class="ti ti-droplet"></i></div>Water Supply</div>
+      <div class="svc-chip selected"><div class="svc-chip-icon"><i class="ti ti-truck"></i></div>Tank Delivery</div>
+      <div class="svc-chip"><div class="svc-chip-icon"><i class="ti ti-plug"></i></div>New Connection</div>
+      <div class="svc-chip selected"><div class="svc-chip-icon"><i class="ti ti-gauge"></i></div>Meter Support</div>
+      <div class="svc-chip"><div class="svc-chip-icon"><i class="ti ti-search"></i></div>Inspection</div>
+      <div class="svc-chip"><div class="svc-chip-icon"><i class="ti ti-receipt"></i></div>Billing</div>
+    </div>
+  </div>
+
+  <!-- Coverage -->
+  <div style="margin-bottom:18px">
+    <div class="fl" style="margin-bottom:10px">Coverage Area <span class="req">*</span></div>
+    <div class="coverage-grid">
+      <div class="cov-chip selected"><i class="ti ti-check-circle" style="font-size:14px"></i> Kigali City</div>
+      <div class="cov-chip selected"><i class="ti ti-check-circle" style="font-size:14px"></i> Eastern Province</div>
+      <div class="cov-chip"><i class="ti ti-circle" style="font-size:14px;color:#CBD5E1"></i> Southern Province</div>
+      <div class="cov-chip"><i class="ti ti-circle" style="font-size:14px;color:#CBD5E1"></i> Western Province</div>
+      <div class="cov-chip"><i class="ti ti-circle" style="font-size:14px;color:#CBD5E1"></i> Northern Province</div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div class="section-head" style="margin-top:20px">
+    <div class="section-icon" style="background:#EFF6FF"><i class="ti ti-user-shield" style="color:#1565C0"></i></div>
+    <div><div class="section-label">Account Administrator</div><div style="font-size:12px;color:#64748B">Primary contact who will manage this account</div></div>
+  </div>
+  <div class="field field-row">
+    <div><div class="fl">Admin Full Name <span class="req">*</span></div><div class="fw"><i class="ti ti-user fi"></i><input type="text" value="Aline Mukamana"></div></div>
+    <div><div class="fl">Job Title <span class="req">*</span></div><div class="fw"><i class="ti ti-id-badge fi"></i><input type="text" value="Operations Director"></div></div>
+  </div>
+  <div class="field field-row">
+    <div><div class="fl">Admin Email <span class="req">*</span></div><div class="fw"><i class="ti ti-mail fi"></i><input type="email" value="aline@wasac.rw"></div></div>
+    <div><div class="fl">Admin Phone <span class="req">*</span></div><div class="fw"><i class="ti ti-phone fi"></i><input type="tel" value="+250 788 000 000"></div></div>
+  </div>
+  <div class="field"><div class="fl">Password <span class="req">*</span></div><div class="fw"><i class="ti ti-lock fi"></i><input type="password" value="••••••••••"><button style="position:absolute;right:12px;background:none;border:none;cursor:pointer;color:#94A3B8"><i class="ti ti-eye"></i></button></div></div>
+  <div class="field"><div class="fl">Confirm Password <span class="req">*</span></div><div class="fw"><i class="ti ti-lock fi"></i><input type="password" value="••••••••••"></div></div>
+  <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#334155;cursor:pointer;margin-bottom:4px"><input type="checkbox" checked style="accent-color:#E65100;width:16px;height:16px;margin-top:1px;flex-shrink:0"> I confirm this organization is a licensed water service provider in Rwanda and agree to the <a href="#" style="color:#E65100;font-weight:700">Terms of Use</a></label>
+  <button class="btn-submit"><i class="ti ti-building"></i> Submit for Approval</button>
+  <div class="approval-note"><i class="ti ti-info-circle" style="color:#E65100;flex-shrink:0;font-size:16px;margin-top:1px"></i><span>Your application will be reviewed by our team within <strong>24–48 hours</strong>. You'll receive an email once your account is approved.</span></div>
+</div>
+</body></html>

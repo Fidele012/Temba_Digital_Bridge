@@ -1,0 +1,220 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+/* NAVBAR */
+.navbar{height:64px;background:#fff;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(10,37,64,.06)}
+.logo-area{display:flex;align-items:center;gap:9px;margin-right:auto}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center}
+.brand{font-size:15px;font-weight:800;color:#0A2540}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #E2E8F0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #fff}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 64px)}
+/* SIDEBAR */
+.sidebar{width:256px;background:#fff;border-right:1px solid #F1F5F9;flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-inner{padding:16px 0;flex:1}
+.role-chip{margin:0 14px 18px;background:linear-gradient(135deg,#EFF6FF,#E1F5FE);border:1.5px solid rgba(21,101,192,.15);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#CBD5E1;padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:#475569;position:relative}
+.nav-item.active{background:#EFF6FF;color:#1565C0}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#1565C0;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:#F1F5F9;margin:10px 14px}
+.sidebar-cta{margin:10px 14px;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:10px;width:calc(100% - 28px);padding:11px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(21,101,192,.3)}
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:28px}
+/* PANEL HERO */
+.panel-hero{background:linear-gradient(135deg,#1565C0,#0288D1);border-radius:16px;padding:28px 32px;margin-bottom:24px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.hero-greeting{font-size:24px;font-weight:800;margin-bottom:4px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.75)}
+.hero-badge{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 14px;font-size:12px;font-weight:700;margin-top:12px;display:inline-block}
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 1px 6px rgba(10,37,64,.07);position:relative}
+.stat-icon{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.stat-num{font-size:28px;font-weight:800;color:#0A2540;line-height:1}
+.stat-label{font-size:12px;color:#64748B;font-weight:600;margin-top:5px}
+.stat-trend{font-size:11px;font-weight:700;margin-top:8px;display:flex;align-items:center;gap:3px}
+/* CONTENT GRID */
+.content-grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07)}
+.card-header{padding:18px 20px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:15px;font-weight:700;color:#0A2540}
+.card-link{font-size:13px;font-weight:600;color:#1565C0;text-decoration:none}
+.card-body{padding:4px 0}
+/* Report items */
+.report-item{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid #F8FAFB;cursor:pointer}
+.report-item:last-child{border-bottom:none}
+.ri-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ri-body{flex:1;min-width:0}
+.ri-title{font-size:14px;font-weight:700;color:#1E293B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-meta{font-size:12px;color:#94A3B8;margin-top:2px}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Quick actions */
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px}
+.qa-btn{padding:14px 10px;border:1.5px solid #E2E8F0;border-radius:12px;background:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:inherit}
+.qa-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.qa-label{font-size:12px;font-weight:700;color:#334155;text-align:center}
+/* Announcements */
+.ann-item{padding:14px 20px;border-bottom:1px solid #F8FAFB}
+.ann-item:last-child{border-bottom:none}
+.ann-tag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.ann-title{font-size:13.5px;font-weight:700;color:#1E293B}
+.ann-meta{font-size:11px;color:#94A3B8;margin-top:3px}
+</style></head><body>
+
+<nav class="navbar">
+  <div class="logo-area">
+    <div class="logo-mark"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+    <span class="brand">Temba Digital Bridge</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:3px">
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:700;color:#1565C0;cursor:pointer;padding:4px 6px">EN</button>
+    <span style="color:#CBD5E1">|</span>
+    <button style="background:none;border:none;font-family:inherit;font-size:13px;font-weight:600;color:#94A3B8;cursor:pointer;padding:4px 6px">RW</button>
+  </div>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">J</div>
+  <button style="background:none;border:1.5px solid #E2E8F0;color:#64748B;padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="role-chip">
+        <div class="role-icon"><i class="ti ti-users" style="color:#fff;font-size:15px"></i></div>
+        <div><div style="font-size:13px;font-weight:800;color:#0A2540">Jean Mugisha</div><div style="font-size:11px;color:#64748B;margin-top:1px">Community Member</div></div>
+      </div>
+      <div class="sec-label">MAIN</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard" style="font-size:16px"></i> Overview</div>
+      <div class="nav-item"><i class="ti ti-report" style="font-size:16px"></i> My Reports <span class="nav-badge">3</span></div>
+      <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests</div>
+      <div class="nav-item"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments <span class="nav-badge">1</span></div>
+      <div class="nav-item"><i class="ti ti-bell" style="font-size:16px"></i> Alerts <span class="nav-badge">5</span></div>
+      <div class="sb-divider"></div>
+      <div class="sec-label">EXPLORE</div>
+      <div class="nav-item"><i class="ti ti-building" style="font-size:16px"></i> Providers</div>
+      <div class="nav-item"><i class="ti ti-history" style="font-size:16px"></i> History</div>
+      <div class="sb-divider"></div>
+      <button class="sidebar-cta"><i class="ti ti-plus"></i> New Report</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="panel-hero">
+      <div>
+        <div class="hero-greeting">Good morning, Jean 👋</div>
+        <div class="hero-sub">Here's what's happening with your water reports today</div>
+        <div class="hero-badge"><i class="ti ti-map-pin"></i> Kicukiro, Kigali</div>
+      </div>
+      <div style="text-align:right">
+        <button style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:10px 20px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px"><i class="ti ti-report"></i> Report Issue</button>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#EFF6FF"><i class="ti ti-report" style="color:#1565C0"></i></div>
+        <div class="stat-num">24</div><div class="stat-label">Total Reports</div>
+        <div class="stat-trend" style="color:#2E7D32"><i class="ti ti-trending-up"></i> +3 this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#FFF3E0"><i class="ti ti-clock" style="color:#E65100"></i></div>
+        <div class="stat-num" style="color:#E65100">8</div><div class="stat-label">Open Issues</div>
+        <div class="stat-trend" style="color:#E65100"><i class="ti ti-alert-triangle"></i> 2 overdue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+        <div class="stat-num" style="color:#2E7D32">16</div><div class="stat-label">Resolved</div>
+        <div class="stat-trend" style="color:#2E7D32"><i class="ti ti-trending-up"></i> 67% rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#F3E5F5"><i class="ti ti-tools" style="color:#7B1FA2"></i></div>
+        <div class="stat-num">5</div><div class="stat-label">Service Requests</div>
+        <div class="stat-trend" style="color:#64748B"><i class="ti ti-minus"></i> No change</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><span class="card-title">Recent Reports</span><a class="card-link" href="#">View all →</a></div>
+          <div class="card-body">
+            <div class="report-item">
+              <div class="ri-icon" style="background:#FFEBEE"><i class="ti ti-droplet-off" style="color:#C62828"></i></div>
+              <div class="ri-body">
+                <div class="ri-title">No Water Supply — Kicukiro Sector</div>
+                <div class="ri-meta">WASAC · Jun 12, 2026 · <span style="font-family:monospace;font-size:11px">RPT-20260612-K7M3</span></div>
+              </div>
+              <span class="badge" style="background:#FFF3E0;color:#E65100">In Progress</span>
+            </div>
+            <div class="report-item">
+              <div class="ri-icon" style="background:#FFF3E0"><i class="ti ti-flask" style="color:#E65100"></i></div>
+              <div class="ri-body">
+                <div class="ri-title">Water Quality Issue — Cloudy & Odour</div>
+                <div class="ri-meta">IRIBA Water Group · Jun 10, 2026</div>
+              </div>
+              <span class="badge" style="background:#EFF6FF;color:#1565C0">Pending</span>
+            </div>
+            <div class="report-item">
+              <div class="ri-icon" style="background:#E8F5E9"><i class="ti ti-circle-check" style="color:#2E7D32"></i></div>
+              <div class="ri-body">
+                <div class="ri-title">Meter Reading Support Request</div>
+                <div class="ri-meta">Pro Water Rwanda · Jun 5, 2026</div>
+              </div>
+              <span class="badge" style="background:#E8F5E9;color:#2E7D32">Resolved</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Quick Actions</span></div>
+          <div class="quick-grid">
+            <button class="qa-btn"><div class="qa-icon" style="background:#EFF6FF"><i class="ti ti-report" style="color:#1565C0;font-size:18px"></i></div><span class="qa-label">Report Issue</span></button>
+            <button class="qa-btn"><div class="qa-icon" style="background:#E8F5E9"><i class="ti ti-tools" style="color:#2E7D32;font-size:18px"></i></div><span class="qa-label">Request Service</span></button>
+            <button class="qa-btn"><div class="qa-icon" style="background:#F3E5F5"><i class="ti ti-calendar" style="color:#7B1FA2;font-size:18px"></i></div><span class="qa-label">Book Appointment</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><span class="card-title">Announcements</span></div>
+          <div class="card-body">
+            <div class="ann-item">
+              <div class="ann-tag" style="color:#C62828">⚠ URGENT</div>
+              <div class="ann-title">Scheduled Maintenance — Kicukiro</div>
+              <div class="ann-meta">WASAC · Jun 15, 2026 · 08:00–16:00</div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-tag" style="color:#1565C0">ℹ INFO</div>
+              <div class="ann-title">New connection applications now open</div>
+              <div class="ann-meta">IRIBA Water Group · Jun 10, 2026</div>
+            </div>
+            <div class="ann-item">
+              <div class="ann-tag" style="color:#2E7D32">✓ UPDATE</div>
+              <div class="ann-title">Water quality restored in Gasabo</div>
+              <div class="ann-meta">Pro Water Rwanda · Jun 8, 2026</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Track an Issue</span></div>
+          <div style="padding:16px">
+            <div style="font-size:13px;color:#64748B;margin-bottom:10px">Enter a reference code to check status</div>
+            <input style="width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;font-family:inherit;outline:none;font-family:monospace" placeholder="RPT-YYYYMMDD-XXXX">
+            <button style="margin-top:10px;width:100%;background:linear-gradient(135deg,#1565C0,#0288D1);color:#fff;border:none;border-radius:9px;padding:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer">Track</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body></html>

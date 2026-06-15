@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temba Digital Bridge — Rwanda Water &amp; Sanitation Platform</title>
+  <link rel="stylesheet" href="temba.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --navy:        #0A2540;
+  --blue:        #1565C0;
+  --mid-blue:    #1976D2;
+  --sky:         #29B6F6;
+  --sky-light:   #E1F5FE;
+  --sky-pale:    #F0FAFF;
+  --white:       #ffffff;
+  --gray-50:     #F8FAFB;
+  --gray-100:    #F0F4F8;
+  --gray-200:    #E2E8F0;
+  --gray-400:    #94A3B8;
+  --gray-600:    #475569;
+  --gray-800:    #1E293B;
+  --green:       #2E7D32;
+  --green-light: #E8F5E9;
+  --orange:      #E65100;
+  --font:        'Plus Jakarta Sans', sans-serif;
+}
+
+body { font-family: var(--font); background: var(--white); color: var(--gray-800); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+button { font-family: var(--font); cursor: pointer; }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.55s ease, transform 0.55s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.delay-1 { transition-delay: 0.08s; }
+.delay-2 { transition-delay: 0.16s; }
+.delay-3 { transition-delay: 0.24s; }
+.delay-4 { transition-delay: 0.32s; }
+
+/* ── NAV ── */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem; height: 68px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky; top: 0; z-index: 100;
+  transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 2px 20px rgba(10,37,64,0.08); }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-img { height: 44px; width: auto; display: block; transition: transform 0.25s; }
+.nav-logo:hover .nav-logo-img { transform: scale(1.04); }
+.nav-logo-name { font-size: 16px; font-weight: 800; color: var(--navy); letter-spacing: -0.01em; white-space: nowrap; }
+.nav-logo-mark {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(21,101,192,0.3);
+  transition: transform 0.25s;
+}
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  font-size: 13.5px; color: var(--gray-600); font-weight: 500;
+  padding: 6px 12px; border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover { color: var(--navy); background: var(--gray-100); }
+.nav-right { display: flex; gap: 8px; align-items: center; }
+.btn-ghost-nav {
+  background: none; border: none; font-family: var(--font);
+  font-size: 13.5px; font-weight: 500; color: var(--gray-600);
+  padding: 8px 16px; border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+.btn-ghost-nav:hover { color: var(--navy); background: var(--gray-100); }
+.btn-cta-nav {
+  background: linear-gradient(135deg, var(--blue), var(--sky));
+  color: #fff; border: none; border-radius: 8px;
+  font-family: var(--font); font-size: 13.5px; font-weight: 600; padding: 9px 20px;
+  box-shadow: 0 2px 10px rgba(21,101,192,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+.btn-cta-nav:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(21,101,192,0.4); }
+.hamburger {
+  display: none; background: none; border: none;
+  font-size: 22px; color: var(--navy); padding: 4px;
+}
+.nav-mobile {
+  display: none; position: fixed; top: 68px; left: 0; right: 0;
+  background: var(--white); border-bottom: 1px solid var(--gray-200);
+  padding: 1rem 1.5rem; z-index: 99; flex-direction: column; gap: 4px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.nav-mobile.open { display: flex; }
+.nav-mobile a { font-size: 15px; font-weight: 500; color: var(--gray-800); padding: 10px 12px; border-radius: 8px; transition: background 0.15s; }
+.nav-mobile a:hover { background: var(--gray-100); }
+.mobile-cta { display: flex; gap: 8px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--gray-200); }
+.mobile-cta a { flex: 1; text-align: center; border-radius: 8px; }
+
+/* ── HERO ── */
+.hero {
+  text-align: center; padding: 6.5rem 2rem 0;
+  background: linear-gradient(170deg, #EBF8FF 0%, var(--sky-pale) 45%, var(--white) 100%);
+  border-bottom: 1px solid var(--gray-200);
+  position: relative; overflow: hidden;
+}
+.hero-rings {
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 900px; pointer-events: none;
+}
+.hero-rings circle { animation: ringPulse 7s ease-in-out infinite; }
+.hero-rings circle:nth-child(2) { animation-delay: 1.5s; }
+.hero-rings circle:nth-child(3) { animation-delay: 3s; }
+@keyframes ringPulse { 0%,100%{opacity:0.07} 50%{opacity:0.15} }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--sky-light); color: var(--blue);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.4px;
+  padding: 6px 15px; border-radius: 20px; margin-bottom: 1.5rem;
+  border: 1px solid #B3E5FC;
+  animation: tagIn 0.5s ease both;
+}
+@keyframes tagIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
+
+.hero h1 {
+  font-size: 52px; font-weight: 800; line-height: 1.1;
+  letter-spacing: -1.5px; max-width: 660px; margin: 0 auto 1.25rem; color: var(--navy);
+  animation: fadeUp 0.65s ease 0.1s both;
+}
+.hero h1 .highlight {
+  background: linear-gradient(90deg, var(--blue), var(--sky));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub {
+  font-size: 17px; color: var(--gray-600); max-width: 500px;
+  margin: 0 auto 2.25rem; line-height: 1.75;
+  animation: fadeUp 0.65s ease 0.2s both;
+}
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;
+  animation: fadeUp 0.65s ease 0.3s both;
+}
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+.btn-primary-lg {
+  background: linear-gradient(135deg, var(--blue), var(--sky));
+  color: #fff; border: none; border-radius: 12px;
+  font-family: var(--font); font-size: 15px; font-weight: 600; padding: 14px 30px;
+  box-shadow: 0 4px 18px rgba(21,101,192,0.35);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary-lg:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(21,101,192,0.42); }
+.btn-secondary-lg {
+  background: var(--white); color: var(--navy);
+  border: 1.5px solid var(--gray-200); border-radius: 12px;
+  font-family: var(--font); font-size: 15px; font-weight: 600; padding: 14px 28px;
+  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.btn-secondary-lg:hover { border-color: var(--sky); background: var(--sky-pale); transform: translateY(-1px); }
+.hero-note { font-size: 12.5px; color: var(--gray-400); margin-bottom: 3.5rem; animation: fadeUp 0.65s ease 0.4s both; }
+
+/* Hero mini-dashboard preview */
+.hero-preview {
+  max-width: 860px; margin: 0 auto;
+  border-radius: 16px 16px 0 0;
+  border: 1px solid var(--gray-200); border-bottom: none;
+  box-shadow: 0 -4px 40px rgba(21,101,192,0.10); overflow: hidden;
+  animation: previewUp 0.8s ease 0.5s both;
+}
+@keyframes previewUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+.preview-bar {
+  background: var(--gray-50); border-bottom: 1px solid var(--gray-200);
+  padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+}
+.preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+.preview-url {
+  flex: 1; background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 6px; padding: 4px 12px; font-size: 12px; color: var(--gray-400);
+  max-width: 300px; margin: 0 auto;
+}
+.preview-stats {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-top: 1px solid var(--gray-200);
+}
+.preview-stat {
+  padding: 16px 20px; border-right: 1px solid var(--gray-200);
+}
+.preview-stat:last-child { border-right: none; }
+.preview-stat-label { font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.preview-stat-num   { font-size: 24px; font-weight: 800; color: var(--navy); }
+.preview-stat-sub   { font-size: 10.5px; font-weight: 600; margin-top: 2px; }
+
+/* ── SECTION LABELS ── */
+.eyebrow { text-align: center; font-size: 11.5px; font-weight: 700; color: var(--sky); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+.sec-title { text-align: center; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -0.4px; margin-bottom: 0.5rem; }
+.sec-sub { text-align: center; font-size: 14.5px; color: var(--gray-600); max-width: 480px; margin: 0 auto 2.75rem; line-height: 1.75; }
+
+/* ── LIVE REPORTS ── */
+.cards-section { background: var(--white); padding: 4rem 2rem; }
+.cards-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; max-width: 1000px; margin: 0 auto; }
+.report-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 18px; padding: 18px;
+  transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+}
+.report-card:hover { box-shadow: 0 12px 36px rgba(21,101,192,0.12); border-color: #B3E5FC; transform: translateY(-5px); }
+.rc-icon { width: 100%; height: 80px; border-radius: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+.rc-icon.blue-bg { background: linear-gradient(135deg,#E3F2FD,#B3E5FC); }
+.rc-icon.sky-bg  { background: linear-gradient(135deg,#E1F5FE,#81D4FA); }
+.rc-icon.teal-bg { background: linear-gradient(135deg,#E1F5EE,#A5D6A7); }
+.rc-icon.warn-bg { background: linear-gradient(135deg,#FFF8E1,#FFECB3); }
+.rc-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+.badge-urgent   { background: #FFEBEE; color: #C62828; }
+.badge-moderate { background: #FFF3E0; color: var(--orange); }
+.badge-resolved { background: var(--green-light); color: var(--green); }
+.rc-title { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 3px; line-height: 1.35; }
+.rc-meta  { font-size: 11.5px; color: var(--gray-400); margin-bottom: 10px; }
+.rc-stats { display: flex; gap: 4px; flex-wrap: wrap; font-size: 11px; color: var(--gray-600); border-top: 1px solid var(--gray-100); padding-top: 9px; margin-bottom: 10px; }
+.rc-stats span { font-weight: 700; color: var(--blue); }
+.rc-btn {
+  width: 100%; background: var(--sky-pale); color: var(--blue);
+  border: 1px solid #B3E5FC; border-radius: 8px;
+  font-family: var(--font); font-size: 12px; font-weight: 600; padding: 8px 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+.rc-btn:hover { background: var(--sky-light); border-color: var(--sky); }
+
+/* ── WHO WE SERVE ── */
+.for-section { padding: 5rem 2rem; background: linear-gradient(180deg,var(--gray-50) 0%,var(--white) 100%); border-top: 1px solid var(--gray-200); }
+.for-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 920px; margin: 0 auto; }
+.for-card {
+  border: 1px solid var(--gray-200); border-radius: 22px; padding: 2.25rem;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.for-card:hover { box-shadow: 0 10px 36px rgba(21,101,192,0.1); transform: translateY(-4px); }
+.for-card.accent { border-color: #81D4FA; background: linear-gradient(145deg,var(--sky-pale),#EBF5FF); }
+.for-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 1rem; }
+.for-card-icon {
+  width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--blue), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 22px;
+  box-shadow: 0 4px 12px rgba(21,101,192,0.28);
+}
+.for-card h3 { font-size: 19px; font-weight: 800; color: var(--navy); }
+.for-card > p { font-size: 13.5px; color: var(--gray-600); margin-bottom: 1.25rem; line-height: 1.7; }
+.for-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.for-list li { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--gray-800); }
+.for-list li .bullet { width: 20px; height: 20px; border-radius: 50%; background: var(--sky-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.for-list li .bullet i { font-size: 11px; color: var(--blue); }
+
+/* ── HOW IT WORKS ── */
+.hiw { background: linear-gradient(180deg,var(--sky-pale),#EBF5FF); padding: 5rem 2rem; border-top: 1px solid #B3E5FC; border-bottom: 1px solid #B3E5FC; }
+.hiw-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+.hiw-step {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: 20px; padding: 2rem 1.75rem;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.hiw-step:hover { box-shadow: 0 8px 28px rgba(21,101,192,0.1); transform: translateY(-4px); }
+.hiw-num {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--sky));
+  color: #fff; font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem;
+  box-shadow: 0 3px 12px rgba(21,101,192,0.3);
+}
+.hiw-step h3 { font-size: 15.5px; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+.hiw-step p  { font-size: 13.5px; color: var(--gray-600); line-height: 1.65; margin-bottom: 1.1rem; }
+.hiw-mock { background: var(--sky-pale); border: 1px solid #B3E5FC; border-radius: 10px; padding: 11px 13px; }
+.hiw-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray-700); padding: 3px 0; }
+.hiw-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── PROVIDERS ── */
+.providers-band { background: linear-gradient(135deg, var(--navy), #1565C0); padding: 3rem 2rem; text-align: center; }
+.providers-band > p { font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,0.45); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 1.25rem; }
+.provider-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.provider-pill {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px; padding: 9px 20px; font-size: 13.5px; font-weight: 600; color: #fff;
+  display: flex; align-items: center; gap: 7px;
+  transition: background 0.2s;
+}
+.provider-pill:hover { background: rgba(255,255,255,0.18); }
+
+/* ── USSD ── */
+.ussd-section { background: var(--sky-pale); padding: 5rem 2rem; border-top: 1px solid #B3E5FC; border-bottom: 1px solid #B3E5FC; }
+.ussd-inner { max-width: 880px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; }
+.ussd-eyebrow { font-size: 11px; font-weight: 700; color: var(--sky); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.6rem; }
+.ussd-inner h3 { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 0.65rem; letter-spacing: -0.4px; }
+.ussd-inner > div > p { font-size: 14px; color: var(--gray-600); line-height: 1.75; margin-bottom: 1.25rem; }
+.ussd-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.ussd-chip {
+  background: var(--white); border: 1px solid #B3E5FC; border-radius: 20px;
+  padding: 7px 15px; font-size: 12.5px; font-weight: 600; color: var(--blue);
+  display: flex; align-items: center; gap: 5px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.ussd-chip:hover { background: var(--sky-light); box-shadow: 0 2px 8px rgba(41,182,246,0.15); }
+.phone-frame { background: var(--navy); border-radius: 30px; padding: 9px; width: 196px; flex-shrink: 0; box-shadow: 0 20px 50px rgba(10,37,64,0.25); }
+.phone-screen { background: #fff; border-radius: 24px; padding: 16px; font-family: 'Courier New', monospace; font-size: 11.5px; color: #111; line-height: 1.85; min-height: 270px; }
+.phone-title  { font-weight: 700; font-size: 12px; color: var(--blue); border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-bottom: 8px; }
+.phone-option { color: #333; padding: 1px 0; }
+.phone-group  { font-size: 10.5px; color: #999; margin: 8px 0 3px; }
+.phone-cursor { color: #999; font-size: 10.5px; margin-top: 10px; border-top: 1px solid #eee; padding-top: 7px; }
+
+/* ── TRACK YOUR ISSUE ── */
+.track-section { background: #fff; padding: 4.5rem 2rem; border-top: 1px solid var(--gray-200); }
+.track-inner { max-width: 660px; margin: 0 auto; text-align: center; }
+.track-eyebrow { font-size: 11px; font-weight: 700; color: var(--sky); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.6rem; }
+.track-inner h3 { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 0.65rem; letter-spacing: -0.4px; }
+.track-inner > p { font-size: 14px; color: var(--gray-600); line-height: 1.75; margin-bottom: 1.75rem; }
+.track-form { display: flex; gap: 10px; max-width: 480px; margin: 0 auto 1.5rem; }
+.track-form input {
+  flex: 1; padding: 13px 16px; border: 2px solid var(--gray-200); border-radius: 10px;
+  font-size: 15px; font-weight: 600; letter-spacing: 1px; font-family: 'Courier New', monospace;
+  text-transform: uppercase; color: var(--navy); outline: none;
+  transition: border-color 0.2s;
+}
+.track-form input:focus { border-color: var(--sky); }
+.track-form input::placeholder { font-weight: 400; letter-spacing: 0; font-size: 13px; color: var(--gray-400); text-transform: none; font-family: inherit; }
+.track-form button {
+  padding: 13px 22px; background: var(--blue); color: #fff; border: none;
+  border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background 0.2s, transform 0.1s; white-space: nowrap;
+}
+.track-form button:hover { background: var(--navy); }
+.track-form button:active { transform: scale(0.98); }
+.track-result { max-width: 480px; margin: 0 auto; text-align: left; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--gray-200); }
+.track-card-header { background: var(--blue); padding: 18px 22px; color: #fff; }
+.track-card-header .track-ref { font-family: 'Courier New', monospace; font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+.track-card-header .track-type { font-size: 11px; opacity: 0.8; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.track-card-body { padding: 20px 22px; background: #fff; }
+.track-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--gray-100); }
+.track-row:last-child { border-bottom: none; padding-bottom: 0; }
+.track-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; min-width: 90px; padding-top: 1px; }
+.track-value { font-size: 14px; color: var(--navy); font-weight: 600; flex: 1; }
+.track-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; background: #e8f4fd; color: var(--blue); }
+.track-error { color: var(--red); font-size: 14px; font-weight: 600; padding: 16px; background: #fff5f5; border-radius: 10px; border: 1.5px solid #fecaca; }
+
+/* ── ABOUT + IMPACT ── */
+.about-section { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--gray-200); }
+.about-col { padding: 4rem 3rem; }
+.about-col:first-child { border-right: 1px solid var(--gray-200); }
+.about-eyebrow { font-size: 11px; font-weight: 700; color: var(--sky); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
+.about-col h2 { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 0.9rem; letter-spacing: -0.4px; }
+.about-col p  { font-size: 14px; color: var(--gray-600); line-height: 1.8; margin-bottom: 0.75rem; }
+.provider-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
+.provider-tag {
+  background: var(--sky-light); color: var(--blue); border: 1px solid #B3E5FC;
+  border-radius: 20px; padding: 5px 13px; font-size: 12px; font-weight: 600;
+  transition: background 0.2s;
+}
+.provider-tag:hover { background: #B3E5FC; }
+.impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.5rem; }
+.impact-card {
+  background: linear-gradient(135deg,var(--sky-pale),#EBF5FF);
+  border: 1px solid #B3E5FC; border-radius: 14px; padding: 1.1rem 1.25rem;
+  transition: transform 0.2s;
+}
+.impact-card:hover { transform: translateY(-2px); }
+.impact-card .num   { font-size: 28px; font-weight: 800; color: var(--blue); letter-spacing: -0.5px; }
+.impact-card .label { font-size: 12px; color: var(--gray-600); margin-top: 3px; line-height: 1.4; }
+
+/* ── FINAL CTA ── */
+.final-cta {
+  text-align: center; padding: 6rem 2rem;
+  background: linear-gradient(180deg, var(--white) 0%, var(--sky-pale) 60%, #E8F4FF 100%);
+  border-top: 1px solid var(--gray-200); position: relative; overflow: hidden;
+}
+.final-cta::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 700px 400px at 50% 100%, rgba(41,182,246,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.final-cta h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.8px; color: var(--navy); margin-bottom: 0.85rem; max-width: 580px; margin-left: auto; margin-right: auto; }
+.final-cta > p { font-size: 15.5px; color: var(--gray-600); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.7; }
+.final-note { font-size: 12.5px; color: var(--gray-400); margin-top: 1.25rem; }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--white); border-top: 1px solid var(--gray-200);
+  padding: 3.5rem 2.5rem 2rem;
+  display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 2.5rem;
+}
+.footer-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.footer-logo-img { height: 40px; width: auto; display: block; }
+.footer-logo-mark { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,var(--blue),var(--sky)); display: flex; align-items: center; justify-content: center; }
+.footer-brand p { font-size: 13px; color: var(--gray-400); line-height: 1.65; margin-bottom: 6px; }
+.footer-contact { font-size: 12.5px; color: var(--gray-400); display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.footer-contact i { color: var(--blue); font-size: 13px; }
+.footer-col h4  { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+.footer-col a   { display: block; font-size: 13px; color: var(--gray-400); margin-bottom: 8px; transition: color 0.2s; }
+.footer-col a:hover { color: var(--blue); }
+.footer-bottom {
+  border-top: 1px solid var(--gray-200); padding: 1.25rem 2.5rem;
+  font-size: 12.5px; color: var(--gray-400); font-family: var(--font);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-langs { display: flex; gap: 14px; }
+.footer-langs span { cursor: pointer; transition: color 0.2s; }
+.footer-langs span:hover { color: var(--blue); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) { .cards-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 900px) {
+  .nav-links, .nav-right .btn-ghost-nav, .nav-right .btn-cta-nav { display: none; }
+  .hamburger { display: block; }
+  .hero h1 { font-size: 38px; }
+  .for-grid, .hiw-grid, .about-section { grid-template-columns: 1fr; }
+  .about-col:first-child { border-right: none; border-bottom: 1px solid var(--gray-200); }
+  .ussd-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .phone-frame { margin: 0 auto; }
+  .footer { grid-template-columns: 1fr 1fr; }
+  .preview-stats { grid-template-columns: 1fr 1fr; }
+  .preview-stat:nth-child(2) { border-right: none; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 4rem 1.25rem 0; }
+  .hero h1 { font-size: 30px; }
+  .hero-sub { font-size: 15px; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .cards-grid { grid-template-columns: 1fr; max-width: 340px; }
+  .final-cta h2 { font-size: 28px; }
+  .footer { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .nav { padding: 0 1.25rem; }
+  .about-col { padding: 2.5rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a class="nav-logo" href="#">
+    <img src="assets/temba-logo.png" alt="Temba Digital Bridge" class="nav-logo-img">
+    <span class="nav-logo-name">Temba Digital Bridge</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features"     data-i18n="nav_features">Features</a>
+    <a href="#how-it-works" data-i18n="nav_how_it_works">How It Works</a>
+    <a href="#providers"    data-i18n="nav_providers">Providers</a>
+    <a href="#ussd"         data-i18n="nav_ussd">USSD Access</a>
+    <a href="#about"        data-i18n="nav_about">About</a>
+  </div>
+  <div class="nav-right">
+    <button data-lang-btn="en" onclick="setLang('en')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;padding:4px 8px;">EN</button>
+      <span style="color:var(--gray-300);">|</span>
+      <button data-lang-btn="rw" onclick="setLang('rw')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;padding:4px 8px;">RW</button>
+      <button class="btn-ghost-nav" onclick="window.location.href='signin.html'" data-i18n="nav_signin">Sign In</button>
+    <a class="btn-cta-nav" href="signup.html" data-i18n="nav_signup">Sign Up</a>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Open menu">
+      <i class="ti ti-menu-2" aria-hidden="true"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="nav-mobile" id="navMobile">
+  <a href="#features"     onclick="toggleMenu()" data-i18n="nav_features">Features</a>
+  <a href="#how-it-works" onclick="toggleMenu()" data-i18n="nav_how_it_works">How It Works</a>
+  <a href="#providers"    onclick="toggleMenu()" data-i18n="nav_providers">Providers</a>
+  <a href="#ussd"         onclick="toggleMenu()" data-i18n="nav_ussd">USSD Access</a>
+  <a href="#about"        onclick="toggleMenu()" data-i18n="nav_about">About</a>
+  <div class="mobile-cta">
+    <a href="signin.html" class="btn-ghost-nav" style="border:1.5px solid var(--gray-200);" data-i18n="nav_signin">Sign In</a>
+    <a href="signup.html" class="btn-cta-nav" data-i18n="nav_signup">Sign Up</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="features">
+  <svg class="hero-rings" viewBox="0 0 900 900" fill="none">
+    <circle cx="450" cy="450" r="240" stroke="#1565C0" stroke-width="1.5"/>
+    <circle cx="450" cy="450" r="340" stroke="#1565C0" stroke-width="1"/>
+    <circle cx="450" cy="450" r="420" stroke="#1565C0" stroke-width="0.6"/>
+  </svg>
+
+  <div class="hero-tag">
+    <i class="ti ti-map-pin" style="font-size:12px;" aria-hidden="true"></i>
+    <span data-i18n="hero_tag">Rwanda · Water &amp; Sanitation Platform</span>
+  </div>
+
+  <h1 data-i18n="hero_h1">Your water problems,<br><span class="highlight">heard and resolved</span> faster</h1>
+
+  <p class="hero-sub" data-i18n="hero_sub">Report broken pipes, shortages &amp; contamination directly to your provider — via web or basic phone USSD. In English and Kinyarwanda.</p>
+
+  <div class="hero-actions">
+    <a class="btn-primary-lg" href="signup.html">
+      <i class="ti ti-flag" style="font-size:16px;" aria-hidden="true"></i> <span data-i18n="hero_cta1">Report a problem</span>
+    </a>
+    <a class="btn-secondary-lg" href="#how-it-works">
+      <i class="ti ti-player-play" style="font-size:15px;" aria-hidden="true"></i> <span data-i18n="hero_cta2">See how it works</span>
+    </a>
+  </div>
+
+  <p class="hero-note" data-i18n="hero_note">Free for all community members &nbsp;·&nbsp; No smartphone required &nbsp;·&nbsp; Available in English &amp; Kinyarwanda</p>
+
+  <!-- Mini dashboard preview -->
+  <div class="hero-preview">
+    <div class="preview-bar">
+      <div class="preview-dot" style="background:#FF5F57;"></div>
+      <div class="preview-dot" style="background:#FEBC2E;"></div>
+      <div class="preview-dot" style="background:#28C840;"></div>
+      <div class="preview-url">temba.rw/dashboard</div>
+    </div>
+    <div class="preview-stats">
+      <div class="preview-stat">
+        <div class="preview-stat-label" data-i18n="stat_lbl_active">Active Reports</div>
+        <div class="preview-stat-num">12</div>
+        <div class="preview-stat-sub" style="color:var(--green);" data-i18n="stat_sub_week">↑ 3 this week</div>
+      </div>
+      <div class="preview-stat">
+        <div class="preview-stat-label" data-i18n="stat_lbl_resolved">Resolved</div>
+        <div class="preview-stat-num">84</div>
+        <div class="preview-stat-sub" style="color:var(--green);" data-i18n="stat_sub_month">↑ 12 this month</div>
+      </div>
+      <div class="preview-stat">
+        <div class="preview-stat-label" data-i18n="stat_lbl_providers">Providers Active</div>
+        <div class="preview-stat-num">6</div>
+        <div class="preview-stat-sub" style="color:var(--blue);" data-i18n="stat_sub_provinces">Across 5 provinces</div>
+      </div>
+      <div class="preview-stat">
+        <div class="preview-stat-label" data-i18n="stat_lbl_avg">Avg. Response</div>
+        <div class="preview-stat-num">2.4h</div>
+        <div class="preview-stat-sub" style="color:var(--orange);" data-i18n="stat_sub_faster">↓ 18% faster</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE REPORTS -->
+<section class="cards-section">
+  <p class="eyebrow reveal" data-i18n="live_eyebrow">Live from the platform</p>
+  <h2 class="sec-title reveal delay-1" data-i18n="live_title">Reports happening right now</h2>
+  <p class="sec-sub reveal delay-2" data-i18n="live_sub">Real reports submitted by community members across Rwanda — tracked, assigned, and resolved in real time.</p>
+
+  <div class="cards-grid">
+    <div class="report-card reveal delay-1">
+      <div class="rc-icon blue-bg">🚰</div>
+      <div class="rc-badge badge-urgent" data-i18n="rc_badge_urgent">Urgent</div>
+      <div class="rc-title" data-i18n="rc_title1">Broken pipe — Nyarugenge</div>
+      <div class="rc-meta" data-i18n="rc_meta1">8 min ago · WASAC</div>
+      <div class="rc-stats" data-i18n="rc_status1">Status: <span>Assigned</span>&nbsp;·&nbsp;ETA: <span>2h</span></div>
+      <button class="rc-btn" data-i18n="rc_view_btn">View Report Details</button>
+    </div>
+    <div class="report-card reveal delay-2">
+      <div class="rc-icon sky-bg">💧</div>
+      <div class="rc-badge badge-moderate" data-i18n="rc_badge_moderate">Moderate</div>
+      <div class="rc-title" data-i18n="rc_title2">Dry public tap — Gasabo</div>
+      <div class="rc-meta" data-i18n="rc_meta2">1 hr ago · Pro Water Rwanda</div>
+      <div class="rc-stats" data-i18n="rc_status2">Status: <span>Under review</span>&nbsp;·&nbsp;ETA: <span>6h</span></div>
+      <button class="rc-btn" data-i18n="rc_view_btn">View Report Details</button>
+    </div>
+    <div class="report-card reveal delay-3">
+      <div class="rc-icon warn-bg">⚠️</div>
+      <div class="rc-badge badge-urgent" data-i18n="rc_badge_urgent">Urgent</div>
+      <div class="rc-title" data-i18n="rc_title3">Contamination — Kicukiro</div>
+      <div class="rc-meta" data-i18n="rc_meta3">2 hrs ago · IRIBA Group</div>
+      <div class="rc-stats" data-i18n="rc_status3">Status: <span>In progress</span>&nbsp;·&nbsp;ETA: <span>4h</span></div>
+      <button class="rc-btn" data-i18n="rc_view_btn">View Report Details</button>
+    </div>
+    <div class="report-card reveal delay-4">
+      <div class="rc-icon teal-bg">✅</div>
+      <div class="rc-badge badge-resolved" data-i18n="rc_badge_resolved">Resolved</div>
+      <div class="rc-title" data-i18n="rc_title4">Water restored — Kimisagara</div>
+      <div class="rc-meta" data-i18n="rc_meta4">3 hrs ago · WASAC</div>
+      <div class="rc-stats" data-i18n="rc_status4">Status: <span>Closed</span>&nbsp;·&nbsp;Time: <span>3h</span></div>
+      <button class="rc-btn" data-i18n="rc_view_btn">View Report Details</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section class="for-section">
+  <p class="eyebrow reveal" data-i18n="ws_eyebrow">Who we serve</p>
+  <h2 class="sec-title reveal delay-1" style="margin-bottom:2.75rem;" data-i18n="ws_title">Built for communities and providers</h2>
+  <div class="for-grid">
+    <div class="for-card reveal delay-1">
+      <div class="for-card-head">
+        <div class="for-card-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+        <h3 data-i18n="ws_community_h3">Community Members</h3>
+      </div>
+      <p data-i18n="ws_community_sub">Residents currently report issues through local leaders with no way to track progress. Temba lets anyone report directly and stay informed — on any phone.</p>
+      <ul class="for-list">
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li1">Submit water and sanitation reports directly</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li2">Upload photos or video evidence</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li3">Track every report from submission to resolution</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li4">Choose the provider responsible for your area</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li5">Use USSD — no smartphone or internet needed</span></li>
+      </ul>
+    </div>
+    <div class="for-card accent reveal delay-2">
+      <div class="for-card-head">
+        <div class="for-card-icon"><i class="ti ti-building" aria-hidden="true"></i></div>
+        <h3 data-i18n="ws_provider_h3">Water Service Providers</h3>
+      </div>
+      <p data-i18n="ws_provider_sub">Providers miss critical issues due to fragmented reporting. Temba gives a single dashboard to receive, respond to, and communicate with communities at scale.</p>
+      <ul class="for-list">
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li6">Receive and triage reports by urgency level</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li7">Broadcast alerts by village, cell, or province</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li8">Call or SMS community members for follow-up</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li9">Publish water quality and safety notices</span></li>
+        <li><div class="bullet"><i class="ti ti-check" aria-hidden="true"></i></div><span data-i18n="ws_li10">Manage all communications in one dashboard</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw" id="how-it-works">
+  <p class="eyebrow reveal" data-i18n="hiw_eyebrow">How it works</p>
+  <h2 class="sec-title reveal delay-1" data-i18n="hiw_title">Get your issue resolved in 3 steps</h2>
+  <p class="sec-sub reveal delay-2" data-i18n="hiw_sub">From reporting a problem to seeing it fixed — all within Temba.</p>
+  <div class="hiw-grid">
+    <div class="hiw-step reveal delay-1">
+      <div class="hiw-num">1</div>
+      <h3 data-i18n="hiw_step1_h3">Describe your water issue</h3>
+      <p data-i18n="hiw_step1_p">Share what's happening — broken pipe, shortage, or contamination — and upload photo or video evidence from your phone.</p>
+      <div class="hiw-mock">
+        <div class="hiw-row"><div class="hiw-dot" style="background:#E24B4A;"></div> <span data-i18n="hiw_mock1_row1">Issue: Broken pipe</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#EF9F27;"></div> <span data-i18n="hiw_mock1_row2">Urgency: Urgent</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#29B6F6;"></div> <span data-i18n="hiw_mock1_row3">Location: Nyarugenge, Kigali</span></div>
+      </div>
+    </div>
+    <div class="hiw-step reveal delay-2">
+      <div class="hiw-num">2</div>
+      <h3 data-i18n="hiw_step2_h3">Assign to your provider</h3>
+      <p data-i18n="hiw_step2_p">Select the water provider for your area. Your report goes directly to them with all evidence and context attached.</p>
+      <div class="hiw-mock">
+        <div class="hiw-row"><div class="hiw-dot" style="background:#1565C0;"></div> <span data-i18n="hiw_mock2_row1">Provider: WASAC</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#1565C0;"></div> <span data-i18n="hiw_mock2_row2">Report sent ✓</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#1565C0;"></div> <span data-i18n="hiw_mock2_row3">Ref: #TDB-4291</span></div>
+      </div>
+    </div>
+    <div class="hiw-step reveal delay-3">
+      <div class="hiw-num">3</div>
+      <h3 data-i18n="hiw_step3_h3">Track progress &amp; get alerts</h3>
+      <p data-i18n="hiw_step3_p">Monitor your report status from your dashboard. Receive SMS or platform alerts the moment it's being fixed or resolved.</p>
+      <div class="hiw-mock">
+        <div class="hiw-row"><div class="hiw-dot" style="background:#2E7D32;"></div> <span data-i18n="hiw_mock3_row1">Status: In progress</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#2E7D32;"></div> <span data-i18n="hiw_mock3_row2">ETA: 2 hours</span></div>
+        <div class="hiw-row"><div class="hiw-dot" style="background:#2E7D32;"></div> <span data-i18n="hiw_mock3_row3">SMS alert sent ✓</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVIDERS -->
+<div class="providers-band" id="providers">
+  <p data-i18n="prov_band_label">Trusted partner providers across Rwanda</p>
+  <div class="provider-pills">
+    <div class="provider-pill"><i class="ti ti-building" style="font-size:14px;" aria-hidden="true"></i> WASAC</div>
+    <div class="provider-pill"><i class="ti ti-building" style="font-size:14px;" aria-hidden="true"></i> Water Access Rwanda</div>
+    <div class="provider-pill"><i class="ti ti-building" style="font-size:14px;" aria-hidden="true"></i> IRIBA Water Group</div>
+    <div class="provider-pill"><i class="ti ti-building" style="font-size:14px;" aria-hidden="true"></i> Aquasan Limited</div>
+    <div class="provider-pill"><i class="ti ti-building" style="font-size:14px;" aria-hidden="true"></i> Pro Water Rwanda</div>
+    <div class="provider-pill" style="opacity:0.5; border-style:dashed;"><i class="ti ti-plus" style="font-size:13px;" aria-hidden="true"></i> <span data-i18n="prov_more">More joining</span></div>
+  </div>
+</div>
+
+<!-- USSD -->
+<section class="ussd-section" id="ussd">
+  <div class="ussd-inner">
+    <div class="reveal">
+      <p class="ussd-eyebrow" data-i18n="ussd_eyebrow">USSD Access</p>
+      <h3 data-i18n="ussd_h3">Works on any phone, anywhere</h3>
+      <p data-i18n="ussd_p">No smartphone? No internet? Dial the USSD shortcode on any basic phone to report issues, check status, and choose your language — completely free of data charges.</p>
+      <div class="ussd-chips">
+        <div class="ussd-chip"><i class="ti ti-device-mobile" style="font-size:14px;" aria-hidden="true"></i> <span data-i18n="ussd_chip1">Dial *XXX# to start</span></div>
+        <div class="ussd-chip"><i class="ti ti-language" style="font-size:14px;" aria-hidden="true"></i> <span data-i18n="ussd_chip2">English &amp; Kinyarwanda</span></div>
+        <div class="ussd-chip"><i class="ti ti-wifi-off" style="font-size:14px;" aria-hidden="true"></i> <span data-i18n="ussd_chip3">No internet needed</span></div>
+        <div class="ussd-chip"><i class="ti ti-currency-dollar-off" style="font-size:14px;" aria-hidden="true"></i> <span data-i18n="ussd_chip4">Free of data charges</span></div>
+      </div>
+    </div>
+    <div class="phone-frame reveal delay-1">
+      <div class="phone-screen">
+        <div class="phone-title" data-i18n="ussd_phone_title">Temba Digital Bridge</div>
+        <div class="phone-group" data-i18n="ussd_phone_select_lang">Select language:</div>
+        <div class="phone-option" data-i18n="ussd_phone_en">1. English</div>
+        <div class="phone-option" data-i18n="ussd_phone_rw">2. Kinyarwanda</div>
+        <div class="phone-group" data-i18n="ussd_phone_main_menu">Main menu:</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt1">1. Report water issue</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt2">2. Track my reports</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt3">3. Book appointment</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt4">4. My appointments</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt5">5. Service request status</div>
+        <div class="phone-option" data-i18n="ussd_phone_opt6">6. Submit service request</div>
+        <div class="phone-cursor" data-i18n="ussd_phone_enter">Enter choice: _</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACK YOUR ISSUE -->
+<section class="track-section" id="track">
+  <div class="track-inner reveal">
+    <p class="track-eyebrow" data-i18n="track_eyebrow">Issue Tracking</p>
+    <h3 data-i18n="track_h3">Track your submitted issue</h3>
+    <p data-i18n="track_p">Received a tracking code from USSD? Enter it below to check the status and progress of your report or service request — no login needed.</p>
+    <div class="track-form">
+      <input type="text" id="trackInput" maxlength="20" placeholder="e.g. RPT-20260614-K7M3" data-i18n-placeholder="track_placeholder" />
+      <button onclick="trackIssue()" id="trackBtn" data-i18n="track_btn">Track</button>
+    </div>
+    <div id="trackResult" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- ABOUT + IMPACT -->
+<div class="about-section" id="about">
+  <div class="about-col reveal">
+    <p class="about-eyebrow" data-i18n="about_eyebrow">About Temba</p>
+    <h2 data-i18n="about_h2">Built for Rwanda's communities</h2>
+    <p data-i18n="about_p1">Temba Digital Bridge is a civic platform built to close the communication gap between Rwandan communities and the water service providers that serve them.</p>
+    <p data-i18n="about_p2">Accessible via web app or USSD on any phone — no smartphone or internet required. Available in English and Kinyarwanda.</p>
+    <div class="provider-tags">
+      <span class="provider-tag">WASAC</span>
+      <span class="provider-tag">Water Access Rwanda</span>
+      <span class="provider-tag">IRIBA Water Group</span>
+      <span class="provider-tag">Aquasan Limited</span>
+      <span class="provider-tag">Pro Water Rwanda</span>
+    </div>
+  </div>
+  <div class="about-col reveal delay-1">
+    <p class="about-eyebrow" data-i18n="impact_eyebrow">Our Impact</p>
+    <h2 data-i18n="impact_h2">Connecting every community to clean water</h2>
+    <p data-i18n="impact_p">Making water access more transparent and reliable across Rwanda — one report at a time.</p>
+    <div class="impact-grid">
+      <div class="impact-card"><div class="num">6+</div><div class="label" data-i18n="impact_lbl1">Water service providers</div></div>
+      <div class="impact-card"><div class="num">5</div><div class="label" data-i18n="impact_lbl2">Administrative levels covered</div></div>
+      <div class="impact-card"><div class="num">2</div><div class="label" data-i18n="impact_lbl3">Languages supported</div></div>
+      <div class="impact-card"><div class="num">Web+USSD</div><div class="label" data-i18n="impact_lbl4">Channels available</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2 class="reveal" data-i18n="cta_h2">Ready to get your water issues resolved?</h2>
+  <p class="reveal delay-1" data-i18n="cta_p">Join community members and providers making water access more reliable across Rwanda.</p>
+  <a class="btn-primary-lg reveal delay-2" href="signup.html" style="margin:0 auto; display:inline-flex;">
+    <i class="ti ti-user-plus" style="font-size:16px;" aria-hidden="true"></i> <span data-i18n="cta_btn">Sign Up — it's free</span>
+  </a>
+  <p class="final-note reveal delay-3" data-i18n="cta_note">No account needed to browse &nbsp;·&nbsp; Free for all community members &nbsp;·&nbsp; Available on any phone</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="footer-logo">
+      <img src="assets/temba-logo.png" alt="Temba Digital Bridge" class="footer-logo-img">
+    </div>
+    <p data-i18n="footer_tagline">Bridging communities and water service providers across Rwanda for faster, more reliable access to clean water.</p>
+    <div class="footer-contact"><i class="ti ti-mail" aria-hidden="true"></i> temba@waterbridge.rw</div>
+    <div class="footer-contact"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> +250 XXX XXX XXX</div>
+  </div>
+  <div class="footer-col">
+    <h4 data-i18n="footer_product">Product</h4>
+    <a href="#features"     data-i18n="footer_features">Features</a>
+    <a href="#how-it-works" data-i18n="nav_how_it_works">How It Works</a>
+    <a href="#ussd"         data-i18n="footer_ussd_link">USSD Access</a>
+    <a href="signup.html"   data-i18n="footer_for_providers">For Providers</a>
+  </div>
+  <div class="footer-col">
+    <h4 data-i18n="footer_company">Company</h4>
+    <a href="#about" data-i18n="footer_about_link">About</a>
+    <a href="#"      data-i18n="footer_blog">Blog</a>
+    <a href="#"      data-i18n="footer_careers">Careers</a>
+    <a href="#"      data-i18n="footer_contact_link">Contact</a>
+  </div>
+  <div class="footer-col">
+    <h4 data-i18n="footer_legal">Legal</h4>
+    <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+    <a href="#" data-i18n="footer_terms">Terms of Use</a>
+    <a href="#" data-i18n="footer_cookies">Cookie Policy</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span data-i18n="footer_copyright">© 2025 Temba Digital Bridge · Rwanda</span>
+  <div class="footer-langs">
+    <span data-lang-btn="en" onclick="setLang('en')" style="cursor:pointer;" data-i18n="footer_lang_en">English</span>
+    <span data-lang-btn="rw" onclick="setLang('rw')" style="cursor:pointer;" data-i18n="footer_lang_rw">Kinyarwanda</span>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+function toggleMenu() {
+  const m = document.getElementById('navMobile');
+  const btn = document.getElementById('hamburgerBtn');
+  const open = m.classList.toggle('open');
+  btn.innerHTML = open
+    ? '<i class="ti ti-x" aria-hidden="true"></i>'
+    : '<i class="ti ti-menu-2" aria-hidden="true"></i>';
+}
+document.addEventListener('click', (e) => {
+  const m = document.getElementById('navMobile');
+  if (m.classList.contains('open') && !e.target.closest('.nav') && !e.target.closest('.nav-mobile')) {
+    m.classList.remove('open');
+    document.getElementById('hamburgerBtn').innerHTML = '<i class="ti ti-menu-2" aria-hidden="true"></i>';
+  }
+});
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+const TRACK_API = 'http://127.0.0.1:8000/api/v1/track';
+
+async function trackIssue() {
+  const input = document.getElementById('trackInput');
+  const res   = document.getElementById('trackResult');
+  const btn   = document.getElementById('trackBtn');
+  const code  = input.value.trim().toUpperCase();
+  if (!code) { input.focus(); return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  res.style.display = 'none';
+
+  try {
+    const r = await fetch(`${TRACK_API}/${encodeURIComponent(code)}`);
+    res.style.display = 'block';
+    if (!r.ok) {
+      res.innerHTML = `<p class="track-error">No issue found with that code.<br><small style="color:var(--gray-500);font-size:0.8rem;">Codes are 16–18 characters, e.g. <strong>RPT-20260614-K7M3</strong>. Check your SMS for the full code and try again.</small></p>`;
+      return;
+    }
+    const d = await r.json();
+    const lang = localStorage.getItem('tembaLang') || 'en';
+    const cat    = lang === 'rw' ? d.category_rw : d.category;
+    const status = lang === 'rw' ? d.status_rw   : d.status;
+    const urg    = lang === 'rw' ? d.urgency_rw  : d.urgency;
+    const typeLabel = d.type === 'report'
+      ? (lang === 'rw' ? 'Raporo y\'ikibazo' : 'Issue Report')
+      : (lang === 'rw' ? 'Icyifuzo cya serivisi' : 'Service Request');
+
+    res.innerHTML = `
+      <div class="track-result">
+        <div class="track-card-header">
+          <div class="track-ref">${d.reference_number}</div>
+          <div class="track-type">${typeLabel}</div>
+        </div>
+        <div class="track-card-body">
+          <div class="track-row">
+            <span class="track-label">${lang==='rw'?'Icyiciro':'Category'}</span>
+            <span class="track-value">${cat}</span>
+          </div>
+          <div class="track-row">
+            <span class="track-label">${lang==='rw'?'Aho bigeze':'Status'}</span>
+            <span class="track-value"><span class="track-status-badge">${status}</span></span>
+          </div>
+          <div class="track-row">
+            <span class="track-label">${lang==='rw'?'Ubwihutirwe':'Urgency'}</span>
+            <span class="track-value">${urg}</span>
+          </div>
+          ${d.provider ? `<div class="track-row"><span class="track-label">${lang==='rw'?'Umutanga':'Provider'}</span><span class="track-value">${d.provider}</span></div>` : ''}
+          ${d.location ? `<div class="track-row"><span class="track-label">${lang==='rw'?'Ahantu':'Location'}</span><span class="track-value">${d.location}</span></div>` : ''}
+          <div class="track-row">
+            <span class="track-label">${lang==='rw'?'Itariki':'Submitted'}</span>
+            <span class="track-value">${d.submitted_at}</span>
+          </div>
+          ${d.resolution_notes ? `<div class="track-row"><span class="track-label">${lang==='rw'?'Igisubizo':'Progress'}</span><span class="track-value" style="color:var(--gray-600);font-weight:400;">${d.resolution_notes}</span></div>` : ''}
+        </div>
+      </div>`;
+  } catch(e) {
+    res.style.display = 'block';
+    res.innerHTML = `<p class="track-error">${window._t ? t('track_error') : 'Error looking up code. Make sure the backend is running and try again.'}</p>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = window.t ? t('track_btn') : 'Track';
+  }
+}
+
+document.getElementById('trackInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') trackIssue();
+});
+</script>
+  <script src="temba-i18n.js"></script>
+  <script src="temba-about.js"></script>
+  <script src="temba-chatbot.js"></script>
+</body>
+</html>

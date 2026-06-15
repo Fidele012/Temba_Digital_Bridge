@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- Logo -->
+  <a href="index.html" class="auth-logo">
+    <img src="assets/temba-logo.png" alt="Temba Digital Bridge" class="auth-logo-img">
+    <span class="auth-brand-name">Temba Digital Bridge</span>
+
+  </a>
+
+  <div class="auth-lang-toggle" style="display:flex;align-items:center;gap:4px;margin-bottom:0.5rem;">
+    <button data-lang-btn="en" onclick="setLang('en')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);cursor:pointer;padding:4px 8px;">EN</button>
+    <span style="color:rgba(255,255,255,0.25);">|</span>
+    <button data-lang-btn="rw" onclick="setLang('rw')" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;padding:4px 8px;">RW</button>
+  </div>
+
+  <!-- Card -->
+  <div class="auth-card">
+    <h1 class="auth-title" data-i18n="signup_title">Sign Up</h1>
+    <p class="auth-sub" data-i18n="signup_sub">Create your account to report water issues and stay informed.</p>
+
+    <!-- Tab toggle -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabC" onclick="switchTab('community')">
+        <i class="ti ti-users" aria-hidden="true"></i> <span data-i18n="tab_community">Community Member</span>
+      </button>
+      <button class="auth-tab" id="tabP" onclick="switchTab('provider')">
+        <i class="ti ti-building" aria-hidden="true"></i> <span data-i18n="tab_provider">Water Provider</span>
+      </button>
+    </div>
+
+    <!-- ════════════════════════
+         COMMUNITY MEMBER
+         ════════════════════════ -->
+    <div id="communityForm">
+
+      <!-- Steps -->
+      <div class="auth-steps">
+        <div class="auth-step active" id="cs1"><div class="auth-step-dot">1</div><div class="auth-step-label" data-i18n="step_personal">Personal</div></div>
+        <div class="auth-step-line" id="cline1"></div>
+        <div class="auth-step" id="cs2"><div class="auth-step-dot">2</div><div class="auth-step-label" data-i18n="step_location">Location</div></div>
+        <div class="auth-step-line" id="cline2"></div>
+        <div class="auth-step" id="cs3"><div class="auth-step-dot">3</div><div class="auth-step-label" data-i18n="step_account">Account</div></div>
+      </div>
+
+      <!-- Step 1: Personal -->
+      <div class="form-step active" id="cStep1">
+        <div class="step-section"><i class="ti ti-user" aria-hidden="true"></i> <span data-i18n="sec_personal_info">Personal Information</span></div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_first_name">First Name</span> <span class="req">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-user field-icon" aria-hidden="true"></i>
+              <input type="text" id="cFirstName" placeholder="e.g. Jean Baptiste" autocomplete="given-name" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_last_name">Last Name</span> <span class="req">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-user field-icon" aria-hidden="true"></i>
+              <input type="text" id="cLastName" placeholder="e.g. Mugisha" autocomplete="family-name" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_phone_number">Phone Number</span> <span class="req">*</span></label>
+          <div class="phone-wrap">
+            <select id="cPhoneCode" class="phone-code-sel" aria-label="Country code">
+              <option value="+250">🇷🇼 +250</option>
+              <optgroup label="Central / East Africa">
+                <option value="+257">🇧🇮 +257</option><option value="+237">🇨🇲 +237</option>
+                <option value="+236">🇨🇫 +236</option><option value="+235">🇹🇩 +235</option>
+                <option value="+243">🇨🇩 +243</option><option value="+242">🇨🇬 +242</option>
+                <option value="+253">🇩🇯 +253</option><option value="+240">🇬🇶 +240</option>
+                <option value="+291">🇪🇷 +291</option><option value="+251">🇪🇹 +251</option>
+                <option value="+241">🇬🇦 +241</option><option value="+254">🇰🇪 +254</option>
+                <option value="+252">🇸🇴 +252</option><option value="+211">🇸🇸 +211</option>
+                <option value="+249">🇸🇩 +249</option><option value="+255">🇹🇿 +255</option>
+                <option value="+256">🇺🇬 +256</option>
+              </optgroup>
+              <optgroup label="North / West Africa">
+                <option value="+213">🇩🇿 +213</option><option value="+229">🇧🇯 +229</option>
+                <option value="+226">🇧🇫 +226</option><option value="+238">🇨🇻 +238</option>
+                <option value="+20">🇪🇬 +20</option><option value="+220">🇬🇲 +220</option>
+                <option value="+233">🇬🇭 +233</option><option value="+224">🇬🇳 +224</option>
+                <option value="+245">🇬🇼 +245</option><option value="+225">🇨🇮 +225</option>
+                <option value="+218">🇱🇾 +218</option><option value="+231">🇱🇷 +231</option>
+                <option value="+223">🇲🇱 +223</option><option value="+222">🇲🇷 +222</option>
+                <option value="+212">🇲🇦 +212</option><option value="+227">🇳🇪 +227</option>
+                <option value="+234">🇳🇬 +234</option><option value="+221">🇸🇳 +221</option>
+                <option value="+232">🇸🇱 +232</option><option value="+228">🇹🇬 +228</option>
+                <option value="+216">🇹🇳 +216</option>
+              </optgroup>
+              <optgroup label="Southern / Island Africa">
+                <option value="+244">🇦🇴 +244</option><option value="+267">🇧🇼 +267</option>
+                <option value="+269">🇰🇲 +269</option><option value="+268">🇸🇿 +268</option>
+                <option value="+266">🇱🇸 +266</option><option value="+261">🇲🇬 +261</option>
+                <option value="+265">🇲🇼 +265</option><option value="+230">🇲🇺 +230</option>
+                <option value="+258">🇲🇿 +258</option><option value="+264">🇳🇦 +264</option>
+                <option value="+239">🇸🇹 +239</option><option value="+248">🇸🇨 +248</option>
+                <option value="+27">🇿🇦 +27</option><option value="+260">🇿🇲 +260</option>
+                <option value="+263">🇿🇼 +263</option>
+              </optgroup>
+            </select>
+            <input type="tel" class="phone-num-input" id="cPhone" placeholder="e.g. 788 123 456" autocomplete="tel" />
+          </div>
+          <div class="field-hint" data-i18n="hint_phone">Required — providers will use this to contact you</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_email_addr">Email Address</span> <span class="opt" data-i18n="lbl_optional">Optional</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+            <input type="email" id="cEmail" placeholder="e.g. jean@example.com" autocomplete="email" />
+          </div>
+          <div class="field-hint" data-i18n="hint_email">For platform notifications if you have internet access</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_id_doc">Identity Document</span> <span class="req">*</span></label>
+          <div class="id-toggle">
+            <label class="id-toggle-opt">
+              <input type="radio" name="cIdType" value="nid" checked onchange="onIdType('c')" />
+              <span class="id-toggle-box"><i class="ti ti-id-badge-2" aria-hidden="true"></i> <span data-i18n="id_nid">National ID (NID)</span></span>
+            </label>
+            <label class="id-toggle-opt">
+              <input type="radio" name="cIdType" value="passport" onchange="onIdType('c')" />
+              <span class="id-toggle-box"><i class="ti ti-passport" aria-hidden="true"></i> <span data-i18n="id_passport">Passport</span></span>
+            </label>
+          </div>
+          <div class="field-wrap" id="cNidWrap" style="margin-top:8px;">
+            <i class="ti ti-id-badge-2 field-icon" aria-hidden="true"></i>
+            <input type="text" id="cNid" placeholder="e.g. 1 1990 8 0012345 6 78" maxlength="16" inputmode="numeric" />
+          </div>
+          <div class="field-wrap" id="cPassWrap" style="margin-top:8px; display:none;">
+            <i class="ti ti-passport field-icon" aria-hidden="true"></i>
+            <input type="text" id="cPassport" placeholder="e.g. PA1234567 (as on passport)" maxlength="20" />
+          </div>
+          <div class="field-hint" id="cIdHint" data-i18n="hint_id">Used to verify your identity</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_gender">Gender</span> <span class="req">*</span></label>
+          <div class="radio-pills">
+            <label class="radio-pill-opt"><input type="radio" name="cGender" value="male" /><span class="radio-pill-box" data-i18n="gender_male">Male</span></label>
+            <label class="radio-pill-opt"><input type="radio" name="cGender" value="female" /><span class="radio-pill-box" data-i18n="gender_female">Female</span></label>
+            <label class="radio-pill-opt"><input type="radio" name="cGender" value="other" /><span class="radio-pill-box" data-i18n="gender_other">Prefer not to say</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_pref_lang">Preferred Language</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-language field-icon" aria-hidden="true"></i>
+            <select id="cLang">
+              <option value="" disabled selected data-i18n="ph_choose_lang">Choose language</option>
+              <option value="en">English</option>
+              <option value="rw">Kinyarwanda</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="cGoTo(2)">
+          <span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Step 2: Location -->
+      <div class="form-step" id="cStep2">
+        <div class="step-section"><i class="ti ti-map-pin" aria-hidden="true"></i> <span data-i18n="sec_location">Residential Location</span></div>
+        <p class="field-hint" style="margin:-0.5rem 0 1rem;" data-i18n="hint_location">Your location helps providers identify and reach you quickly.</p>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_province">Province</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-map field-icon" aria-hidden="true"></i>
+            <select id="cProvince" onchange="onProvinceChange()">
+              <option value="" disabled selected data-i18n="ph_sel_province">Select province</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_district">District</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-map-2 field-icon" aria-hidden="true"></i>
+            <select id="cDistrict" disabled onchange="onDistrictChange()">
+              <option value="" disabled selected data-i18n="ph_sel_prov_first">Select province first</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_sector">Sector</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-location field-icon" aria-hidden="true"></i>
+            <select id="cSector" disabled onchange="onSectorChange()">
+              <option value="" disabled selected data-i18n="ph_sel_dist_first">Select district first</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_cell">Cell</span> <span class="req">*</span></label>
+            <div class="field-wrap sel-wrap">
+              <i class="ti ti-home field-icon" aria-hidden="true"></i>
+              <select id="cCell" disabled onchange="onCellChange()">
+                <option value="" disabled selected data-i18n="ph_sel_sect_first">Select sector first</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_village">Village</span> <span class="req">*</span></label>
+            <div class="field-wrap sel-wrap">
+              <i class="ti ti-building-community field-icon" aria-hidden="true"></i>
+              <select id="cVillage" disabled>
+                <option value="" disabled selected data-i18n="ph_sel_cell_first">Select cell first</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="loc-preview" id="locPreview">
+          <i class="ti ti-circle-check-filled" aria-hidden="true"></i>
+          <span id="locPreviewText"></span>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="cGoTo(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+          <button class="btn-primary" style="flex:1; margin-top:0;" onclick="cGoTo(3)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <!-- Step 3: Account -->
+      <div class="form-step" id="cStep3">
+        <div class="step-section"><i class="ti ti-shield-lock" aria-hidden="true"></i> <span data-i18n="sec_account_setup">Account Setup</span></div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_password">Password</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+            <input type="password" id="cPw" data-i18n-placeholder="ph_create_pw" placeholder="Create a strong password (min. 8 chars)" oninput="checkStrength(this.value,'cStrFill','cStrLbl'); checkMatch('cPw','cPwConf','cMatchMsg')" autocomplete="new-password" />
+            <button type="button" class="eye-btn" onclick="togglePw('cPw',this)"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          </div>
+          <div class="strength-wrap">
+            <div class="strength-track"><div class="strength-fill" id="cStrFill"></div></div>
+            <span class="strength-lbl" id="cStrLbl"></span>
+          </div>
+          <div class="field-hint" data-i18n="hint_pw_rules">Must include uppercase letter, digit, and special character (e.g. <strong>Temba@2024</strong>)</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_confirm_pw">Confirm Password</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+            <input type="password" id="cPwConf" data-i18n-placeholder="ph_confirm_pw" placeholder="Type your password again" oninput="checkMatch('cPw','cPwConf','cMatchMsg')" autocomplete="new-password" />
+            <button type="button" class="eye-btn" onclick="togglePw('cPwConf',this)"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          </div>
+          <div class="match-msg" id="cMatchMsg"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" data-i18n="lbl_alert_prefs">Alert Preferences</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked /> <i class="ti ti-message" aria-hidden="true"></i> <span data-i18n="alert_sms">SMS notifications</span></label>
+            <label class="check-item"><input type="checkbox" /> <i class="ti ti-mail" aria-hidden="true"></i> <span data-i18n="alert_email">Email notifications</span></label>
+            <label class="check-item"><input type="checkbox" checked /> <i class="ti ti-bell" aria-hidden="true"></i> <span data-i18n="alert_inapp">In-app alerts</span></label>
+          </div>
+        </div>
+
+        <label class="terms-label"><input type="checkbox" id="cTerms" /> <span data-i18n="lbl_terms_agree">I agree to the</span> <a href="#" data-i18n="terms_of_use_link">Terms of Use</a> <span data-i18n="terms_and">and</span> <a href="#" data-i18n="terms_privacy_link">Privacy Policy</a></label>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="cGoTo(2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+          <button class="btn-primary" style="flex:1; margin-top:0;" onclick="handleSubmit('community')"><i class="ti ti-user-plus" aria-hidden="true"></i> <span data-i18n="btn_create_account">Create Account</span></button>
+        </div>
+      </div>
+
+    </div><!-- /communityForm -->
+
+    <!-- ════════════════════════
+         WATER PROVIDER
+         ════════════════════════ -->
+    <div id="providerForm" style="display:none;">
+
+      <div class="auth-steps">
+        <div class="auth-step active" id="ps1"><div class="auth-step-dot">1</div><div class="auth-step-label" data-i18n="step_organisation">Organisation</div></div>
+        <div class="auth-step-line" id="pline1"></div>
+        <div class="auth-step" id="ps2"><div class="auth-step-dot">2</div><div class="auth-step-label" data-i18n="step_admin">Admin</div></div>
+        <div class="auth-step-line" id="pline2"></div>
+        <div class="auth-step" id="ps3"><div class="auth-step-dot">3</div><div class="auth-step-label" data-i18n="step_account">Account</div></div>
+      </div>
+
+      <!-- Provider Step 1 -->
+      <div class="form-step active" id="pStep1">
+        <div class="step-section"><i class="ti ti-building" aria-hidden="true"></i> <span data-i18n="sec_org_details">Organisation Details</span></div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_org_name">Organisation Name</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-building field-icon" aria-hidden="true"></i>
+            <input type="text" id="pOrgName" placeholder="e.g. WASAC, IRIBA Water Group, AquaServe Ltd" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_services_prov">Services Provided</span> <span class="req">*</span></label>
+          <div class="field-hint" style="margin-bottom:8px;" data-i18n="hint_services">Select all services your organisation provides. Community members will be matched to you based on these categories.</div>
+          <div class="svc-category-grid" id="svcCategoryGrid">
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="water_supply" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-droplet" style="color:var(--blue);"></i> <span data-i18n="svc_water_supply">Water Supply &amp; Distribution</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_water_sup_desc">Household and community water supply</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="sanitation" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-recycle" style="color:var(--green);"></i> <span data-i18n="svc_sanitation">Sanitation Services</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_sanit_desc">Drainage, sewage, waste management</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="water_quality" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-flask" style="color:var(--purple);"></i> <span data-i18n="svc_quality_test">Water Quality Testing</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_quality_desc">Lab testing, contamination analysis</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="infrastructure" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-tool" style="color:var(--orange);"></i> <span data-i18n="svc_infra">Infrastructure Maintenance</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_infra_desc">Pipe repair, network maintenance</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="water_storage" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-device-floppy" style="color:var(--sky);"></i> <span data-i18n="svc_storage">Water Tank &amp; Storage</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_storage_desc">Tank supply, installation, delivery</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="truck_delivery" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-truck" style="color:var(--blue);"></i> <span data-i18n="svc_truck_del">Water Truck Delivery</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_truck_desc">Emergency bulk water delivery</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="meter_services" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-gauge" style="color:var(--navy);"></i> <span data-i18n="svc_meter_inst">Meter Installation &amp; Repair</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_meter_desc">Meters, readings, billing support</div>
+              </div>
+            </label>
+            <label class="svc-cat-check" onclick="toggleSvcCat(this)">
+              <input type="checkbox" value="borehole" />
+              <div>
+                <div class="svc-cat-label"><i class="ti ti-arrows-down" style="color:var(--green);"></i> <span data-i18n="svc_borehole">Borehole &amp; Well Services</span></div>
+                <div class="svc-cat-desc" data-i18n="svc_bore_desc">Drilling, pumps, groundwater</div>
+              </div>
+            </label>
+          </div>
+          <div style="margin-top:8px;">
+            <label class="field-label" style="font-size:12px;margin-bottom:5px;" data-i18n="lbl_other_svc">Other service not listed above?</label>
+            <div style="display:flex;gap:8px;">
+              <div class="field-wrap" style="flex:1;margin-bottom:0;">
+                <i class="ti ti-pencil field-icon" aria-hidden="true"></i>
+                <input type="text" id="pOtherSvc" placeholder="e.g. Rainwater harvesting systems" maxlength="100" />
+              </div>
+              <button type="button" class="btn-add-svc" onclick="addCustomSvc()" style="flex-shrink:0;margin-top:0;">
+                <i class="ti ti-plus" aria-hidden="true"></i> <span data-i18n="btn_add">Add</span>
+              </button>
+            </div>
+            <div id="customSvcTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_licence">Registration / Licence Number</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-license field-icon" aria-hidden="true"></i>
+            <input type="text" id="pLicence" placeholder="e.g. RDB/2021/WS/00123" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_coverage">Coverage Area</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-map field-icon" aria-hidden="true"></i>
+            <select id="pCoverage" onchange="onCoverage()">
+              <option value="" disabled selected data-i18n="ph_coverage">Widest area you cover</option>
+              <option data-i18n="cov_national">National (all Rwanda)</option>
+              <option data-i18n="cov_kigali">Kigali City</option>
+              <option data-i18n="cov_east">Eastern Province</option>
+              <option data-i18n="cov_north">Northern Province</option>
+              <option data-i18n="cov_south">Southern Province</option>
+              <option data-i18n="cov_west">Western Province</option>
+              <option value="specific" data-i18n="cov_specific">Specific districts only</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+          <div class="c-reveal" id="specificDistReveal">
+            <div class="field-wrap" style="margin-top:8px;">
+              <i class="ti ti-map-pin field-icon" style="top:14px;bottom:auto;" aria-hidden="true"></i>
+              <textarea id="pSpecificDist" data-i18n-placeholder="hint_specific_dist" placeholder="e.g. Gasabo, Nyarugenge, Bugesera, Huye (separate with commas)" rows="3" style="padding-left:42px; height:auto;"></textarea>
+            </div>
+            <div class="field-hint" data-i18n="hint_specific_dist">List all districts you operate in, separated by commas.</div>
+          </div>
+          <div class="field-hint" data-i18n="hint_coverage_fine">Fine-tune coverage zones later in your provider dashboard.</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_org_phone">Organisation Phone</span> <span class="req">*</span></label>
+          <div class="phone-wrap">
+            <select id="pOrgPhoneCode" class="phone-code-sel" aria-label="Country code">
+              <option value="+250">🇷🇼 +250</option>
+              <optgroup label="Central / East"><option value="+257">🇧🇮 +257</option><option value="+237">🇨🇲 +237</option><option value="+243">🇨🇩 +243</option><option value="+254">🇰🇪 +254</option><option value="+255">🇹🇿 +255</option><option value="+256">🇺🇬 +256</option></optgroup>
+              <optgroup label="North / West"><option value="+234">🇳🇬 +234</option><option value="+233">🇬🇭 +233</option><option value="+221">🇸🇳 +221</option><option value="+212">🇲🇦 +212</option><option value="+20">🇪🇬 +20</option></optgroup>
+              <optgroup label="Southern"><option value="+27">🇿🇦 +27</option><option value="+263">🇿🇼 +263</option><option value="+260">🇿🇲 +260</option></optgroup>
+            </select>
+            <input type="tel" class="phone-num-input" id="pOrgPhone" placeholder="e.g. 788 000 000" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_org_email">Organisation Email</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+            <input type="email" id="pOrgEmail" placeholder="e.g. info@yourorganisation.rw" autocomplete="email" />
+          </div>
+          <div class="field-hint" data-i18n="hint_org_email">Required — used for account activation and official communications.</div>
+        </div>
+
+        <button class="btn-primary" onclick="pGoTo(2)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
+
+      <!-- Provider Step 2 -->
+      <div class="form-step" id="pStep2">
+        <div class="step-section"><i class="ti ti-user-cog" aria-hidden="true"></i> <span data-i18n="sec_admin_contact">Admin Contact Person</span></div>
+        <p class="field-hint" style="margin:-0.5rem 0 1rem;" data-i18n="hint_admin">This person will manage the organisation account on Temba.</p>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_first_name">First Name</span> <span class="req">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-user field-icon" aria-hidden="true"></i>
+              <input type="text" id="pAdminFirst" placeholder="e.g. Alice" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label"><span data-i18n="lbl_last_name">Last Name</span> <span class="req">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-user field-icon" aria-hidden="true"></i>
+              <input type="text" id="pAdminLast" placeholder="e.g. Uwimana" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_job_title">Job Title</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-briefcase field-icon" aria-hidden="true"></i>
+            <input type="text" id="pTitle" placeholder="e.g. Operations Manager, Water Engineer" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_admin_phone">Admin Phone</span> <span class="req">*</span></label>
+          <div class="phone-wrap">
+            <select id="pAdminPhoneCode" class="phone-code-sel" aria-label="Country code">
+              <option value="+250">🇷🇼 +250</option>
+              <optgroup label="Central / East"><option value="+257">🇧🇮 +257</option><option value="+254">🇰🇪 +254</option><option value="+255">🇹🇿 +255</option><option value="+256">🇺🇬 +256</option></optgroup>
+              <optgroup label="North / West"><option value="+234">🇳🇬 +234</option><option value="+233">🇬🇭 +233</option></optgroup>
+              <optgroup label="Southern"><option value="+27">🇿🇦 +27</option></optgroup>
+            </select>
+            <input type="tel" class="phone-num-input" id="pAdminPhone" placeholder="e.g. 788 999 000" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_admin_email">Admin Email</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+            <input type="email" id="pAdminEmail" placeholder="e.g. admin@yourorganisation.rw" />
+          </div>
+          <div class="field-hint" data-i18n="hint_admin_email">Required — sign-in and account recovery will use this address.</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="pGoTo(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+          <button class="btn-primary" style="flex:1; margin-top:0;" onclick="pGoTo(3)"><span data-i18n="btn_continue">Continue</span> <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <!-- Provider Step 3 -->
+      <div class="form-step" id="pStep3">
+        <div class="step-section"><i class="ti ti-shield-lock" aria-hidden="true"></i> <span data-i18n="sec_account_setup">Account Setup</span></div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_password">Password</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+            <input type="password" id="pPw" data-i18n-placeholder="ph_create_pw" placeholder="Create a strong password (min. 8 chars)" oninput="checkStrength(this.value,'pStrFill','pStrLbl'); checkMatch('pPw','pPwConf','pMatchMsg')" autocomplete="new-password" />
+            <button type="button" class="eye-btn" onclick="togglePw('pPw',this)"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          </div>
+          <div class="strength-wrap">
+            <div class="strength-track"><div class="strength-fill" id="pStrFill"></div></div>
+            <span class="strength-lbl" id="pStrLbl"></span>
+          </div>
+          <div class="field-hint" data-i18n="hint_pw_rules">Must include uppercase letter, digit, and special character (e.g. <strong>Temba@2024</strong>)</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label"><span data-i18n="lbl_confirm_pw">Confirm Password</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+            <input type="password" id="pPwConf" data-i18n-placeholder="ph_confirm_pw" placeholder="Type your password again" oninput="checkMatch('pPw','pPwConf','pMatchMsg')" autocomplete="new-password" />
+            <button type="button" class="eye-btn" onclick="togglePw('pPwConf',this)"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          </div>
+          <div class="match-msg" id="pMatchMsg"></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" data-i18n="lbl_dash_lang">Dashboard Language</label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-language field-icon" aria-hidden="true"></i>
+            <select id="pLang"><option value="en">English</option><option value="rw">Kinyarwanda</option></select>
+            <i class="ti ti-chevron-down sel-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <div class="info-box" style="background:var(--green-light);border-color:#A5D6A7;">
+          <i class="ti ti-circle-check" style="color:var(--green);"></i>
+          <span style="color:#1B5E20;" data-i18n="prov_activation">Your provider account will be <strong>activated immediately</strong> upon completing registration. No waiting period required.</span>
+        </div>
+
+        <label class="terms-label"><input type="checkbox" id="pTerms" /> <span data-i18n="lbl_terms_agree">I agree to the</span> <a href="#" data-i18n="terms_of_use_link">Terms of Use</a> <span data-i18n="terms_and">and</span> <a href="#" data-i18n="terms_privacy_link">Privacy Policy</a></label>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="pGoTo(2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back">Back</span></button>
+          <button class="btn-primary" style="flex:1; margin-top:0;" onclick="handleSubmit('provider')"><i class="ti ti-send" aria-hidden="true"></i> <span data-i18n="btn_submit_app">Submit Application</span></button>
+        </div>
+      </div>
+
+    </div><!-- /providerForm -->
+
+    <!-- Success -->
+    <div id="successScreen" style="display:none;" class="success-screen">
+      <div class="success-icon" style="background:linear-gradient(135deg,#00897B,#26C6DA);width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;box-shadow:0 8px 24px rgba(0,183,212,0.3);">
+        <i class="ti ti-circle-check-filled" style="font-size:36px;color:#fff;" aria-hidden="true"></i>
+      </div>
+      <h2 id="successTitle" data-i18n="success_title" style="font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:0.5rem;">Account Created!</h2>
+      <p id="successMsg" data-i18n="success_msg" style="color:var(--gray-600);font-size:14px;line-height:1.6;margin-bottom:1.5rem;">Welcome to Temba Digital Bridge.</p>
+      <a href="signin.html" class="btn-primary" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:0.85rem;">
+        <i class="ti ti-arrow-right-to-bracket" aria-hidden="true"></i> <span data-i18n="btn_signin_now">Sign In Now</span>
+      </a>
+      <p id="successCountdown" style="font-size:12.5px;color:var(--gray-400);text-align:center;margin:0;"></p>
+    </div>
+
+  </div><!-- /auth-card -->
+
+  <p class="auth-footer" id="signinCta"><span data-i18n="already_account">Already have an account?</span> <a href="signin.html">Sign In</a></p>
+
+</div>
+
+<div id="temba-toast"></div>
+<script src="rwanda_data.js"></script>
+<script src="temba-auth.js"></script>
+<script>
+/* ── Password strength meter ── */
+function checkStrength(pw, fillId, lblId) {
+  fillId = fillId || 'cStrFill';
+  lblId  = lblId  || 'cStrLbl';
+  const fill = document.getElementById(fillId);
+  const lbl  = document.getElementById(lblId);
+  if (!fill || !lbl) return;
+
+  const hasLen  = pw.length >= 8;
+  const hasUp   = /[A-Z]/.test(pw);
+  const hasDig  = /[0-9]/.test(pw);
+  const hasSpc  = /[!@#$%^&*()\-_=+\[\]{}|;:'",.<>?/]/.test(pw);
+  const score   = [hasLen, hasUp, hasDig, hasSpc].filter(Boolean).length;
+
+  const levels = [
+    { pct:'20%',  bg:'#E53935', label:'Too short',  color:'#E53935' },
+    { pct:'40%',  bg:'#FB8C00', label:'Weak',        color:'#FB8C00' },
+    { pct:'65%',  bg:'#FDD835', label:'Fair',         color:'#F9A825' },
+    { pct:'85%',  bg:'#43A047', label:'Good',         color:'#2E7D32' },
+    { pct:'100%', bg:'#1E88E5', label:'Strong',       color:'#1565C0' },
+  ];
+  const lvl = pw.length === 0 ? null : levels[score];
+  fill.style.width      = lvl ? lvl.pct : '0';
+  fill.style.background = lvl ? lvl.bg  : '';
+  lbl.textContent       = lvl ? lvl.label : '';
+  lbl.style.color       = lvl ? lvl.color : '';
+}
+
+/* ── Password match indicator ── */
+function checkMatch(pwId, confId, msgId) {
+  const pw   = document.getElementById(pwId)?.value || '';
+  const conf = document.getElementById(confId)?.value || '';
+  const msg  = document.getElementById(msgId);
+  if (!msg || !conf) return;
+  if (pw === conf) {
+    msg.textContent = '✓ Passwords match';
+    msg.style.color = '#2E7D32';
+  } else {
+    msg.textContent = '✗ Passwords do not match';
+    msg.style.color = '#C62828';
+  }
+}
+
+/* ── Service category multi-select ── */
+const customSvcs = [];
+function toggleSvcCat(label) {
+  label.classList.toggle('checked', label.querySelector('input').checked);
+}
+function addCustomSvc() {
+  const inp = document.getElementById('pOtherSvc');
+  const val = inp.value.trim();
+  if (!val) return;
+  customSvcs.push(val);
+  inp.value = '';
+  renderCustomTags();
+}
+function removeCustomSvc(idx) {
+  customSvcs.splice(idx, 1);
+  renderCustomTags();
+}
+function renderCustomTags() {
+  document.getElementById('customSvcTags').innerHTML = customSvcs.map((s,i) =>
+    `<span style="background:var(--sky-pale);border:1px solid #B3E5FC;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--blue);display:inline-flex;align-items:center;gap:6px;">
+      ${s} <button type="button" onclick="removeCustomSvc(${i})" style="background:none;border:none;color:var(--blue);cursor:pointer;font-size:14px;padding:0;">&times;</button>
+    </span>`
+  ).join('');
+}
+function getSelectedSvcCategories() {
+  return [...document.querySelectorAll('#svcCategoryGrid input:checked')].map(i => i.value);
+}
+/* Override pGoTo step 1→2 to validate categories */
+const _origPGoTo = window.pGoTo;
+window.pGoTo = function(step) {
+  if (step === 2) {
+    const cats = getSelectedSvcCategories();
+    if (!cats.length && !customSvcs.length) {
+      const t = document.getElementById('temba-toast');
+      if (t) { t.style.background='#C62828'; t.textContent='Please select at least one service category'; t.style.opacity='1'; clearTimeout(t._tm); t._tm=setTimeout(()=>{t.style.opacity='0';},2800); }
+      return;
+    }
+  }
+  if (typeof _origPGoTo === 'function') _origPGoTo(step);
+};
+</script>
+<script src="temba-i18n.js"></script>
+<script src="temba-chatbot.js"></script>
+</body>
+</html>

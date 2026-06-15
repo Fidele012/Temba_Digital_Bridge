@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Provider Dashboard — Temba Digital Bridge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="temba.css" />
+</head>
+<body>
+
+<nav class="navbar" id="mainNav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand" style="cursor:pointer;">
+      <img src="assets/temba-logo.png" alt="Temba Digital Bridge" style="height:38px;width:auto;display:block;">
+      <span style="font-size:15px;font-weight:800;color:var(--navy,#0A2540);white-space:nowrap;letter-spacing:-0.01em;">Temba Digital Bridge</span>
+    </a>
+    <div class="nav-actions">
+      <button data-lang-btn="en" onclick="setLang('en');rerenderProviderDashboard()" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;padding:4px 6px;">EN</button>
+      <span style="color:var(--gray-300);">|</span>
+      <button data-lang-btn="rw" onclick="setLang('rw');rerenderProviderDashboard()" style="background:none;border:none;font-family:var(--font);font-size:13px;font-weight:600;color:var(--gray-400);cursor:pointer;padding:4px 6px;">RW</button>
+      <button class="dark-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Toggle dark mode"><i class="ti ti-moon" id="darkModeIcon"></i></button>
+      <button class="notif-btn" id="notifBtn" onclick="openNotifDrawer()" title="Notifications" aria-label="Notifications">
+        <i class="ti ti-bell"></i>
+        <span class="notif-badge" id="notifBadge" style="display:none;"></span>
+      </button>
+      <div class="nav-avatar" id="navAvatar" title="View profile" onclick="openProfileModal()" style="cursor:pointer;">P</div>
+      <span id="orgNameNav" style="font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;" onclick="openProfileModal()"></span>
+      <button class="btn-ghost" onclick="signOut()" style="font-size:13px;" data-i18n="nav_signout">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+
+  <aside class="dash-sidebar">
+    <div style="padding:1.25rem 1.5rem 0.5rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:0.5rem;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#E65100,#FF8F00);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;box-shadow:0 3px 10px rgba(230,81,0,0.45);"><i class="ti ti-building"></i></div>
+        <div>
+          <div style="font-size:11px;font-weight:800;color:rgba(255,204,128,0.95);letter-spacing:0.8px;line-height:1.2;" data-i18n="prov_label">WATER PROVIDER</div>
+          <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.2px;" data-i18n="service_portal">Service Portal</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-section-label" data-i18n="sidebar_operations">Operations</div>
+    <a href="#" class="sidebar-item active" onclick="showPanel('overview',this)"><i class="ti ti-layout-dashboard"></i> <span data-i18n="prov_overview">Overview</span></a>
+    <a href="#" class="sidebar-item" onclick="showPanel('inbox',this)">
+      <i class="ti ti-inbox"></i> <span data-i18n="prov_inbox">Reports Inbox</span>
+      <span class="s-badge" id="inboxBadge">5</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('service-requests',this)">
+      <i class="ti ti-tool"></i> <span data-i18n="dash_service_requests">Service Requests</span>
+      <span class="s-badge" id="svcReqBadge">0</span>
+    </a>
+    <a href="#" class="sidebar-item" onclick="showPanel('appointments',this)">
+      <i class="ti ti-calendar"></i> <span data-i18n="dash_appointments">Appointments</span>
+      <span class="s-badge" id="apptMgmtBadge">0</span>
+    </a>
+    <hr class="sidebar-divider" />
+    <div class="sidebar-section-label" data-i18n="sidebar_community_section">Community</div>
+    <a href="#" class="sidebar-item" onclick="showPanel('announcements',this)"><i class="ti ti-speakerphone"></i> <span data-i18n="prov_announce">Announcements</span></a>
+    <a href="#" class="sidebar-item" onclick="showPanel('community',this)"><i class="ti ti-users"></i> <span data-i18n="prov_community">Community</span></a>
+    <a href="#" class="sidebar-item" onclick="showPanel('water-quality',this)"><i class="ti ti-flask"></i> <span data-i18n="prov_quality">Water Quality</span></a>
+    <a href="#" class="sidebar-item" onclick="showPanel('history',this)"><i class="ti ti-history"></i> <span data-i18n="dash_history">History</span></a>
+    <hr class="sidebar-divider" />
+    <a href="#" class="sidebar-item" onclick="showPanel('team',this)"><i class="ti ti-users-group"></i> <span data-i18n="prov_team">My Team</span></a>
+    <a href="#" class="sidebar-item" onclick="showPanel('availability',this)"><i class="ti ti-clock"></i> <span data-i18n="prov_availability">My Availability</span></a>
+    <a href="#" class="sidebar-item" onclick="signOut()"><i class="ti ti-logout"></i> <span data-i18n="nav_signout">Sign Out</span></a>
+  </aside>
+
+  <main class="dash-main">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="dash-panel active" id="panel-overview">
+      <div class="panel-hero">
+        <div>
+          <h1 id="providerGreeting">Provider Dashboard</h1>
+          <p id="providerSubtitle">Manage community reports, service requests, and appointments.</p>
+        </div>
+        <button class="btn-nav-cta" onclick="showPanel('announcements',null)"><i class="ti ti-speakerphone"></i> <span data-i18n="prov_post_announcement">Post Announcement</span></button>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="ti ti-inbox"></i></div><div><div class="stat-num" id="reportCount">0</div><div class="stat-lbl" data-i18n="prov_stat_reports">Total Reports</div></div></div>
+        <div class="stat-card"><div class="stat-icon purple"><i class="ti ti-tool"></i></div><div><div class="stat-num" id="svcReqCount">0</div><div class="stat-lbl" data-i18n="dash_service_requests">Service Requests</div></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-calendar"></i></div><div><div class="stat-num" id="apptCount">0</div><div class="stat-lbl" data-i18n="dash_appointments">Appointments</div></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><i class="ti ti-clock"></i></div><div><div class="stat-num" id="pendingCount">0</div><div class="stat-lbl" data-i18n="prov_stat_pending">Pending Actions</div></div></div>
+      </div>
+
+      <div class="two-col" style="gap:1.25rem;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-alert-triangle" style="color:var(--red);"></i> <span data-i18n="prov_urgent_reports">Urgent Reports</span></span>
+            <a href="#" class="card-link" onclick="showPanel('inbox',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="urgentList"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-chart-bar" style="color:var(--sky);"></i> <span data-i18n="prov_report_breakdown">Report Breakdown</span></span>
+          </div>
+          <div id="breakdownChart"></div>
+        </div>
+      </div>
+
+      <div class="two-col" style="gap:1.25rem;margin-top:1.25rem;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-tool" style="color:var(--purple);"></i> <span data-i18n="prov_pending_svc">Pending Service Requests</span></span>
+            <a href="#" class="card-link" onclick="showPanel('service-requests',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewSvcReqs"><div class="empty-state"><i class="ti ti-tool"></i><p>No pending service requests</p></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-calendar" style="color:var(--green);"></i> <span data-i18n="prov_pending_appts">Pending Appointments</span></span>
+            <a href="#" class="card-link" onclick="showPanel('appointments',null);return false;" data-i18n="card_view_all">View all</a>
+          </div>
+          <div id="overviewAppts"><div class="empty-state"><i class="ti ti-calendar"></i><p>No pending appointments</p></div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1.25rem;">
+        <div class="card-header"><span class="card-title" data-i18n="prov_recent_activity">Recent Activity</span></div>
+        <div id="activityFeed"></div>
+      </div>
+    </div>
+
+    <!-- ── REPORTS INBOX ── -->
+    <div class="dash-panel" id="panel-inbox">
+      <div class="dash-header"><div><h1 data-i18n="prov_reports_inbox">Reports Inbox</h1><p data-i18n="prov_inbox_sub">All community reports assigned to your organisation.</p></div></div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterInbox('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterInbox('submitted',this)" data-i18n="filter_new">New</button>
+        <button class="filter-btn" onclick="filterInbox('in-progress',this)" data-i18n="filter_in_progress">In Progress</button>
+        <button class="filter-btn" onclick="filterInbox('urgent',this)" data-i18n="filter_urgent">Urgent</button>
+        <button class="filter-btn" onclick="filterInbox('resolved',this)" data-i18n="filter_resolved">Resolved</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="overflow-x:auto;">
+          <table class="data-table" id="inboxTable">
+            <thead><tr><th data-i18n="col_ref">Ref</th><th data-i18n="col_issue">Issue</th><th data-i18n="col_urgency">Urgency</th><th data-i18n="col_location">Location</th><th data-i18n="col_reporter">Reporter</th><th data-i18n="col_reported">Reported</th><th data-i18n="col_status">Status</th><th data-i18n="col_actions">Actions</th></tr></thead>
+            <tbody id="inboxBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SERVICE REQUESTS MANAGEMENT ── -->
+    <div class="dash-panel" id="panel-service-requests">
+      <div class="dash-header"><div><h1 data-i18n="dash_service_requests">Service Requests</h1><p data-i18n="prov_svc_sub">Review and manage water service requests from community members.</p></div></div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterProvSvc('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterProvSvc('submitted',this)" data-i18n="filter_new">New</button>
+        <button class="filter-btn" onclick="filterProvSvc('reviewing',this)" data-i18n="filter_under_review">Under Review</button>
+        <button class="filter-btn" onclick="filterProvSvc('approved',this)" data-i18n="filter_approved">Approved</button>
+        <button class="filter-btn" onclick="filterProvSvc('completed',this)" data-i18n="filter_completed">Completed</button>
+        <button class="filter-btn" onclick="filterProvSvc('rejected',this)" data-i18n="filter_rejected">Rejected</button>
+      </div>
+      <div id="provSvcList"></div>
+    </div>
+
+    <!-- ── APPOINTMENTS MANAGEMENT ── -->
+    <div class="dash-panel" id="panel-appointments">
+      <div class="dash-header"><div><h1 data-i18n="dash_appointments">Appointments</h1><p data-i18n="prov_appt_subtitle">Review, approve, reschedule, and manage community appointment requests.</p></div></div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterProvAppts('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterProvAppts('pending',this)" data-i18n="filter_pending_approval">Pending Approval</button>
+        <button class="filter-btn" onclick="filterProvAppts('approved',this)" data-i18n="filter_approved">Approved</button>
+        <button class="filter-btn" onclick="filterProvAppts('reschedule_requested',this)" data-i18n="filter_reschedule_req">Reschedule Requested</button>
+        <button class="filter-btn" onclick="filterProvAppts('completed',this)" data-i18n="filter_completed">Completed</button>
+      </div>
+      <div id="provApptList"></div>
+    </div>
+
+    <!-- ── ANNOUNCEMENTS ── -->
+    <div class="dash-panel" id="panel-announcements">
+      <div class="dash-header"><div><h1 data-i18n="prov_announce">Announcements</h1><p data-i18n="prov_announce_sub">Broadcast alerts and notices to communities.</p></div></div>
+      <div class="two-col" style="gap:1.25rem;align-items:start;">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:1.25rem;"><i class="ti ti-speakerphone" style="color:var(--blue);"></i> <span data-i18n="prov_create_announce">Create Announcement</span></div>
+
+          <div class="field">
+            <label class="field-label" style="font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:6px;" data-i18n="prov_target_area">Target Area</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="areaChips">
+              <span class="filter-btn active" onclick="toggleArea(this,'national')" style="cursor:pointer;" data-i18n="prov_area_national">All Rwanda</span>
+              <span class="filter-btn" onclick="toggleArea(this,'kigali')" style="cursor:pointer;" data-i18n="prov_area_kigali">Kigali City</span>
+              <span class="filter-btn" onclick="toggleArea(this,'eastern')" style="cursor:pointer;" data-i18n="prov_area_eastern">Eastern</span>
+              <span class="filter-btn" onclick="toggleArea(this,'northern')" style="cursor:pointer;" data-i18n="prov_area_northern">Northern</span>
+              <span class="filter-btn" onclick="toggleArea(this,'southern')" style="cursor:pointer;" data-i18n="prov_area_southern">Southern</span>
+              <span class="filter-btn" onclick="toggleArea(this,'western')" style="cursor:pointer;" data-i18n="prov_area_western">Western</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:1rem;">
+            <label class="field-label" style="font-size:13px;font-weight:600;margin-bottom:6px;" data-i18n="prov_announce_type">Type</label>
+            <div class="field-wrap sel-wrap">
+              <i class="ti ti-tag field-icon"></i>
+              <select id="announceType">
+                <option value="interruption" data-i18n="prov_type_interruption">⚠ Water Supply Interruption</option>
+                <option value="maintenance" data-i18n="prov_type_maintenance">🔧 Scheduled Maintenance</option>
+                <option value="quality" data-i18n="prov_type_quality">🧪 Water Quality Notice</option>
+                <option value="restoration" data-i18n="prov_type_restoration">✅ Supply Restoration</option>
+                <option value="general" data-i18n="prov_type_general">📢 General Announcement</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arrow"></i>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:1rem;">
+            <label class="field-label" style="font-size:13px;font-weight:600;margin-bottom:6px;"><span data-i18n="prov_announce_title_lbl">Title</span> <span style="color:var(--red);">*</span></label>
+            <div class="field-wrap">
+              <i class="ti ti-heading field-icon"></i>
+              <input type="text" id="announceTitle" placeholder="Short, clear title" />
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:1rem;">
+            <label class="field-label" style="font-size:13px;font-weight:600;margin-bottom:6px;"><span data-i18n="prov_announce_msg_lbl">Message</span> <span style="color:var(--red);">*</span></label>
+            <textarea id="announceMsg" rows="4" placeholder="Write your announcement…" style="width:100%;padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-family:var(--font);font-size:14px;outline:none;resize:vertical;transition:border-color 0.2s;"></textarea>
+          </div>
+
+          <div style="display:flex;gap:14px;margin-bottom:1.25rem;flex-wrap:wrap;">
+            <label class="check-item" style="font-size:13.5px;"><input type="checkbox" id="sendSMS" checked /> <span data-i18n="prov_send_sms">Send as SMS</span></label>
+            <label class="check-item" style="font-size:13.5px;"><input type="checkbox" id="sendPlatform" checked /> <span data-i18n="prov_platform_alert">Platform alert</span></label>
+          </div>
+
+          <button class="btn-primary" onclick="postAnnouncement()" style="font-size:14.5px;">
+            <i class="ti ti-send"></i> <span data-i18n="publish_update">Post Announcement</span>
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="margin-bottom:1rem;" data-i18n="prov_posted_announce">Posted Announcements</div>
+          <div id="postedList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMMUNITY ── -->
+    <div class="dash-panel" id="panel-community">
+      <div class="dash-header"><div><h1 data-i18n="prov_community_title">Community Members</h1><p data-i18n="prov_community_sub">Registered members in your service area.</p></div></div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead><tr><th data-i18n="prov_col_name">Name</th><th data-i18n="prov_col_location">Location</th><th data-i18n="prov_col_phone">Phone</th><th data-i18n="prov_col_reports">Reports</th><th data-i18n="prov_col_last_active">Last Active</th><th data-i18n="prov_col_actions">Actions</th></tr></thead>
+            <tbody id="communityBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WATER QUALITY ── -->
+    <div class="dash-panel" id="panel-water-quality">
+      <div class="dash-header">
+        <div><h1 data-i18n="prov_water_quality_title">Water Quality</h1><p data-i18n="prov_water_quality_sub">Publish quality data for your service area.</p></div>
+        <button class="btn-nav-cta" onclick="toast('Quality report published','success')"><i class="ti ti-upload"></i> <span data-i18n="prov_publish_update">Publish Update</span></button>
+      </div>
+      <div class="quality-grid" id="qualityGrid"></div>
+    </div>
+
+    <!-- ── HISTORY ── -->
+    <div class="dash-panel" id="panel-history">
+      <div class="dash-header">
+        <div><h1 data-i18n="prov_history_title">History</h1><p data-i18n="prov_history_sub">Completed, resolved, and closed interactions with community members.</p></div>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterProvHistory('all',this)" data-i18n="filter_all">All</button>
+        <button class="filter-btn" onclick="filterProvHistory('appointments',this)"><i class="ti ti-calendar"></i> <span data-i18n="filter_appointments">Appointments</span></button>
+        <button class="filter-btn" onclick="filterProvHistory('reports',this)"><i class="ti ti-inbox"></i> <span data-i18n="filter_reports">Reports</span></button>
+        <button class="filter-btn" onclick="filterProvHistory('service_requests',this)"><i class="ti ti-tool"></i> <span data-i18n="filter_svc_requests">Service Requests</span></button>
+      </div>
+      <div class="card"><div id="provHistoryList"></div></div>
+    </div>
+
+    <!-- ── MY TEAM ── -->
+    <div class="dash-panel" id="panel-team">
+      <div class="dash-header">
+        <div>
+          <h1><i class="ti ti-users-group" style="color:var(--blue);"></i> <span data-i18n="prov_team">My Team</span></h1>
+          <p data-i18n="prov_team_sub">Manage your escalation chain. Staff with provider-role accounts will receive escalation notifications when SLA deadlines are breached.</p>
+        </div>
+      </div>
+
+      <!-- Escalation ladder info -->
+      <div style="background:linear-gradient(135deg,#EDF6FF,#E8F8FD);border:1.5px solid #B8DCF8;border-radius:14px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:14px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#1565C0,#0288D1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="ti ti-arrow-up-right" style="font-size:18px;color:#fff;"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:14px;color:#071E38;margin-bottom:4px;" data-i18n="prov_escalation_title">Escalation Chain</div>
+          <div style="font-size:13px;color:var(--gray-600);line-height:1.65;" data-i18n="prov_escalation_desc">
+            When a case goes overdue, Temba automatically notifies your team in order:
+            <strong>Officer (you)</strong> → <strong>Supervisor (+24 h)</strong> → <strong>Regional Manager (+48 h)</strong> → <strong>Executive (+72 h)</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Add staff form -->
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:1rem;"><i class="ti ti-user-plus" style="margin-right:6px;color:var(--blue);"></i><span data-i18n="prov_add_staff">Add Staff Member</span></div>
+        <div style="display:grid;grid-template-columns:1fr 180px auto;gap:10px;align-items:end;">
+          <div class="field" style="margin:0;">
+            <label class="field-label" data-i18n="prov_staff_email_lbl">Email (must have a provider-role Temba account)</label>
+            <div class="field-wrap">
+              <i class="ti ti-mail field-icon"></i>
+              <input type="email" id="staffEmail" placeholder="colleague@example.com" />
+            </div>
+          </div>
+          <div class="field" style="margin:0;">
+            <label class="field-label" data-i18n="prov_staff_role_lbl">Role</label>
+            <select id="staffRole" class="field-select" style="height:42px;border-radius:var(--radius-sm);border:1.5px solid var(--gray-200);padding:0 12px;font-family:var(--font);font-size:14px;color:var(--navy);background:#fff;width:100%;">
+              <option value="supervisor" data-i18n="prov_role_supervisor">Supervisor</option>
+              <option value="regional_manager" data-i18n="prov_role_regional">Regional Manager</option>
+              <option value="executive" data-i18n="prov_role_executive">Executive</option>
+            </select>
+          </div>
+          <button class="btn-primary" style="height:42px;white-space:nowrap;" onclick="addStaffMember()">
+            <i class="ti ti-plus"></i> <span data-i18n="prov_add_btn">Add</span>
+          </button>
+        </div>
+        <div id="staffAddError" style="display:none;margin-top:10px;font-size:13px;color:var(--red);padding:8px 12px;background:var(--red-light);border-radius:8px;"></div>
+      </div>
+
+      <!-- Team list -->
+      <div class="card">
+        <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:1rem;"><i class="ti ti-shield-check" style="margin-right:6px;color:var(--blue);"></i><span data-i18n="prov_current_chain">Current Escalation Chain</span></div>
+        <div id="teamList"><div class="empty-state"><i class="ti ti-users" style="font-size:2rem;color:var(--gray-300);"></i><p data-i18n="prov_no_staff">No staff added yet. Add your supervisor and managers above.</p></div></div>
+      </div>
+    </div>
+
+    <!-- ── MY AVAILABILITY ── -->
+    <div class="dash-panel" id="panel-availability">
+      <div class="dash-header"><div><h1 data-i18n="prov_availability">My Availability</h1><p data-i18n="prov_avail_sub">Configure your time slots — community members will only be able to book slots you have marked as open.</p></div></div>
+
+      <div class="two-col" style="gap:1.25rem;align-items:start;">
+
+        <!-- ── Left: Slot Configuration ── -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:1.25rem;"><i class="ti ti-clock" style="color:var(--blue);"></i> <span data-i18n="prov_working_hours">Working Hours &amp; Slot Settings</span></div>
+
+          <div class="field">
+            <label class="field-label"><span data-i18n="prov_working_days">Working Days</span> <span class="req">*</span></label>
+            <div class="avail-days" id="availDays">
+              <div class="avail-day on" onclick="toggleDay(this)" data-day="Mon">Mon</div>
+              <div class="avail-day on" onclick="toggleDay(this)" data-day="Tue">Tue</div>
+              <div class="avail-day on" onclick="toggleDay(this)" data-day="Wed">Wed</div>
+              <div class="avail-day on" onclick="toggleDay(this)" data-day="Thu">Thu</div>
+              <div class="avail-day on" onclick="toggleDay(this)" data-day="Fri">Fri</div>
+              <div class="avail-day"    onclick="toggleDay(this)" data-day="Sat">Sat</div>
+              <div class="avail-day"    onclick="toggleDay(this)" data-day="Sun">Sun</div>
+            </div>
+          </div>
+
+          <div class="field-row" style="margin-top:1rem;">
+            <div class="field">
+              <label class="field-label" data-i18n="prov_office_opens">Office Opens</label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-clock field-icon"></i>
+                <select id="openTime" onchange="refreshSlotPreview()">
+                  <option value="07:00">07:00 AM</option>
+                  <option value="08:00" selected>08:00 AM</option>
+                  <option value="09:00">09:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow"></i>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" data-i18n="prov_office_closes">Office Closes</label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-clock field-icon"></i>
+                <select id="closeTime" onchange="refreshSlotPreview()">
+                  <option value="15:00">03:00 PM</option>
+                  <option value="16:00">04:00 PM</option>
+                  <option value="17:00" selected>05:00 PM</option>
+                  <option value="18:00">06:00 PM</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row" style="margin-top:0.75rem;">
+            <div class="field">
+              <label class="field-label" data-i18n="prov_slot_duration">Slot Duration</label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-hourglass field-icon"></i>
+                <select id="slotDuration" onchange="refreshSlotPreview()">
+                  <option value="30" data-i18n="slot_30min">30 minutes</option>
+                  <option value="60" selected data-i18n="slot_1hr">1 hour</option>
+                  <option value="90" data-i18n="slot_1_5hr">1.5 hours</option>
+                  <option value="120" data-i18n="slot_2hr">2 hours</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow"></i>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label" data-i18n="prov_bookings_per_slot">Bookings per Slot</label>
+              <div class="field-wrap sel-wrap">
+                <i class="ti ti-users field-icon"></i>
+                <select id="maxPerSlot" onchange="refreshSlotPreview()">
+                  <option value="1" selected data-i18n="booking_1">1 booking</option>
+                  <option value="2" data-i18n="booking_2">2 bookings</option>
+                  <option value="3" data-i18n="booking_3">3 bookings</option>
+                  <option value="5" data-i18n="booking_5">5 bookings</option>
+                </select>
+                <i class="ti ti-chevron-down sel-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" style="margin-top:1.25rem;" onclick="saveAvailability()">
+            <i class="ti ti-device-floppy"></i> <span data-i18n="btn_save_availability">Save &amp; Publish Availability</span>
+          </button>
+          <div id="availSaveMsg" style="display:none;margin-top:10px;font-size:13px;font-weight:600;color:#2E7D32;display:flex;align-items:center;gap:6px;"></div>
+        </div>
+
+        <!-- ── Right: Unavailable Dates + Slot Preview ── -->
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+          <div class="card">
+            <div class="card-title" style="margin-bottom:1rem;"><i class="ti ti-calendar-off" style="color:var(--orange);"></i> <span data-i18n="prov_block_dates_title">Block Unavailable Dates</span></div>
+            <p style="font-size:13px;color:var(--gray-600);margin-bottom:1rem;line-height:1.6;" data-i18n="prov_block_dates_desc">Add dates when you are fully unavailable — public holidays, training days, or leave. Community members cannot book on these dates.</p>
+            <div style="display:flex;gap:8px;">
+              <div class="field-wrap" style="flex:1;margin-bottom:0;">
+                <i class="ti ti-calendar field-icon"></i>
+                <input type="date" id="unavailDate" style="margin-bottom:0;" />
+              </div>
+              <button class="btn-action primary" onclick="addUnavailDate()" style="flex-shrink:0;height:48px;"><i class="ti ti-plus"></i> <span data-i18n="prov_block_btn">Block</span></button>
+            </div>
+            <div id="unavailList" style="margin-top:1rem;"></div>
+          </div>
+
+          <!-- Slot Preview -->
+          <div class="card" id="slotPreviewCard">
+            <div class="card-title" style="margin-bottom:0.75rem;"><i class="ti ti-calendar-check" style="color:var(--green);"></i> <span data-i18n="prov_slot_preview_title">Daily Slot Preview</span></div>
+            <p style="font-size:12.5px;color:var(--gray-500);margin-bottom:1rem;" data-i18n="prov_slot_preview_desc">This is what a typical working day looks like to community members booking appointments.</p>
+            <div id="slotPreviewGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── PROVIDER RESCHEDULE MODAL ── -->
+<div class="modal-overlay" id="provReschedModal">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-head">
+      <h2><i class="ti ti-calendar-event" style="color:var(--purple);"></i> <span data-i18n="prov_propose_time_title">Propose New Time</span></h2>
+      <button class="modal-close" onclick="closeProvReschedModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:var(--gray-600);margin-bottom:1.25rem;" data-i18n="prov_propose_time_sub">You are unavailable at the requested time. Propose an alternative date and time for the community member to review.</p>
+      <input type="hidden" id="provReschedApptId" />
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label"><span data-i18n="prov_proposed_date">Proposed Date</span> <span class="req">*</span></label>
+          <div class="field-wrap">
+            <i class="ti ti-calendar field-icon"></i>
+            <input type="date" id="provReschedDate" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label"><span data-i18n="prov_proposed_time">Proposed Time</span> <span class="req">*</span></label>
+          <div class="field-wrap sel-wrap">
+            <i class="ti ti-clock field-icon"></i>
+            <select id="provReschedTime">
+              <option value="" disabled selected data-i18n="resched_select_time">Select time</option>
+              <option>08:00 AM</option><option>09:00 AM</option><option>10:00 AM</option>
+              <option>11:00 AM</option><option>12:00 PM</option><option>01:00 PM</option>
+              <option>02:00 PM</option><option>03:00 PM</option><option>04:00 PM</option>
+            </select>
+            <i class="ti ti-chevron-down sel-arrow"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label" data-i18n="prov_msg_to_requester">Message to requester</label>
+        <div class="field-wrap">
+          <i class="ti ti-pencil field-icon" style="top:13px;bottom:auto;"></i>
+          <textarea id="provReschedMsg" rows="2" placeholder="e.g. We have a team meeting that morning, would the afternoon work?"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeProvReschedModal()" data-i18n="btn_cancel">Cancel</button>
+      <button class="btn-primary" style="width:auto;height:42px;padding:0 24px;margin-top:0;" onclick="submitProvResched()">
+        <i class="ti ti-send"></i> <span data-i18n="prov_propose_submit">Propose New Time</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROVIDER PROFILE MODAL ══ -->
+<div id="profileModal" onclick="if(event.target===this)closeProfileModal()" style="display:none;position:fixed;inset:0;background:rgba(4,10,22,0.65);z-index:900;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px);">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:0 32px 80px rgba(4,10,22,0.4);">
+
+    <!-- ─ Header ─ -->
+    <div style="background:linear-gradient(135deg,#061525 0%,#0D2B4B 50%,#1565C0 100%);padding:2rem 2rem 0;border-radius:20px 20px 0 0;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:url(\"data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0v40M0 40h40' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E\") repeat;pointer-events:none;"></div>
+      <button onclick="closeProfileModal()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.12);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;">&times;</button>
+      <div style="display:flex;align-items:flex-start;gap:1rem;position:relative;">
+        <div id="pm-avatar" style="width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,rgba(255,200,80,0.25),rgba(255,160,30,0.15));border:2px solid rgba(255,200,80,0.4);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#FFD166;flex-shrink:0;">P</div>
+        <div style="flex:1;">
+          <div id="pm-org" style="font-size:20px;font-weight:800;color:#fff;line-height:1.25;"></div>
+          <div id="pm-admin-sub" style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:3px;"></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap;">
+            <span style="background:rgba(255,200,80,0.18);border:1px solid rgba(255,200,80,0.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:#FFD166;display:inline-flex;align-items:center;gap:5px;"><i class="ti ti-building"></i> <span data-i18n="prov_profile_water_provider">Water Service Provider</span></span>
+            <span id="pm-approval-badge" style="background:rgba(77,184,106,0.18);border:1px solid rgba(77,184,106,0.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;color:#6EE89B;display:inline-flex;align-items:center;gap:5px;"><i class="ti ti-shield-check"></i> <span data-i18n="prov_profile_verified">Verified</span></span>
+          </div>
+        </div>
+      </div>
+      <!-- live stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:1.25rem 0 0;padding-bottom:1.25rem;position:relative;">
+        <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;text-align:center;">
+          <div id="pm-stat-reports" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;margin-top:2px;" data-i18n="prov_profile_reports">Reports</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;text-align:center;">
+          <div id="pm-stat-appts" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;margin-top:2px;" data-i18n="prov_profile_appts">Appointments</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px;text-align:center;">
+          <div id="pm-stat-svc" style="font-size:22px;font-weight:800;color:#fff;">0</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.6);font-weight:600;margin-top:2px;" data-i18n="prov_profile_svc_reqs">Service Reqs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ Body ─ -->
+    <div style="padding:1.5rem 1.75rem;">
+
+      <!-- Organisation Information -->
+      <div style="font-size:11px;font-weight:800;color:#1565C0;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-building-skyscraper"></i> <span data-i18n="prov_profile_org_info">Organisation Information</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;grid-column:span 2;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_company">Company Name</div>
+          <div id="pm-company-name" style="font-size:14px;font-weight:700;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_licence">Registration / Licence No.</div>
+          <div id="pm-licence" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_coverage">Coverage Area</div>
+          <div id="pm-coverage" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_org_phone">Org. Phone</div>
+          <div id="pm-org-phone" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_org_email">Org. Email</div>
+          <div id="pm-org-email" style="font-size:13.5px;font-weight:600;color:var(--navy);word-break:break-word;">—</div>
+        </div>
+      </div>
+
+      <!-- Services Provided -->
+      <div style="font-size:11px;font-weight:800;color:#1565C0;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-droplet"></i> <span data-i18n="prov_profile_services">Services Provided</span></div>
+      <div id="pm-cats" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;"></div>
+
+      <!-- Service Areas -->
+      <div style="font-size:11px;font-weight:800;color:#1565C0;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-map-pin"></i> <span data-i18n="prov_profile_areas">Service Areas</span></div>
+      <div id="pm-areas" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;"></div>
+
+      <!-- Administrator Details -->
+      <div style="font-size:11px;font-weight:800;color:#1565C0;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><i class="ti ti-user-cog"></i> <span data-i18n="prov_profile_admin">Administrator Details</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_first_name">First Name</div>
+          <div id="pm-first-name" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_last_name">Last Name</div>
+          <div id="pm-last-name" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_job_title">Job Title</div>
+          <div id="pm-title" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_admin_phone">Admin Phone</div>
+          <div id="pm-admin-phone" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;grid-column:span 2;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_admin_email">Admin Email</div>
+          <div id="pm-admin-email" style="font-size:13.5px;font-weight:600;color:var(--navy);word-break:break-word;">—</div>
+        </div>
+      </div>
+
+      <!-- Account Status -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.25rem;">
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_acct_status">Account Status</div>
+          <div style="font-size:13.5px;font-weight:700;color:#2E7D32;display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:#2E7D32;display:inline-block;"></span> <span data-i18n="prov_profile_acct_active">Active</span></div>
+        </div>
+        <div class="dm-invert" style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;" data-i18n="prov_profile_reg_since">Registered Since</div>
+          <div id="pm-since" style="font-size:13.5px;font-weight:600;color:var(--navy);">—</div>
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div style="border:1.5px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;">
+        <button onclick="togglePmPwForm()" style="width:100%;padding:12px 14px;background:none;border:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--font);">
+          <span style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--navy);"><i class="ti ti-lock" style="color:#1565C0;font-size:16px;"></i> <span data-i18n="prov_profile_change_pw">Change Password</span></span>
+          <i class="ti ti-chevron-down" id="pmPwChevron" style="color:var(--gray-400);font-size:15px;transition:transform 0.2s;"></i>
+        </button>
+        <div id="pmPwForm" style="display:none;padding:0 14px 14px;border-top:1px solid var(--gray-200);">
+          <div style="height:10px;"></div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="prov_profile_current_pw">Current Password</label>
+            <div style="position:relative;">
+              <input type="password" id="pmPwCurrent" placeholder="Enter current password" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="togglePmEye('pmPwCurrent',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="prov_profile_new_pw">New Password</label>
+            <div style="position:relative;">
+              <input type="password" id="pmPwNew" placeholder="Min 8 chars, uppercase, number, symbol" oninput="pmCheckStrength(this.value)" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="togglePmEye('pmPwNew',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+            <div style="margin-top:5px;height:4px;background:var(--gray-200);border-radius:4px;overflow:hidden;"><div id="pmStrFill" style="height:100%;width:0;border-radius:4px;transition:width 0.3s,background 0.3s;"></div></div>
+            <div id="pmStrLbl" style="font-size:11px;font-weight:600;margin-top:3px;color:var(--gray-400);"></div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px;" data-i18n="prov_profile_confirm_pw">Confirm New Password</label>
+            <div style="position:relative;">
+              <input type="password" id="pmPwConf" placeholder="Repeat new password" oninput="pmCheckMatch()" style="width:100%;box-sizing:border-box;padding:10px 40px 10px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13.5px;font-family:var(--font);outline:none;" />
+              <button type="button" onclick="togglePmEye('pmPwConf',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);"><i class="ti ti-eye"></i></button>
+            </div>
+            <div id="pmMatchLbl" style="font-size:11px;font-weight:600;margin-top:3px;"></div>
+          </div>
+          <button onclick="submitPmPwChange()" id="pmPwBtn" style="width:100%;padding:11px;background:linear-gradient(135deg,#0D2B4B,#1565C0);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13.5px;cursor:pointer;" data-i18n="prov_profile_update_pw">Update Password</button>
+          <div id="pmPwError" style="display:none;margin-top:8px;font-size:12.5px;color:#C62828;font-weight:600;"></div>
+        </div>
+      </div>
+
+      <button onclick="closeProfileModal()" style="width:100%;padding:12px;background:linear-gradient(135deg,#0D2B4B,#1565C0);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;" data-i18n="prov_profile_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REPORT DETAIL MODAL ══ -->
+<div class="modal-overlay" id="reportDetailModal" onclick="if(event.target===this)closeReportDetail()" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:900;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(15,23,42,0.22);">
+    <div style="background:linear-gradient(135deg,var(--navy),var(--blue));padding:1.5rem 2rem;border-radius:16px 16px 0 0;position:relative;">
+      <button onclick="closeReportDetail()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&times;</button>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <i class="ti ti-flag" style="font-size:22px;color:rgba(255,255,255,0.8);"></i>
+        <div>
+          <div id="rd-title" style="font-size:18px;font-weight:800;color:#fff;"></div>
+          <div id="rd-ref" style="font-size:12.5px;color:rgba(255,255,255,0.7);margin-top:2px;"></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:1.5rem 2rem;">
+      <!-- Status + urgency row -->
+      <div style="display:flex;gap:10px;margin-bottom:1.25rem;" id="rd-badges"></div>
+      <!-- Grid of fields -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;" id="rd-fields"></div>
+      <!-- Description -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Description</div>
+        <div id="rd-description" style="font-size:14px;color:var(--navy);background:var(--gray-100);border-radius:8px;padding:12px;line-height:1.6;"></div>
+      </div>
+      <!-- Action buttons -->
+      <div id="rd-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem;"></div>
+    </div>
+  </div>
+</div>
+
+<div id="temba-toast"></div>
+
+<!-- ── NOTIFICATION DRAWER ── -->
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotifDrawer()"></div>
+<div class="notif-drawer" id="notifDrawer">
+  <div class="notif-drawer-head">
+    <div>
+      <div class="notif-drawer-title"><i class="ti ti-bell" style="margin-right:6px;color:var(--blue);"></i><span data-i18n="notif_title">Notifications</span></div>
+      <div class="notif-drawer-sub" id="notifSubLine" data-i18n="notif_all_caught_up">All caught up</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <button class="notif-mark-btn" onclick="markAllNotifsRead()" data-i18n="notif_mark_all_read">Mark all read</button>
+      <button onclick="closeNotifDrawer()" style="background:none;border:none;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:18px;" title="Close"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+  <div class="notif-list" id="notifList"></div>
+</div>
+<script>
+/* ── Session guard: must be logged in as a provider ── */
+const _s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+if (!_s.loggedIn) window.location.href = 'signin.html';
+if (_s.loggedIn && _s.role !== 'provider') window.location.href = 'dashboard-community.html';
+
+/* ── Storage keys — namespaced per provider so accounts don't share data ── */
+const _userKey = (_s.email || 'guest').toLowerCase().replace(/[^a-z0-9]/g, '_');
+const SVC_KEY  = `temba_svc_${_userKey}`;
+const APPT_KEY = `temba_appts_${_userKey}`;
+
+/* ── Provider identity: filter only data assigned to this org ── */
+const CURRENT_PROVIDER = _s.orgName || _s.name || '';
+
+function getProviderSvcRequests() {
+  const all = getSvcRequests();
+  return CURRENT_PROVIDER ? all.filter(r => r.provider === CURRENT_PROVIDER) : all;
+}
+function getProviderAppts() {
+  const all = getAppts();
+  return CURRENT_PROVIDER ? all.filter(a => a.provider === CURRENT_PROVIDER) : all;
+}
+
+/* ── Seed Data (cleared — data comes from API only) ── */
+const reports = [];
+const community = [];
+const quality = [
+  { label:'pH Level',       value:'7.2',  unit:'pH',        status:'good' },
+  { label:'Turbidity',      value:'0.8',  unit:'NTU',       status:'good' },
+  { label:'Chlorine',       value:'0.4',  unit:'mg/L',      status:'good' },
+  { label:'E. coli',        value:'0',    unit:'CFU/100ml', status:'good' },
+  { label:'Total Hardness', value:'148',  unit:'mg/L',      status:'warn' },
+  { label:'Nitrate',        value:'6.2',  unit:'mg/L',      status:'good' },
+];
+let postedAnnouncements = [];
+let selectedAreas = ['national'];
+let unavailDates = [];
+
+const SVC_LABELS = { water_connection:'Water Connection', tank_delivery:'Tank Delivery', truck_delivery:'Water Truck', meter_support:'Meter Support', inspection:'Technical Inspection' };
+const STATUS_BADGE = { submitted:'badge-active','in-progress':'badge-moderate', resolved:'badge-resolved', reviewing:'badge-reviewing', approved:'badge-approved', rejected:'badge-rejected', completed:'badge-completed', cancelled:'badge-cancelled', pending:'badge-pending', rescheduled:'badge-rescheduled', reschedule_requested:'badge-rescheduled' };
+const STATUS_LABEL = { submitted:'Submitted','in-progress':'In Progress', resolved:'Resolved', reviewing:'Under Review', approved:'Approved', rejected:'Rejected', completed:'Completed', cancelled:'Cancelled', pending:'Pending Approval', rescheduled:'Rescheduled', reschedule_requested:'Reschedule Requested' };
+const APPT_REASON_LABELS = { new_connection:'New Connection Inquiry', billing:'Billing Dispute', meter:'Meter Issue', infrastructure:'Service Complaint', quality:'Water Quality Concern', general:'General Consultation', other:'Other' };
+
+/* ── Helpers ── */
+function getSvcRequests() { return JSON.parse(localStorage.getItem(SVC_KEY) || '[]'); }
+function saveSvcRequests(d) { localStorage.setItem(SVC_KEY, JSON.stringify(d)); }
+function getAppts() { return JSON.parse(localStorage.getItem(APPT_KEY) || '[]'); }
+function saveAppts(d) { localStorage.setItem(APPT_KEY, JSON.stringify(d)); }
+function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-RW',{day:'numeric',month:'short',year:'numeric'}); }
+
+/* ── API Integration ── */
+const API_BASE = 'http://127.0.0.1:8000/api/v1';
+window._apiReports = []; window._apiAppts = []; window._apiSvcReqs = [];
+window._myProviderProfile = null;
+
+async function loadProviderProfile() {
+  const data = await apiGet('/providers/me');
+  if (!data) return;
+  window._myProviderProfile = data;
+  // Update nav display
+  const navEl = document.getElementById('orgNameNav');
+  if (navEl) navEl.textContent = data.organization_name;
+  // Update hero greeting + subtitle
+  const greet = document.getElementById('providerGreeting');
+  const hr = new Date().getHours();
+  const tod = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  if (greet) greet.textContent = `${tod}, ${data.organization_name}`;
+  const sub = document.getElementById('providerSubtitle');
+  if (sub) sub.textContent = `Managing reports, requests, and appointments for ${data.organization_name}.`;
+  // Show service categories as tags under subtitle if space
+  const cats = (data.service_categories || []).join(' · ') || '';
+  const catEl = document.getElementById('providerCatTags');
+  if (catEl) catEl.textContent = cats;
+  // Populate availability panel
+  if (data.work_start_time && data.work_end_time) {
+    const wdEl = document.getElementById('workDaysDisplay');
+    if (wdEl) wdEl.textContent = (data.working_days || []).join(', ') || 'Not set';
+    const whEl = document.getElementById('workHoursDisplay');
+    if (whEl) whEl.textContent = `${data.work_start_time} – ${data.work_end_time}`;
+    const maxEl = document.getElementById('maxApptDisplay');
+    if (maxEl) maxEl.textContent = data.max_appointments_per_day;
+  }
+}
+
+async function apiGet(path) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+async function apiPost(path, body) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+async function apiPut(path, body) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return null;
+  try {
+    const r = await fetch(API_BASE + path, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    if (r.status === 401) { localStorage.removeItem('temba_token'); return null; }
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
+}
+
+function convertTo24h(timeStr) {
+  if (!timeStr) return '08:00';
+  if (/^\d{2}:\d{2}$/.test(timeStr)) return timeStr;
+  const [time, period] = timeStr.trim().split(' ');
+  let [h, m] = time.split(':').map(Number);
+  if (period === 'PM' && h !== 12) h += 12;
+  if (period === 'AM' && h === 12) h = 0;
+  return `${String(h).padStart(2,'0')}:${String(m||0).padStart(2,'0')}`;
+}
+
+function _normProvReport(r) {
+  const cm = { CONTAMINATION:'Contamination', contamination:'Contamination', PIPE_BURST:'Pipe Burst', pipe_burst:'Pipe Burst', NO_SUPPLY:'No Water Supply', no_supply:'No Water Supply', LOW_PRESSURE:'Low Pressure', low_pressure:'Low Pressure', WATER_QUALITY:'Water Quality', water_quality:'Water Quality', BILLING:'Billing Issue', billing:'Billing Issue', METER:'Meter Issue', meter:'Meter Issue', OTHER:'Water Issue', other:'Water Issue' };
+  const um = { HIGH:'urgent', MEDIUM:'moderate', LOW:'low', CRITICAL:'urgent', high:'urgent', medium:'moderate', low:'low', critical:'urgent' };
+  const sm = { open:'submitted', under_review:'in-progress', in_progress:'in-progress', resolved:'resolved', closed:'resolved', OPEN:'submitted', UNDER_REVIEW:'in-progress', IN_PROGRESS:'in-progress', RESOLVED:'resolved', CLOSED:'resolved' };
+  const rawIssue = r.title||(cm[r.category]||r.category);
+  const isUssd = typeof rawIssue === 'string' && rawIssue.startsWith('USSD:');
+  const issue = isUssd ? rawIssue.replace(/^USSD:\s*/i, '') : rawIssue;
+  const ref = r.reference_number || ('#'+String(r.id).slice(0,8).toUpperCase());
+  return { ref, issue, channel:isUssd?'ussd':'web', urgency:um[r.urgency]||'moderate', loc:[r.sector,r.district,r.province].filter(Boolean).join(', ')||'Rwanda', reporter:r.user_name||'Community Member', phone:r.user_phone||'', status:sm[r.status]||'submitted', time:r.created_at, fromApi:true, apiId:r.id };
+}
+function _normProvAppt(a) {
+  const reason = (a.reason||'consultation').toLowerCase();
+  const notes = a.notes||'';
+  const isUssd = notes.startsWith('[USSD]');
+  return { id:a.id, apiId:a.id, provider:a.provider_name||(a.provider&&a.provider.organization_name)||CURRENT_PROVIDER, reason, date:a.appointment_date||'', time:a.appointment_time||'', status:(a.status||'pending').toLowerCase(), notes, channel:isUssd?'ussd':'web', reporter:a.user_name||'Community Member', phone:a.user_phone||'', requestedDate:a.requested_date||null, requestedTime:a.requested_time||null, proposedDate:a.proposed_date||null, proposedTime:a.proposed_time||null, createdAt:a.created_at, fromApi:true };
+}
+function _normProvSvc(s) {
+  const tl = { WATER_CONNECTION:'water_connection', water_connection:'water_connection', TANK_DELIVERY:'tank_delivery', tank_delivery:'tank_delivery', TRUCK_DELIVERY:'truck_delivery', truck_delivery:'truck_delivery', METER_SUPPORT:'meter_support', meter_support:'meter_support', INSPECTION:'inspection', inspection:'inspection' };
+  const desc = s.description||'';
+  const isUssd = desc.includes('via USSD');
+  return { id:s.id, apiId:s.id, type:tl[s.request_type]||'water_connection', provider:CURRENT_PROVIDER, urgency:(s.urgency||'low').toLowerCase(), status:(s.status||'submitted').toLowerCase().replace('_','-'), description:desc, channel:isUssd?'ussd':'web', location:[s.address_detail,s.district,s.province].filter(Boolean).join(', ')||'', reporter:s.user_name||'Community Member', phone:s.user_phone||'', providerNotes:s.provider_notes||'', createdAt:s.created_at, fromApi:true };
+}
+
+function getProviderSvcRequests() {
+  const local = getSvcRequests().filter(r => !r.fromApi && (!CURRENT_PROVIDER || r.provider === CURRENT_PROVIDER));
+  return [...window._apiSvcReqs, ...local];
+}
+function getProviderAppts() {
+  const local = getAppts().filter(a => !a.fromApi && (!CURRENT_PROVIDER || a.provider === CURRENT_PROVIDER));
+  return [...window._apiAppts, ...local];
+}
+function getProviderReports() {
+  const local = reports.filter(r => !r.fromApi);
+  return [...window._apiReports, ...local];
+}
+
+/* ── Profile Modal ── */
+function openProfileModal() {
+  const p = window._myProviderProfile || {};
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+
+  const orgName   = p.organization_name  || s.orgName    || s.name  || 'My Organisation';
+  const firstName = p.first_name         || s.firstName  || (s.name||'').split(' ')[0] || '—';
+  const lastName  = p.last_name          || s.lastName   || (s.name||'').split(' ').slice(1).join(' ') || '—';
+  const adminName = [firstName !== '—' ? firstName : '', lastName !== '—' ? lastName : ''].filter(Boolean).join(' ') || orgName;
+  const title     = p.position           || s.title      || '—';
+  const orgPhone  = p.phone              || s.orgPhone   || s.phone  || '—';
+  const orgEmail  = p.email              || s.orgEmail   || s.email  || '—';
+  const adminEmail = s.email             || '—';
+  const adminPhone = s.adminPhone        || '—';
+  const licence   = p.registration_number|| s.licence    || '—';
+  const since     = p.created_at
+    ? new Date(p.created_at).toLocaleDateString('en-RW',{day:'numeric',month:'long',year:'numeric'})
+    : (s.createdAt ? new Date(s.createdAt).toLocaleDateString('en-RW',{day:'numeric',month:'long',year:'numeric'}) : '—');
+
+  /* Coverage — translate stored value to readable label */
+  const coverageLabels = {
+    national:'National (all provinces)', kigali:'Kigali City only',
+    northern:'Northern Province', southern:'Southern Province',
+    eastern:'Eastern Province', western:'Western Province', specific:'Specific districts'
+  };
+  const rawCoverage = p.coverage || s.coverage || '';
+  const coverageDisplay = coverageLabels[rawCoverage] || rawCoverage || 'Rwanda (national)';
+
+  /* Header */
+  document.getElementById('pm-avatar').textContent = orgName[0].toUpperCase();
+  document.getElementById('pm-org').textContent    = orgName;
+  document.getElementById('pm-admin-sub').textContent = adminName ? `Admin: ${adminName}` : '';
+
+  /* Approval badge */
+  const badge = document.getElementById('pm-approval-badge');
+  if (badge) {
+    const approved = (p.status || 'approved').toLowerCase() === 'approved';
+    badge.innerHTML = approved ? '<i class="ti ti-shield-check"></i> Verified' : '<i class="ti ti-alert-circle"></i> Pending';
+    badge.style.color      = approved ? '#6EE89B' : '#FFD166';
+    badge.style.background = approved ? 'rgba(77,184,106,0.18)' : 'rgba(255,200,80,0.18)';
+    badge.style.borderColor= approved ? 'rgba(77,184,106,0.3)'  : 'rgba(255,200,80,0.3)';
+  }
+
+  /* Live stats */
+  document.getElementById('pm-stat-reports').textContent = getProviderReports().length;
+  document.getElementById('pm-stat-appts').textContent   = getProviderAppts().length;
+  document.getElementById('pm-stat-svc').textContent     = getProviderSvcRequests().length;
+
+  /* Organisation fields */
+  document.getElementById('pm-company-name').textContent = orgName;
+  document.getElementById('pm-licence').textContent      = licence;
+  document.getElementById('pm-coverage').textContent     = coverageDisplay;
+  document.getElementById('pm-org-phone').textContent    = orgPhone;
+  document.getElementById('pm-org-email').textContent    = orgEmail;
+
+  /* Services — API data takes priority, fall back to session/local */
+  const apiCats = (p.service_categories || []);
+  const localCats = s.services || [];
+  const allCats = apiCats.length ? apiCats : localCats;
+  document.getElementById('pm-cats').innerHTML = allCats.length
+    ? allCats.map(c => {
+        const label = c.replace(/_/g,' ').replace(/\b\w/g, l => l.toUpperCase());
+        return `<span style="background:#EFF6FF;color:#1565C0;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid rgba(21,101,192,0.2);display:inline-flex;align-items:center;gap:5px;"><i class="ti ti-droplet" style="font-size:11px;"></i>${label}</span>`;
+      }).join('')
+    : '<span style="color:var(--gray-400);font-size:13px;">No services listed</span>';
+
+  /* Service areas */
+  const apiAreas = (p.service_areas || []);
+  document.getElementById('pm-areas').innerHTML = apiAreas.length
+    ? apiAreas.map(a => `<span style="background:#F0FDF4;color:#2E7D32;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid rgba(46,125,50,0.2);">${[a.sector,a.district,a.province].filter(Boolean).join(', ')}</span>`).join('')
+    : `<span style="background:#F0FDF4;color:#2E7D32;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid rgba(46,125,50,0.2);">Rwanda — ${coverageDisplay}</span>`;
+
+  /* Admin fields */
+  document.getElementById('pm-first-name').textContent  = firstName;
+  document.getElementById('pm-last-name').textContent   = lastName;
+  document.getElementById('pm-title').textContent       = title;
+  document.getElementById('pm-admin-phone').textContent = adminPhone !== '—' ? adminPhone : orgPhone;
+  document.getElementById('pm-admin-email').textContent = adminEmail;
+  document.getElementById('pm-since').textContent       = since;
+
+  /* Reset password form */
+  document.getElementById('pmPwForm').style.display = 'none';
+  document.getElementById('pmPwChevron').style.transform = '';
+  ['pmPwCurrent','pmPwNew','pmPwConf'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('pmPwError').style.display = 'none';
+  document.getElementById('pmStrFill').style.width = '0';
+  document.getElementById('pmStrLbl').textContent = '';
+  document.getElementById('pmMatchLbl').textContent = '';
+
+  document.getElementById('profileModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfileModal() {
+  document.getElementById('profileModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function togglePmPwForm() {
+  const form = document.getElementById('pmPwForm');
+  const chevron = document.getElementById('pmPwChevron');
+  const open = form.style.display === 'none';
+  form.style.display = open ? 'block' : 'none';
+  chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+function togglePmEye(id, btn) {
+  const f = document.getElementById(id);
+  const show = f.type === 'text';
+  f.type = show ? 'password' : 'text';
+  btn.querySelector('i').className = show ? 'ti ti-eye' : 'ti ti-eye-off';
+}
+function pmCheckStrength(val) {
+  const fill = document.getElementById('pmStrFill');
+  const lbl  = document.getElementById('pmStrLbl');
+  let score = 0;
+  if (val.length >= 8)          score++;
+  if (/[A-Z]/.test(val))        score++;
+  if (/[0-9]/.test(val))        score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    {w:'0%',bg:'#ddd',txt:'',col:''},
+    {w:'25%',bg:'#C62828',txt:'Weak',col:'#C62828'},
+    {w:'50%',bg:'#E65100',txt:'Fair',col:'#E65100'},
+    {w:'75%',bg:'#29B6F6',txt:'Good',col:'#1565C0'},
+    {w:'100%',bg:'#2E7D32',txt:'Strong',col:'#2E7D32'},
+  ];
+  const l = levels[score];
+  fill.style.width = l.w; fill.style.background = l.bg;
+  lbl.textContent = l.txt; lbl.style.color = l.col;
+  pmCheckMatch();
+}
+function pmCheckMatch() {
+  const p1 = document.getElementById('pmPwNew').value;
+  const p2 = document.getElementById('pmPwConf').value;
+  const el = document.getElementById('pmMatchLbl');
+  if (!p2) { el.textContent = ''; return; }
+  if (p1 === p2) { el.textContent = '✓ Passwords match'; el.style.color = '#2E7D32'; }
+  else           { el.textContent = '✗ Passwords do not match'; el.style.color = '#C62828'; }
+}
+async function submitPmPwChange() {
+  const current = document.getElementById('pmPwCurrent').value;
+  const nw      = document.getElementById('pmPwNew').value;
+  const conf    = document.getElementById('pmPwConf').value;
+  const errEl   = document.getElementById('pmPwError');
+  const btn     = document.getElementById('pmPwBtn');
+  const showErr = msg => { errEl.textContent = msg; errEl.style.display = 'block'; };
+  errEl.style.display = 'none';
+  if (!current)                  { showErr('Please enter your current password.'); return; }
+  if (nw.length < 8)             { showErr('New password must be at least 8 characters.'); return; }
+  if (!/[A-Z]/.test(nw))         { showErr('New password must contain at least one uppercase letter.'); return; }
+  if (!/[0-9]/.test(nw))         { showErr('New password must contain at least one number.'); return; }
+  if (!/[^A-Za-z0-9]/.test(nw))  { showErr('New password must contain at least one special character.'); return; }
+  if (nw !== conf)               { showErr('Passwords do not match.'); return; }
+  if (nw === current)            { showErr('New password must differ from your current password.'); return; }
+  btn.textContent = 'Updating…'; btn.disabled = true;
+  const token = localStorage.getItem('temba_token');
+  if (token) {
+    try {
+      const r = await fetch(`${API_BASE}/auth/change-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ current_password: current, new_password: nw })
+      });
+      if (!r.ok) {
+        const e = await r.json().catch(() => ({}));
+        showErr(e.detail || 'Password change failed. Check your current password.');
+        btn.textContent = 'Update Password'; btn.disabled = false; return;
+      }
+    } catch (_) { /* fall through to local update */ }
+  }
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  const acct = _getLocalAccount(s.email || '');
+  if (acct) {
+    const currentHash = await _hashPw(current);
+    if (currentHash !== acct.passwordHash) {
+      showErr('Current password is incorrect.');
+      btn.textContent = 'Update Password'; btn.disabled = false; return;
+    }
+    acct.passwordHash = await _hashPw(nw);
+    _saveLocalAccount(acct);
+  }
+  btn.textContent = 'Update Password'; btn.disabled = false;
+  document.getElementById('pmPwForm').style.display = 'none';
+  document.getElementById('pmPwChevron').style.transform = '';
+  ['pmPwCurrent','pmPwNew','pmPwConf'].forEach(id => { document.getElementById(id).value = ''; });
+  showTembaToast('Password updated successfully!', 'success');
+}
+
+/* ── Report Detail Modal ── */
+let _currentDetailReport = null;
+function openReportDetail(rJson) {
+  const r = typeof rJson === 'string' ? JSON.parse(rJson) : rJson;
+  _currentDetailReport = r;
+
+  document.getElementById('rd-title').textContent = r.issue || 'Water Issue Report';
+  document.getElementById('rd-ref').textContent = `Ref ${r.ref} · Submitted ${new Date(r.time).toLocaleDateString('en-RW',{weekday:'short',day:'numeric',month:'long',year:'numeric'})}`;
+
+  const urgColor = r.urgency==='urgent' ? 'var(--red)' : r.urgency==='moderate' ? 'var(--orange)' : 'var(--blue)';
+  const statusColor = r.status==='resolved' ? 'var(--green)' : r.status==='in-progress'||r.status==='in_progress' ? 'var(--orange)' : 'var(--blue)';
+  document.getElementById('rd-badges').innerHTML = `
+    <span style="background:${urgColor}22;color:${urgColor};font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:20px;text-transform:capitalize;">${r.urgency} priority</span>
+    <span style="background:${statusColor}22;color:${statusColor};font-size:12.5px;font-weight:700;padding:5px 14px;border-radius:20px;text-transform:capitalize;">${(r.status||'submitted').replace(/_/g,' ')}</span>`;
+
+  const fields = [
+    ['Reporter', r.reporter||'Community Member'],
+    ['Phone', r.phone||'—'],
+    ['Location', r.loc||'—'],
+    ['Category', r.issue||'—'],
+  ];
+  document.getElementById('rd-fields').innerHTML = fields.map(([l,v])=>`
+    <div style="background:var(--gray-100);border-radius:8px;padding:10px 12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px;">${l}</div>
+      <div style="font-size:13.5px;font-weight:600;color:var(--navy);">${v}</div>
+    </div>`).join('');
+
+  document.getElementById('rd-description').textContent = r.description || 'No additional description provided.';
+
+  const actions = [];
+  if (r.phone && r.phone !== '—') {
+    actions.push(`<a href="tel:${r.phone}" class="btn-call" style="text-decoration:none;"><i class="ti ti-phone"></i> Call</a>`);
+    actions.push(`<a href="sms:${r.phone}" class="btn-sms" style="text-decoration:none;"><i class="ti ti-message"></i> SMS</a>`);
+  }
+  if (r.status !== 'resolved') {
+    actions.push(`<button class="btn-resolve" onclick="resolveReport('${r.ref}','${r.apiId||''}');closeReportDetail()"><i class="ti ti-check"></i> Mark Resolved</button>`);
+  }
+  if ((r.status==='submitted'||r.status==='open') && r.apiId) {
+    actions.push(`<button class="btn-action warning" onclick="markReportInProgress('${r.ref}','${r.apiId}');closeReportDetail()"><i class="ti ti-loader-2"></i> In Progress</button>`);
+  }
+  document.getElementById('rd-actions').innerHTML = actions.join('') || '<span style="color:var(--gray-400);font-size:13px;">No actions available</span>';
+
+  const modal = document.getElementById('reportDetailModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeReportDetail() {
+  document.getElementById('reportDetailModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function loadApiData() {
+  const [rd, ad, sd] = await Promise.all([
+    apiGet('/reports?size=100'),
+    apiGet('/appointments?size=100'),
+    apiGet('/service-requests?size=100'),
+  ]);
+  let changed = false;
+  if (rd && rd.items) { window._apiReports = rd.items.map(_normProvReport); changed = true; }
+  if (ad && ad.items) { window._apiAppts   = ad.items.map(_normProvAppt);   changed = true; }
+  if (sd && sd.items) { window._apiSvcReqs = sd.items.map(_normProvSvc);    changed = true; }
+  if (changed) {
+    updateBadges();
+    renderOverviewCards();
+    renderProvSvcList('all');
+    renderProvApptList('all');
+    renderInbox(getProviderReports(), 'all');
+    renderUrgent();
+    renderBreakdown();
+    renderCommunity();
+    renderActivity();
+  }
+}
+
+/* ── API notification sync ─────────────────────────────────────────────── */
+async function _syncApiNotifs() {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return;
+  try {
+    const resp = await fetch(`${API_BASE}/notifications?size=50`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const apiItems = (data.items || []);
+    if (!apiItems.length) return;
+    const _ICON = {
+      report_update:          { icon: 'ti-file-report', color: 'blue' },
+      service_request_update: { icon: 'ti-tool',        color: 'teal' },
+      appointment_update:     { icon: 'ti-calendar-check', color: 'purple' },
+      announcement:           { icon: 'ti-speakerphone', color: 'orange' },
+      system:                 { icon: 'ti-alert-circle', color: 'red' },
+    };
+    const stored = getNotifs();
+    const seen = new Set(stored.map(n => n.id));
+    let added = 0;
+    for (const n of apiItems) {
+      const mid = 'api_' + n.id;
+      if (seen.has(mid)) continue;
+      const { icon, color } = _ICON[n.notification_type] || { icon: 'ti-bell', color: 'blue' };
+      stored.unshift({ id: mid, type: n.notification_type, icon, color,
+        title: n.title, body: n.body, time: n.created_at, read: n.is_read });
+      added++;
+    }
+    if (added > 0) { saveNotifs(stored); updateNotifBadge(); }
+  } catch (_) { /* offline */ }
+}
+
+/* ── Team management ────────────────────────────────────────────────────── */
+async function loadTeam() {
+  const token = localStorage.getItem('temba_token');
+  const container = document.getElementById('teamList');
+  if (!token) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--gray-500);padding:8px;">Sign in with your API account to manage your team.</p>';
+    return;
+  }
+  try {
+    const resp = await fetch(`${API_BASE}/providers/me/staff`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!resp.ok) { container.innerHTML = '<p style="font-size:13px;color:var(--red);">Failed to load team.</p>'; return; }
+    const staff = await resp.json();
+    if (!staff.length) {
+      container.innerHTML = '<div class="empty-state"><i class="ti ti-users" style="font-size:2rem;color:var(--gray-300);"></i><p>No staff added yet. Add your supervisor and managers above.</p></div>';
+      return;
+    }
+    const _ROLE_LABEL = { supervisor: 'Supervisor', regional_manager: 'Regional Manager', executive: 'Executive' };
+    const _ROLE_COLOR = { supervisor: '#0288D1', regional_manager: '#7B1FA2', executive: '#C62828' };
+    const _ROLE_ICON  = { supervisor: 'ti-user-check', regional_manager: 'ti-map-pin', executive: 'ti-crown' };
+    const _ESC_DESC   = { supervisor: 'Notified if overdue +24 h', regional_manager: 'Notified if overdue +48 h', executive: 'Notified if overdue +72 h' };
+    container.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <!-- Officer row (always shown) -->
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--gray-50);border-radius:10px;border:1.5px solid var(--gray-200);">
+          <div style="width:36px;height:36px;border-radius:9px;background:#1565C0;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ti-shield-half-filled" style="color:#fff;font-size:17px;"></i></div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:14px;color:var(--navy);">Officer (You)</div>
+            <div style="font-size:12px;color:var(--gray-500);">Primary account — notified immediately when overdue</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#E3F2FD;color:#1565C0;">LEVEL 1</span>
+        </div>
+        ${staff.map((s, i) => `
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--gray-50);border-radius:10px;border:1.5px solid var(--gray-200);">
+          <div style="width:36px;height:36px;border-radius:9px;background:${_ROLE_COLOR[s.staff_role] || '#555'};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti ${_ROLE_ICON[s.staff_role] || 'ti-user'}" style="color:#fff;font-size:17px;"></i></div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:14px;color:var(--navy);">${s.staff_name || 'Staff member'}</div>
+            <div style="font-size:12px;color:var(--gray-500);">${s.staff_email || ''} · ${_ESC_DESC[s.staff_role] || ''}</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#F3E5F5;color:${_ROLE_COLOR[s.staff_role]};">${_ROLE_LABEL[s.staff_role] || s.staff_role}</span>
+          <button onclick="removeStaff('${s.id}')" style="background:none;border:none;cursor:pointer;color:var(--gray-400);padding:4px 6px;border-radius:6px;" title="Remove"><i class="ti ti-trash" style="font-size:16px;"></i></button>
+        </div>`).join('')}
+      </div>`;
+  } catch (_) { container.innerHTML = '<p style="font-size:13px;color:var(--red);">Network error loading team.</p>'; }
+}
+
+async function addStaffMember() {
+  const token = localStorage.getItem('temba_token');
+  const errBox = document.getElementById('staffAddError');
+  errBox.style.display = 'none';
+  if (!token) { errBox.textContent = 'You must be signed in via the API to manage staff.'; errBox.style.display = 'block'; return; }
+  const email = document.getElementById('staffEmail').value.trim();
+  const role  = document.getElementById('staffRole').value;
+  if (!email) { errBox.textContent = 'Please enter an email address.'; errBox.style.display = 'block'; return; }
+  try {
+    const resp = await fetch(`${API_BASE}/providers/me/staff`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ email, staff_role: role }),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      errBox.textContent = err.detail || 'Failed to add staff member.';
+      errBox.style.display = 'block';
+      return;
+    }
+    document.getElementById('staffEmail').value = '';
+    showTembaToast('Staff member added successfully!', 'success');
+    loadTeam();
+  } catch (_) { errBox.textContent = 'Network error. Please try again.'; errBox.style.display = 'block'; }
+}
+
+async function removeStaff(staffId) {
+  const token = localStorage.getItem('temba_token');
+  if (!token) return;
+  if (!confirm('Remove this staff member from your escalation chain?')) return;
+  try {
+    const resp = await fetch(`${API_BASE}/providers/me/staff/${staffId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (resp.ok || resp.status === 204) {
+      showTembaToast('Staff member removed.', 'success');
+      loadTeam();
+    }
+  } catch (_) { showTembaToast('Network error.', 'error'); }
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+  window.addEventListener('scroll', () => document.getElementById('mainNav').classList.toggle('shadow', window.scrollY > 8));
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  const name = s.name || 'Provider';
+  document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+  document.getElementById('orgNameNav').textContent = name;
+  if (CURRENT_PROVIDER) {
+    document.getElementById('providerSubtitle').textContent =
+      `Showing reports, service requests, and appointments assigned to ${CURRENT_PROVIDER}.`;
+  }
+
+  updateBadges();
+  updateNotifBadge();
+  renderUrgent();
+  renderBreakdown();
+  renderActivity();
+  renderInbox(getProviderReports(), 'all');
+  renderCommunity();
+  renderQuality();
+  renderPosted();
+  renderProvSvcList('all');
+  renderProvApptList('all');
+  renderOverviewCards();
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('unavailDate').min = today;
+  document.getElementById('provReschedDate').min = today;
+
+  // Load own provider profile (name, categories, availability)
+  await loadProviderProfile();
+  // Restore saved availability settings
+  loadAvailability();
+  refreshSlotPreview();
+  // Fetch live data from API and poll every 30 s
+  await loadApiData();
+  setInterval(loadApiData, 30000);
+  // Sync API notifications every 5 minutes
+  _syncApiNotifs();
+  setInterval(_syncApiNotifs, 5 * 60 * 1000);
+});
+
+function updateBadges() {
+  const myReqs    = getProviderSvcRequests();
+  const myAppts   = getProviderAppts();
+  const myReports = getProviderReports();
+  const pendingSvc  = myReqs.filter(r => r.status === 'submitted').length;
+  const pendingAppt = myAppts.filter(a => a.status === 'pending' || a.status === 'reschedule_requested').length;
+  const svcBadge  = document.getElementById('svcReqBadge');
+  const apptBadge = document.getElementById('apptMgmtBadge');
+
+  svcBadge.textContent  = pendingSvc;
+  apptBadge.textContent = pendingAppt;
+  svcBadge.style.display  = pendingSvc  ? 'flex' : 'none';
+  apptBadge.style.display = pendingAppt ? 'flex' : 'none';
+
+  document.getElementById('svcReqCount').textContent  = myReqs.length;
+  document.getElementById('apptCount').textContent    = myAppts.length;
+  const rc = document.getElementById('reportCount');
+  if (rc) rc.textContent = myReports.length;
+  const pc = document.getElementById('pendingCount');
+  if (pc) pc.textContent = pendingSvc + pendingAppt + myReports.filter(r => r.status === 'submitted').length;
+}
+
+function renderOverviewCards() {
+  const pendingSvc = getProviderSvcRequests().filter(r => r.status==='submitted'||r.status==='pending').slice(0,2);
+  document.getElementById('overviewSvcReqs').innerHTML = pendingSvc.length
+    ? pendingSvc.map(r => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+        <div style="flex:1;"><div style="font-size:13.5px;font-weight:700;color:var(--navy);">${SVC_LABELS[r.type]||r.type}</div><div style="font-size:12px;color:var(--gray-400);">${r.location} · ${fmtDate(r.createdAt)}</div></div>
+        <span class="badge badge-active">New</span>
+      </div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-tool"></i><p>No pending service requests</p></div>';
+
+  const pendingAppts = getProviderAppts().filter(a => a.status === 'pending').slice(0,2);
+  document.getElementById('overviewAppts').innerHTML = pendingAppts.length
+    ? pendingAppts.map(a => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+        <div style="flex:1;"><div style="font-size:13.5px;font-weight:700;color:var(--navy);">${APPT_REASON_LABELS[a.reason]||a.reason}</div><div style="font-size:12px;color:var(--gray-400);">${a.date} at ${a.time}</div></div>
+        <span class="badge badge-pending">Pending</span>
+      </div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-calendar"></i><p>No pending appointments</p></div>';
+}
+
+/* ── Reports ── */
+function renderUrgent() {
+  const all = getProviderReports();
+  const urgent = all.filter(r => r.urgency === 'urgent' && r.status !== 'resolved').slice(0,4);
+  document.getElementById('urgentList').innerHTML = urgent.length ? urgent.map(r => `
+  <div class="report-item" onclick="showPanel('inbox',null)">
+    <div class="ri-bar" style="background:var(--red);"></div>
+    <div class="ri-body"><div class="ri-title">${r.issue}</div><div class="ri-meta">${r.loc} · ${r.reporter||''}</div></div>
+    <span class="badge badge-urgent">Urgent</span>
+  </div>`).join('') : '<div class="empty-state"><i class="ti ti-check-circle"></i><p>No urgent reports</p></div>';
+}
+
+function renderBreakdown() {
+  const all = getProviderReports();
+  const total = all.length;
+  const items = [
+    { label:'Urgent',   count:all.filter(r=>r.urgency==='urgent'&&r.status!=='resolved').length,   color:'var(--red)' },
+    { label:'Moderate', count:all.filter(r=>r.urgency==='moderate'&&r.status!=='resolved').length, color:'var(--orange)' },
+    { label:'Resolved', count:all.filter(r=>r.status==='resolved').length,                         color:'var(--green)' },
+  ];
+  document.getElementById('breakdownChart').innerHTML = items.map(it => `
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+    <div style="font-size:14px;font-weight:600;color:var(--navy);flex:1;">${it.label}</div>
+    <div style="font-size:22px;font-weight:800;color:${it.color};min-width:28px;text-align:right;">${it.count}</div>
+    <div style="flex:2;height:7px;background:var(--gray-200);border-radius:4px;overflow:hidden;">
+      <div style="height:100%;width:${total?Math.round(it.count/total*100):0}%;background:${it.color};border-radius:4px;transition:width 0.6s;"></div>
+    </div>
+  </div>`).join('');
+}
+
+function renderActivity() {
+  document.getElementById('activityFeed').innerHTML = getProviderReports().slice(0,5).map(r => `
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-200);">
+    <div style="width:8px;height:8px;border-radius:50%;background:${r.status==='resolved'?'var(--green)':r.urgency==='urgent'?'var(--red)':'var(--orange)'};flex-shrink:0;"></div>
+    <div style="flex:1;font-size:13.5px;color:var(--navy);"><strong>${r.issue}</strong> · ${r.loc}</div>
+    <span class="badge ${STATUS_BADGE[r.status]||'badge-active'}" style="font-size:10.5px;">${STATUS_LABEL[r.status]||r.status}</span>
+    <span style="font-size:11.5px;color:var(--gray-400);">${new Date(r.time).toLocaleDateString()}</span>
+  </div>`).join('');
+}
+
+let inboxFilter = 'all';
+function renderInbox(data, filter) {
+  inboxFilter = filter;
+  const list = filter === 'all' ? data
+    : filter === 'urgent' ? data.filter(r => r.urgency==='urgent'&&r.status!=='resolved')
+    : data.filter(r => r.status === filter);
+  document.getElementById('inboxBody').innerHTML = list.map(r => {
+    const rJson = JSON.stringify(r).replace(/"/g,'&quot;');
+    const phoneHref = r.phone ? r.phone.replace(/\s/g,'') : '';
+    return `
+  <tr style="cursor:pointer;" onclick="openReportDetail(JSON.parse(this.dataset.r))" data-r="${rJson}">
+    <td style="font-weight:700;color:var(--blue);" onclick="event.stopPropagation();openReportDetail(JSON.parse(this.closest('tr').dataset.r))">${r.ref}</td>
+    <td style="font-weight:600;">${r.issue}${r.channel==='ussd'?'<span style="display:inline-block;background:#7C3AED;color:#fff;font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.4px;">USSD</span>':''}</td>
+    <td><span class="badge ${STATUS_BADGE[r.urgency]||'badge-active'}">${r.urgency}</span></td>
+    <td style="font-size:13px;">${r.loc}</td>
+    <td style="font-size:13px;">${r.reporter}${r.phone?`<br><span style="font-size:11.5px;color:var(--gray-400);">${r.phone}</span>`:''}</td>
+    <td style="font-size:12.5px;color:var(--gray-400);">${new Date(r.time).toLocaleDateString('en-RW',{day:'numeric',month:'short'})}</td>
+    <td><span style="font-size:12px;font-weight:700;color:${r.status==='resolved'?'var(--green)':r.status==='in-progress'||r.status==='in_progress'?'var(--orange)':'var(--blue)'};">${STATUS_LABEL[r.status]||r.status}</span></td>
+    <td onclick="event.stopPropagation()">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">
+        ${phoneHref?`<a href="tel:${phoneHref}" class="btn-call" style="text-decoration:none;" title="Call ${r.reporter}"><i class="ti ti-phone"></i></a>`:''}
+        ${phoneHref?`<a href="sms:${phoneHref}" class="btn-sms" style="text-decoration:none;" title="SMS ${r.reporter}"><i class="ti ti-message"></i></a>`:''}
+        ${r.status!=='resolved'?`<button class="btn-resolve" onclick="resolveReport('${r.ref}','${r.apiId||''}')"><i class="ti ti-check"></i> Resolve</button>`:''}
+        ${(r.status==='submitted'||r.status==='open')&&r.apiId?`<button class="btn-action warning" style="font-size:11.5px;" onclick="markReportInProgress('${r.ref}','${r.apiId}')"><i class="ti ti-loader-2"></i> In Progress</button>`:''}
+      </div>
+    </td>
+  </tr>`}).join('');
+}
+
+function filterInbox(filter, btn) {
+  document.querySelectorAll('#panel-inbox .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInbox(getProviderReports(), filter);
+}
+
+async function resolveReport(ref, apiId) {
+  if (apiId) {
+    const r = await apiPut(`/reports/${apiId}`, { status: 'resolved' });
+    if (r) { await loadApiData(); toast(`Report ${ref} resolved ✓`, 'success'); return; }
+  }
+  const r = reports.find(x => x.ref === ref);
+  if (r) { r.status = 'resolved'; renderInbox(getProviderReports(), inboxFilter); }
+  toast(`Report ${ref} marked as resolved ✓`, 'success');
+}
+
+async function markReportInProgress(ref, apiId) {
+  const r = await apiPut(`/reports/${apiId}`, { status: 'in_progress' });
+  if (r) { await loadApiData(); toast(`Report ${ref} moved to In Progress`, 'info'); return; }
+  const rd = reports.find(x => x.ref === ref);
+  if (rd) { rd.status = 'in-progress'; renderInbox(getProviderReports(), inboxFilter); }
+  toast(`Report ${ref} moved to In Progress`, 'info');
+}
+
+/* ── SLA accountability helper ── */
+const _SLA_H = {
+  contamination: 48, pipe_burst: 168, Contamination: 48, 'Pipe Burst': 168,
+  no_supply: 72, low_pressure: 72, 'No Water Supply': 72, 'Low Pressure': 72,
+  water_connection: 336, tank_delivery: 48, truck_delivery: 48,
+  meter_support: 120, inspection: 72, appointment: 48, default: 120,
+};
+const _CLOSED = new Set(['resolved','completed','cancelled','rejected','closed','verified']);
+
+function _slaBadge(type, createdAt, status) {
+  if (!createdAt || _CLOSED.has(status)) return '';
+  const h   = _SLA_H[type] || _SLA_H.default;
+  const ela = (Date.now() - new Date(createdAt)) / 3_600_000;
+  const pct = ela / h;
+  if (pct < 0.75) return '';
+  if (pct >= 1) {
+    const over = Math.round(ela - h);
+    return `<span class="sla-badge sla-overdue"><i class="ti ti-clock-exclamation"></i> Overdue${over > 0 ? ` by ${over}h` : ''}</span>`;
+  }
+  return `<span class="sla-badge sla-warning"><i class="ti ti-clock"></i> ${Math.round(h - ela)}h left</span>`;
+}
+
+/* ── Service Requests (Provider side) ── */
+function renderProvSvcList(filter) {
+  const all = getProviderSvcRequests();
+  const list = filter === 'all' ? all : all.filter(r => r.status === filter);
+  if (!list.length) {
+    document.getElementById('provSvcList').innerHTML = `<div class="empty-state"><i class="ti ti-tool"></i><p>No service requests ${filter==='all'?'submitted yet':'in this category'}.</p></div>`;
+    return;
+  }
+  document.getElementById('provSvcList').innerHTML = list.slice().reverse().map(r => `
+  <div class="appt-mgmt-card">
+    <div style="width:44px;height:44px;border-radius:10px;background:var(--sky-light);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--blue);flex-shrink:0;"><i class="ti ti-tool"></i></div>
+    <div class="appt-mgmt-body">
+      <div class="appt-mgmt-title">${SVC_LABELS[r.type]||r.type}${r.channel==='ussd'?'<span style="display:inline-block;background:#7C3AED;color:#fff;font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.4px;">USSD</span>':''}</div>
+      <div class="appt-mgmt-meta">
+        👤 <strong>${r.reporter||'Community Member'}</strong>${r.phone?` · 📞 ${r.phone}`:''}<br>
+        📍 ${r.location||'—'} &nbsp;·&nbsp; ⚡ ${r.urgency.toUpperCase()} priority &nbsp;·&nbsp; Submitted ${fmtDate(r.createdAt)}<br>
+        ${r.description}
+        ${r.providerNotes?`<br><em style="color:var(--blue);">Note: ${r.providerNotes}</em>`:''}
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><span class="badge ${STATUS_BADGE[r.status]||'badge-active'}">${STATUS_LABEL[r.status]||r.status}</span>${_slaBadge(r.type, r.createdAt, r.status)}</div>
+      <div class="appt-mgmt-actions">
+        ${r.status==='submitted'?`
+          <button class="btn-action primary" onclick="updateSvcStatus('${r.id}','reviewing')"><i class="ti ti-eye"></i> Review</button>
+          <button class="btn-action success" onclick="updateSvcStatus('${r.id}','approved')"><i class="ti ti-check"></i> Approve</button>
+          <button class="btn-action danger"  onclick="updateSvcStatus('${r.id}','rejected')"><i class="ti ti-x"></i> Reject</button>
+        `:''}
+        ${r.status==='reviewing'?`
+          <button class="btn-action success" onclick="updateSvcStatus('${r.id}','approved')"><i class="ti ti-check"></i> Approve</button>
+          <button class="btn-action warning" onclick="updateSvcStatus('${r.id}','in-progress')"><i class="ti ti-loader-2"></i> Start Work</button>
+          <button class="btn-action danger"  onclick="updateSvcStatus('${r.id}','rejected')"><i class="ti ti-x"></i> Reject</button>
+        `:''}
+        ${r.status==='approved'||r.status==='in-progress'?`
+          <button class="btn-action success" onclick="updateSvcStatus('${r.id}','completed')"><i class="ti ti-circle-check"></i> Mark Completed</button>
+        `:''}
+        ${r.phone?`<a href="tel:${r.phone.replace(/[\s\-]/g,'')}" class="btn-action secondary" style="text-decoration:none;"><i class="ti ti-phone"></i> Call</a>`:''}
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+function filterProvSvc(filter, btn) {
+  document.querySelectorAll('#panel-service-requests .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProvSvcList(filter);
+}
+
+async function updateSvcStatus(id, newStatus, providerNotes) {
+  const apiStatus  = newStatus.replace(/-/g, '_');
+  const body       = { status: apiStatus };
+  if (providerNotes) body.provider_notes = providerNotes;
+
+  const allSvc = getSvcRequests();
+  const svc0   = window._apiSvcReqs.find(x => x.id === id) || allSvc.find(x => x.id === id);
+  const svcLabel  = { water_connection:'Water Connection', tank_delivery:'Tank Delivery', truck_delivery:'Truck Delivery', meter_support:'Meter Support', inspection:'Inspection' }[svc0?.type] || 'Service Request';
+  const statusMsg = { reviewing:'under review', approved:'approved', rejected:'rejected', 'in-progress':'in progress', completed:'completed' }[newStatus] || newStatus;
+
+  const _svcNotifs = (svcEntry) => {
+    _pushNotif({ type:'service_updated', icon:'ti-tool', color:'teal', title:'Service Request Updated', body:`${svcEntry?.reporter || 'Customer'}'s ${svcLabel} request has been marked as ${statusMsg}.` });
+    const commBody = newStatus === 'completed'
+      ? `${CURRENT_PROVIDER} marked your ${svcLabel} request as completed. Please open your Service Requests panel to confirm.`
+      : `Your ${svcLabel} request with ${CURRENT_PROVIDER} is now ${statusMsg}.`;
+    _pushCommNotif(svcEntry?.bookedBy || '', { type:'service_updated', icon:'ti-tool', color:'teal', title: newStatus === 'completed' ? 'Service Completed — Please Verify' : 'Service Request Update', body: commBody });
+    if (newStatus === 'completed') {
+      _writePendingVerify(svcEntry?.bookedBy || '', { id: svcEntry?.id || id, type: 'service_request', label: svcLabel, providerName: CURRENT_PROVIDER });
+    }
+  };
+
+  const r = await apiPut(`/service-requests/${id}`, body);
+  if (r) { await loadApiData(); _svcNotifs(svc0); toast(`Request ${STATUS_LABEL[newStatus]||newStatus}`, 'success'); return; }
+  // Fallback: localStorage
+  const all = getSvcRequests(); const req = all.find(x => x.id === id);
+  if (req) { req.status = newStatus; req.updatedAt = new Date().toISOString(); }
+  saveSvcRequests(all); renderProvSvcList('all'); renderOverviewCards(); updateBadges();
+  _svcNotifs(req);
+  toast(`Request ${STATUS_LABEL[newStatus]||newStatus}`, 'success');
+}
+
+/* ── Appointments (Provider side) ── */
+function renderProvApptList(filter) {
+  const all = getProviderAppts();
+  const list = filter === 'all' ? all : all.filter(a => a.status === filter);
+  if (!list.length) {
+    document.getElementById('provApptList').innerHTML = `<div class="empty-state"><i class="ti ti-calendar"></i><p>No appointments ${filter==='all'?'yet':'in this category'}.</p></div>`;
+    return;
+  }
+  document.getElementById('provApptList').innerHTML = list.slice().reverse().map(a => {
+    const isPending = a.status === 'pending';
+    const isResched = a.status === 'reschedule_requested';
+    const isApproved = a.status === 'approved';
+    return `
+  <div class="appt-mgmt-card">
+    <div style="width:44px;height:44px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--green);flex-shrink:0;"><i class="ti ti-calendar"></i></div>
+    <div class="appt-mgmt-body">
+      <div class="appt-mgmt-title">${APPT_REASON_LABELS[a.reason]||a.reason}${a.channel==='ussd'?'<span style="display:inline-block;background:#7C3AED;color:#fff;font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.4px;">USSD</span>':''}</div>
+      <div class="appt-mgmt-meta">
+        👤 <strong>${a.reporter||'Community Member'}</strong>${a.phone?` · 📞 ${a.phone}`:''}<br>
+        📅 ${a.date} at ${a.time} &nbsp;·&nbsp; Requested ${fmtDate(a.createdAt)}
+        ${a.notes?`<br><em>"${a.notes}"</em>`:''}
+        ${isResched?`<br><strong style="color:var(--purple);">⟳ User requested reschedule to: ${a.requestedDate} at ${a.requestedTime}</strong>`:''}
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><span class="badge ${STATUS_BADGE[a.status]||'badge-pending'}">${STATUS_LABEL[a.status]||a.status}</span>${_slaBadge('appointment', a.createdAt, a.status)}</div>
+      <div class="appt-mgmt-actions">
+        ${isPending?`
+          <button class="btn-action success" onclick="approveAppt('${a.id}')"><i class="ti ti-check"></i> Approve</button>
+          <button class="btn-action warning" onclick="openProvReschedModal('${a.id}')"><i class="ti ti-calendar-event"></i> Propose New Time</button>
+          <button class="btn-action danger"  onclick="rejectAppt('${a.id}')"><i class="ti ti-x"></i> Reject</button>
+        `:''}
+        ${isResched?`
+          <button class="btn-action success" onclick="acceptUserResched('${a.id}')"><i class="ti ti-check"></i> Accept New Time</button>
+          <button class="btn-action warning" onclick="openProvReschedModal('${a.id}')"><i class="ti ti-calendar-event"></i> Propose Different Time</button>
+          <button class="btn-action danger"  onclick="rejectAppt('${a.id}')"><i class="ti ti-x"></i> Reject</button>
+        `:''}
+        ${isApproved?`
+          <button class="btn-action success" onclick="completeAppt('${a.id}')"><i class="ti ti-circle-check"></i> Mark Completed</button>
+          <button class="btn-action warning" onclick="openProvReschedModal('${a.id}')"><i class="ti ti-calendar-event"></i> Reschedule</button>
+          <button class="btn-action danger"  onclick="cancelApptProv('${a.id}')"><i class="ti ti-x"></i> Cancel</button>
+        `:''}
+        <button class="btn-action secondary" onclick="toast('Contacting requester…','info')"><i class="ti ti-phone"></i> Contact</button>
+      </div>
+    </div>
+  </div>`;
+  }).join('');
+}
+
+function filterProvAppts(filter, btn) {
+  document.querySelectorAll('#panel-appointments .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProvApptList(filter);
+}
+
+async function approveAppt(id) {
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const r = await apiPut(`/appointments/${id}/status`, { status: 'approved' });
+  if (r) {
+    await loadApiData();
+    _pushNotif({ type:'appointment_approved', icon:'ti-calendar-check', color:'green', title:'Appointment Confirmed', body:`You confirmed ${a0?.reporter || 'a community member'}'s ${a0?.reason || 'appointment'} on ${a0?.date || ''}.` });
+    _pushCommNotif(a0?.bookedBy || a0?.user_email || '', { type:'appointment_confirmed', icon:'ti-calendar-check', color:'green', title:'Appointment Confirmed!', body:`Your appointment with ${CURRENT_PROVIDER} on ${a0?.date || ''} at ${a0?.time || ''} has been confirmed.` });
+    toast('Appointment approved. Community member notified.', 'success'); return;
+  }
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a) a.status = 'approved'; saveAppts(all);
+  _pushNotif({ type:'appointment_approved', icon:'ti-calendar-check', color:'green', title:'Appointment Confirmed', body:`You confirmed ${a?.reporter || 'a community member'}'s appointment on ${a?.date || ''}.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'appointment_confirmed', icon:'ti-calendar-check', color:'green', title:'Appointment Confirmed!', body:`Your appointment with ${CURRENT_PROVIDER} on ${a?.date || ''} at ${a?.time || ''} has been confirmed.` });
+  renderProvApptList('all'); renderOverviewCards(); updateBadges();
+  toast('Appointment approved. Community member notified.', 'success');
+}
+
+async function rejectAppt(id) {
+  if (!confirm('Reject this appointment request?')) return;
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const r = await apiPut(`/appointments/${id}/status`, { status: 'rejected' });
+  if (r) {
+    await loadApiData();
+    _pushNotif({ type:'appointment_rejected', icon:'ti-calendar-x', color:'red', title:'Appointment Rejected', body:`You rejected the appointment request from ${a0?.reporter || 'a community member'} on ${a0?.date || ''}.` });
+    _pushCommNotif(a0?.bookedBy || a0?.user_email || '', { type:'appointment_rejected', icon:'ti-calendar-x', color:'red', title:'Appointment Request Declined', body:`Your appointment request with ${CURRENT_PROVIDER} on ${a0?.date || ''} was not accepted. You may submit a new request for a different time.` });
+    toast('Appointment rejected.', 'info'); return;
+  }
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a) a.status = 'rejected'; saveAppts(all);
+  _pushNotif({ type:'appointment_rejected', icon:'ti-calendar-x', color:'red', title:'Appointment Rejected', body:`You rejected the appointment request from ${a?.reporter || 'a community member'} on ${a?.date || ''}.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'appointment_rejected', icon:'ti-calendar-x', color:'red', title:'Appointment Request Declined', body:`Your appointment request with ${CURRENT_PROVIDER} on ${a?.date || ''} was not accepted.` });
+  renderProvApptList('all'); updateBadges(); toast('Appointment rejected.', 'info');
+}
+
+async function completeAppt(id) {
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const commEmail = a0?.bookedBy || a0?.user_email || '';
+  const verifyEntry = { id, type: 'appointment', label: APPT_REASON_LABELS[a0?.reason] || a0?.reason || 'Appointment', providerName: CURRENT_PROVIDER };
+
+  const r = await apiPut(`/appointments/${id}/status`, { status: 'completed' });
+  if (r) {
+    await loadApiData();
+    _pushNotif({ type:'appointment_completed', icon:'ti-circle-check', color:'green', title:'Appointment Completed', body:`Appointment with ${a0?.reporter || 'community member'} on ${a0?.date || ''} marked as completed.` });
+    _pushCommNotif(commEmail, { type:'appointment_completed', icon:'ti-circle-check', color:'teal', title:'Appointment Completed — Please Verify', body:`${CURRENT_PROVIDER} marked your appointment on ${a0?.date || ''} as completed. Please open your Appointments panel to confirm.` });
+    _writePendingVerify(commEmail, verifyEntry);
+    toast('Appointment marked as completed. Community member will verify.', 'success'); return;
+  }
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a) a.status = 'completed'; saveAppts(all);
+  _pushNotif({ type:'appointment_completed', icon:'ti-circle-check', color:'green', title:'Appointment Completed', body:`Appointment with ${a?.reporter || 'community member'} on ${a?.date || ''} marked as completed.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'appointment_completed', icon:'ti-circle-check', color:'teal', title:'Appointment Completed — Please Verify', body:`${CURRENT_PROVIDER} marked your appointment on ${a?.date || ''} as completed. Please open your Appointments panel to confirm.` });
+  _writePendingVerify(a?.bookedBy || '', verifyEntry);
+  renderProvApptList('all'); updateBadges(); toast('Appointment marked as completed. Community member will verify.', 'success');
+}
+
+async function cancelApptProv(id) {
+  if (!confirm('Cancel this appointment?')) return;
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const r = await apiPut(`/appointments/${id}/status`, { status: 'cancelled' });
+  if (r) {
+    await loadApiData();
+    _pushNotif({ type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled', body:`You cancelled the appointment with ${a0?.reporter || 'community member'} on ${a0?.date || ''}.` });
+    _pushCommNotif(a0?.bookedBy || a0?.user_email || '', { type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled by Provider', body:`Your appointment with ${CURRENT_PROVIDER} on ${a0?.date || ''} has been cancelled by the provider. You may book a new time.` });
+    toast('Appointment cancelled. Community member notified.', 'info'); return;
+  }
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a) a.status = 'cancelled'; saveAppts(all);
+  _pushNotif({ type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled', body:`You cancelled the appointment with ${a?.reporter || 'community member'} on ${a?.date || ''}.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'appointment_cancelled', icon:'ti-calendar-x', color:'red', title:'Appointment Cancelled by Provider', body:`Your appointment with ${CURRENT_PROVIDER} on ${a?.date || ''} has been cancelled by the provider.` });
+  renderProvApptList('all'); updateBadges(); toast('Appointment cancelled. Community member notified.', 'info');
+}
+
+async function acceptUserResched(id) {
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const r = await apiPut(`/appointments/${id}/status`, { status: 'approved', provider_note: 'Reschedule accepted.' });
+  if (r) {
+    await loadApiData();
+    _pushNotif({ type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted', body:`You accepted the new time from ${a0?.reporter || 'community member'}. Appointment confirmed.` });
+    _pushCommNotif(a0?.bookedBy || a0?.user_email || '', { type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Your Reschedule Was Accepted!', body:`${CURRENT_PROVIDER} accepted your new proposed time. Your appointment is confirmed.` });
+    toast('New time accepted. Appointment confirmed.', 'success'); return;
+  }
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a && a.requestedDate) { a.date = a.requestedDate; a.time = a.requestedTime; a.status = 'approved'; delete a.requestedDate; delete a.requestedTime; }
+  saveAppts(all);
+  _pushNotif({ type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Reschedule Accepted', body:`You accepted the new time from ${a?.reporter || 'community member'}.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'reschedule_accepted', icon:'ti-calendar-check', color:'green', title:'Your Reschedule Was Accepted!', body:`${CURRENT_PROVIDER} accepted your new proposed time. Your appointment is confirmed.` });
+  renderProvApptList('all'); updateBadges(); toast('New time accepted. Appointment confirmed.', 'success');
+}
+
+function openProvReschedModal(id) {
+  document.getElementById('provReschedApptId').value = id;
+  document.getElementById('provReschedDate').value = '';
+  document.getElementById('provReschedTime').value = '';
+  document.getElementById('provReschedMsg').value = '';
+  document.getElementById('provReschedModal').classList.add('open');
+}
+function closeProvReschedModal() { document.getElementById('provReschedModal').classList.remove('open'); }
+
+async function submitProvResched() {
+  const id   = document.getElementById('provReschedApptId').value;
+  const date = document.getElementById('provReschedDate').value;
+  const time = document.getElementById('provReschedTime').value;
+  const msg  = document.getElementById('provReschedMsg').value.trim();
+  if (!date) { toast('Please select a proposed date','error'); return; }
+  if (!time) { toast('Please select a proposed time','error'); return; }
+
+  const allLocal = getAppts();
+  const a0 = window._apiAppts.find(x => x.id === id) || allLocal.find(x => x.id === id);
+  const r = await apiPost(`/appointments/${id}/provider-reschedule`, {
+    proposed_date: date,
+    proposed_time: convertTo24h(time),
+    proposed_message: msg || null,
+  });
+  if (r) {
+    await loadApiData(); closeProvReschedModal();
+    _pushNotif({ type:'reschedule_proposed', icon:'ti-calendar-event', color:'purple', title:'New Time Proposed', body:`You proposed ${date} at ${convertTo24h(time)} to ${a0?.reporter || 'community member'}.` });
+    _pushCommNotif(a0?.bookedBy || a0?.user_email || '', { type:'reschedule_proposed', icon:'ti-calendar-event', color:'purple', title:'Provider Proposed a New Time', body:`${CURRENT_PROVIDER} proposed rescheduling your appointment to ${date} at ${convertTo24h(time)}. Please review and accept or decline.` });
+    toast('New time proposed. Community member will be notified.', 'info'); return;
+  }
+  // Fallback: localStorage
+  const all = getAppts(); const a = all.find(x => x.id === id);
+  if (a) { a.status = 'rescheduled'; a.proposedDate = date; a.proposedTime = time; }
+  saveAppts(all); closeProvReschedModal(); renderProvApptList('all'); updateBadges();
+  _pushNotif({ type:'reschedule_proposed', icon:'ti-calendar-event', color:'purple', title:'New Time Proposed', body:`You proposed ${date} at ${convertTo24h(time)} to ${a?.reporter || 'community member'}.` });
+  _pushCommNotif(a?.bookedBy || '', { type:'reschedule_proposed', icon:'ti-calendar-event', color:'purple', title:'Provider Proposed a New Time', body:`${CURRENT_PROVIDER} proposed rescheduling your appointment to ${date} at ${convertTo24h(time)}. Please review and accept or decline.` });
+  toast('New time proposed. Community member will be notified.', 'info');
+}
+
+/* ── Community ── */
+function renderCommunity() {
+  // Build unique member list from live API data (reports + appointments + service requests)
+  const byPhone = {};
+  const addEntry = (phone, name, loc, time, type) => {
+    if (!phone && !name) return;
+    const key = phone || name;
+    if (!byPhone[key]) byPhone[key] = { name: name||'Community Member', phone: phone||'—', loc: loc||'Rwanda', reports:0, appts:0, svc:0, last: time||'' };
+    byPhone[key][type]++;
+    if (time && time > byPhone[key].last) byPhone[key].last = time;
+  };
+  for (const r of window._apiReports)  addEntry(r.phone, r.reporter, r.loc,      r.time,      'reports');
+  for (const a of window._apiAppts)    addEntry(a.phone, a.reporter, '',          a.createdAt, 'appts');
+  for (const s of window._apiSvcReqs) addEntry(s.phone, s.reporter, s.location,  s.createdAt, 'svc');
+
+  const apiMembers = Object.values(byPhone).sort((a, b) => b.last.localeCompare(a.last));
+  const source = apiMembers.length ? apiMembers : community;
+
+  document.getElementById('communityBody').innerHTML = source.map(m => `
+  <tr>
+    <td style="font-weight:700;color:var(--navy);">${m.name}</td>
+    <td style="font-size:13px;">${m.loc||'—'}</td>
+    <td style="font-size:13px;">${m.phone||'—'}</td>
+    <td>
+      <span style="font-size:11px;background:var(--sky-pale);color:var(--blue);padding:2px 7px;border-radius:10px;font-weight:700;">${(m.reports||0)} rep</span>
+      <span style="font-size:11px;background:#f3e8ff;color:var(--purple);padding:2px 7px;border-radius:10px;font-weight:700;">${(m.appts||0)} appt</span>
+      <span style="font-size:11px;background:#fef3c7;color:var(--orange);padding:2px 7px;border-radius:10px;font-weight:700;">${(m.svc||0)} svc</span>
+    </td>
+    <td style="font-size:12px;color:var(--gray-600);">${m.last ? new Date(m.last).toLocaleDateString() : m.last||'—'}</td>
+    <td>
+      <div style="display:flex;gap:5px;">
+        ${m.phone&&m.phone!=='—'?`<a href="tel:${m.phone.replace(/[\s\-]/g,'')}" class="btn-call" style="text-decoration:none;" title="Call ${m.name}"><i class="ti ti-phone"></i></a>`:`<button class="btn-call" disabled title="No phone number"><i class="ti ti-phone"></i></button>`}
+        ${m.phone&&m.phone!=='—'?`<a href="sms:${m.phone.replace(/[\s\-]/g,'')}" class="btn-sms" style="text-decoration:none;" title="SMS ${m.name}"><i class="ti ti-message"></i></a>`:`<button class="btn-sms" disabled title="No phone number"><i class="ti ti-message"></i></button>`}
+      </div>
+    </td>
+  </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:2rem;">No community interactions yet.</td></tr>';
+}
+
+function renderQuality() {
+  document.getElementById('qualityGrid').innerHTML = quality.map(q => `
+  <div class="quality-card">
+    <div class="qc-lbl">${q.label}</div>
+    <div class="qc-val">${q.value}</div>
+    <div class="qc-unit">${q.unit}</div>
+    <span class="qc-status qc-${q.status}">${q.status==='good'?'✓ Safe':q.status==='warn'?'⚠ Monitor':'✗ Unsafe'}</span>
+  </div>`).join('');
+}
+
+/* ── Announcements ── */
+function renderPosted() {
+  document.getElementById('postedList').innerHTML = postedAnnouncements.length
+    ? postedAnnouncements.map(a => `
+    <div class="alert-item" style="margin-bottom:10px;">
+      <div class="alert-icon" style="background:var(--sky-light);"><i class="ti ti-speakerphone" style="color:var(--blue);"></i></div>
+      <div>
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-meta">${a.type} · ${a.area} · ${a.time}</div>
+      </div>
+    </div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-speakerphone"></i><p>No announcements posted yet.</p></div>';
+}
+
+function toggleArea(el, area) {
+  el.classList.toggle('active');
+  if (el.classList.contains('active')) selectedAreas.push(area);
+  else selectedAreas = selectedAreas.filter(a => a !== area);
+}
+
+function postAnnouncement() {
+  const title = document.getElementById('announceTitle').value.trim();
+  const msg   = document.getElementById('announceMsg').value.trim();
+  if (!title || !msg) { toast('Please fill in title and message','error'); return; }
+  postedAnnouncements.unshift({ title, type:document.getElementById('announceType').value, area:selectedAreas.join(', '), time:'Just now' });
+  renderPosted();
+  document.getElementById('announceTitle').value = '';
+  document.getElementById('announceMsg').value = '';
+  toast('Announcement posted and sent to community!', 'success');
+}
+
+/* ── Availability ── */
+/* ── Availability helpers ── */
+function _availProvKey() {
+  const s = JSON.parse(localStorage.getItem('temba_session') || '{}');
+  return (s.orgName || s.name || 'provider').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+const AVAIL_KEY  = () => `temba_avail_${_availProvKey()}`;
+const BOOKED_KEY = () => `temba_booked_${_availProvKey()}`;
+
+function loadAvailability() {
+  const saved = JSON.parse(localStorage.getItem(AVAIL_KEY()) || 'null');
+  if (!saved) return;
+  /* Restore working days */
+  document.querySelectorAll('#availDays .avail-day').forEach(el => {
+    el.classList.toggle('on', saved.days.includes(el.dataset.day));
+  });
+  /* Restore selects */
+  ['openTime','closeTime','slotDuration','maxPerSlot'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && saved[id]) el.value = saved[id];
+  });
+  /* Restore unavailable dates */
+  unavailDates = saved.unavailDates || [];
+  renderUnavailDates();
+  refreshSlotPreview();
+}
+
+function saveAvailability() {
+  const days = [...document.querySelectorAll('#availDays .avail-day.on')].map(el => el.dataset.day);
+  if (!days.length) { toast('Please select at least one working day', 'error'); return; }
+  const avail = {
+    days,
+    openTime:     document.getElementById('openTime').value,
+    closeTime:    document.getElementById('closeTime').value,
+    slotDuration: parseInt(document.getElementById('slotDuration').value),
+    maxPerSlot:   parseInt(document.getElementById('maxPerSlot').value),
+    unavailDates,
+    updatedAt: new Date().toISOString(),
+  };
+  localStorage.setItem(AVAIL_KEY(), JSON.stringify(avail));
+  refreshSlotPreview();
+  toast('Availability published! Community members can now book your slots.', 'success');
+}
+
+/* ── Slot generation (shared logic, used by provider preview and community picker) ── */
+function generateTimeSlots(avail, date, bookedList) {
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dayName  = dayNames[new Date(date + 'T12:00:00').getDay()];
+  if (!avail.days.includes(dayName)) return null; // not a working day
+  if ((avail.unavailDates || []).includes(date)) return null; // blocked
+
+  const [oh, om] = avail.openTime.split(':').map(Number);
+  const [ch, cm] = avail.closeTime.split(':').map(Number);
+  const dur = avail.slotDuration || 60;
+  const max = avail.maxPerSlot || 1;
+  let cur = oh * 60 + om;
+  const end = ch * 60 + cm;
+  const slots = [];
+  const now = new Date();
+
+  while (cur + dur <= end) {
+    const h = Math.floor(cur / 60), m = cur % 60;
+    const timeKey = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const slotDt  = new Date(`${date}T${timeKey}:00`);
+    const isPast  = slotDt <= now;
+    const booked  = (bookedList || []).filter(b => b.date === date && b.time === timeKey)
+                      .reduce((s, b) => s + (b.count || 1), 0);
+    const avail_count = max - booked;
+    slots.push({ time: timeKey, booked, available: Math.max(0, avail_count), total: max, isPast });
+    cur += dur;
+  }
+  return slots;
+}
+
+function fmt12h(time24) {
+  const [h, m] = time24.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${period}`;
+}
+
+/* ── Provider: slot preview ── */
+function refreshSlotPreview() {
+  const days = [...document.querySelectorAll('#availDays .avail-day.on')].map(el => el.dataset.day);
+  const avail = {
+    days,
+    openTime:     document.getElementById('openTime')?.value || '08:00',
+    closeTime:    document.getElementById('closeTime')?.value || '17:00',
+    slotDuration: parseInt(document.getElementById('slotDuration')?.value || '60'),
+    maxPerSlot:   parseInt(document.getElementById('maxPerSlot')?.value || '1'),
+    unavailDates: [],
+  };
+  /* Use next working day for preview */
+  let previewDate = null;
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(); d.setDate(d.getDate() + i);
+    const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    if (avail.days.includes(dayName)) {
+      previewDate = d.toISOString().split('T')[0]; break;
+    }
+  }
+  const grid = document.getElementById('slotPreviewGrid');
+  if (!grid) return;
+  if (!previewDate) { grid.innerHTML = '<p style="color:var(--gray-400);font-size:13px;">No working days selected.</p>'; return; }
+  const slots = generateTimeSlots(avail, previewDate, []);
+  if (!slots || !slots.length) { grid.innerHTML = '<p style="color:var(--gray-400);font-size:13px;">No slots generated — check hours.</p>'; return; }
+  grid.innerHTML = slots.map(s => `
+    <div style="padding:8px 14px;border-radius:8px;border:1.5px solid #BBD6FB;background:#EFF6FF;text-align:center;min-width:80px;">
+      <div style="font-size:13px;font-weight:700;color:#1565C0;">${fmt12h(s.time)}</div>
+      <div style="font-size:10.5px;color:#1565C0;margin-top:2px;opacity:0.7;">${s.total} slot${s.total>1?'s':''}</div>
+    </div>`).join('');
+}
+
+function toggleDay(el) {
+  el.classList.toggle('on');
+  refreshSlotPreview();
+}
+
+function addUnavailDate() {
+  const d = document.getElementById('unavailDate').value;
+  if (!d) { toast('Please select a date','error'); return; }
+  if (unavailDates.includes(d)) { toast('Date already blocked','info'); return; }
+  const today = new Date().toISOString().split('T')[0];
+  if (d < today) { toast('Cannot block a past date','error'); return; }
+  unavailDates.push(d);
+  renderUnavailDates();
+  document.getElementById('unavailDate').value = '';
+  toast('Date blocked — community members cannot book this date.', 'success');
+}
+
+function removeUnavailDate(d) {
+  unavailDates = unavailDates.filter(x => x !== d);
+  renderUnavailDates();
+}
+
+function renderUnavailDates() {
+  const el = document.getElementById('unavailList');
+  if (!el) return;
+  el.innerHTML = unavailDates.length
+    ? unavailDates.sort().map(d => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--red-light);border-radius:8px;margin-bottom:6px;">
+          <span style="font-size:13px;font-weight:600;color:var(--red);"><i class="ti ti-calendar-off"></i> ${new Date(d+'T12:00:00').toLocaleDateString('en-RW',{weekday:'short',day:'numeric',month:'long',year:'numeric'})}</span>
+          <button onclick="removeUnavailDate('${d}')" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;padding:0 4px;"><i class="ti ti-trash"></i></button>
+        </div>`).join('')
+    : '<p style="font-size:13px;color:var(--gray-400);">No blocked dates.</p>';
+}
+
+/* ── Shared ── */
+function showPanel(id, linkEl) {
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (linkEl) {
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    linkEl.classList.add('active');
+  }
+  if (id === 'history') renderProvHistory();
+  if (id === 'team') loadTeam();
+}
+
+function rerenderProviderDashboard() {
+  const active = document.querySelector('.dash-panel.active');
+  if (!active) { applyTranslations(); return; }
+  const id = active.id.replace('panel-', '');
+  if (id === 'overview') { renderOverviewCards(); renderUrgent(); renderBreakdown(); renderActivity(); }
+  else if (id === 'inbox') renderInbox(getProviderReports(), inboxFilter);
+  else if (id === 'service-requests') renderProvSvcList('all');
+  else if (id === 'appointments') renderProvApptList('all');
+  else if (id === 'history') renderProvHistory();
+  else if (id === 'community') renderCommunity();
+  applyTranslations();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProvReschedModal(); });
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+function signOut() {
+  localStorage.removeItem('temba_session');
+  toast('Signed out.', 'info');
+  setTimeout(() => window.location.href = 'index.html', 700);
+}
+function setLang(l) { localStorage.setItem('temba_lang', l); }
+function toast(msg, type='info') {
+  const t = document.getElementById('temba-toast');
+  if (!t) return;
+  const bg = { success:'#2E7D32', error:'#C62828', info:'#1565C0', warn:'#E65100' };
+  t.style.background = bg[type]||bg.info;
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._tm); t._tm = setTimeout(()=>{ t.style.opacity='0'; }, 2800);
+}
+
+/* ── Dark mode ── */
+function toggleDarkMode() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('temba_theme', next);
+  const icon = document.getElementById('darkModeIcon');
+  if (icon) icon.className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+}
+(function initTheme() {
+  const t = localStorage.getItem('temba_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const icon = document.getElementById('darkModeIcon');
+  if (icon) icon.className = t === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+})();
+
+/* ── Provider History ── */
+let _provHistFilter = 'all';
+function filterProvHistory(filter, btn) {
+  _provHistFilter = filter;
+  document.querySelectorAll('#panel-history .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderProvHistory();
+}
+
+function renderProvHistory() {
+  const DONE_APPT = ['completed','cancelled','rejected'];
+  const DONE_REP  = ['resolved','rejected'];
+  const DONE_SVC  = ['completed','rejected','cancelled'];
+  const SVC_LBL   = { water_connection:'Water Connection', tank_delivery:'Tank Delivery', truck_delivery:'Water Truck', meter_support:'Meter Support', inspection:'Inspection' };
+
+  const appts = getProviderAppts().filter(a => DONE_APPT.includes((a.status||'').toLowerCase()));
+  const reps  = getProviderReports().filter(r => DONE_REP.includes((r.status||'').toLowerCase().replace(/_/g,'-')));
+  const svcs  = getProviderSvcRequests().filter(s => DONE_SVC.includes((s.status||'').toLowerCase()));
+
+  let entries = [];
+  if (_provHistFilter === 'all' || _provHistFilter === 'appointments') {
+    entries.push(...appts.map(a => ({
+      icon:'ti-calendar', dotClass: a.status==='completed'?'completed appt':'cancelled appt',
+      title:`Appointment — ${a.reason||'Consultation'}`,
+      meta:`${a.user||a.reporter||'Community Member'} · ${a.date||a.appointment_date||'—'}`,
+      status: a.status, time: a.createdAt||a.created_at,
+    })));
+  }
+  if (_provHistFilter === 'all' || _provHistFilter === 'reports') {
+    entries.push(...reps.map(r => ({
+      icon:'ti-flag', dotClass: r.status==='resolved'?'resolved report':'rejected report',
+      title:`Report — ${r.issue||r.category||'Water Issue'}`,
+      meta:`${r.reporter||'Community Member'} · ${r.loc||r.district||'—'}`,
+      status: r.status, time: r.time||r.created_at,
+    })));
+  }
+  if (_provHistFilter === 'all' || _provHistFilter === 'service_requests') {
+    entries.push(...svcs.map(s => ({
+      icon:'ti-tool', dotClass: s.status==='completed'?'completed svc':s.status==='rejected'?'rejected svc':'cancelled svc',
+      title:`Service Request — ${SVC_LBL[s.type]||s.type||'Service'}`,
+      meta:`${s.reporter||'Community Member'} · ${s.location||'—'}`,
+      status: s.status, time: s.createdAt||s.created_at,
+    })));
+  }
+
+  entries.sort((a,b) => new Date(b.time||0) - new Date(a.time||0));
+  const statusColor = { completed:'#2E7D32', resolved:'#2E7D32', cancelled:'#94A3B8', rejected:'#C62828' };
+  const statusBg    = { completed:'#E8F5E9', resolved:'#E8F5E9', cancelled:'#F1F5F9', rejected:'#FFEBEE' };
+
+  document.getElementById('provHistoryList').innerHTML = entries.length
+    ? entries.map(e => `
+      <div class="history-entry">
+        <div class="history-dot ${e.dotClass}"><i class="ti ${e.icon}"></i></div>
+        <div style="flex:1;min-width:0;">
+          <div class="history-title">${e.title}</div>
+          <div class="history-meta">${e.meta} · ${fmtDate(e.time)}</div>
+        </div>
+        <span class="history-status" style="background:${statusBg[e.status]||'#F1F5F9'};color:${statusColor[e.status]||'#94A3B8'};">${(e.status||'').charAt(0).toUpperCase()+(e.status||'').slice(1)}</span>
+      </div>`).join('')
+    : '<div class="empty-state"><i class="ti ti-history"></i><p>No completed or closed records yet.</p></div>';
+}
+
+/* ══════════════════════════════════════
+   IN-APP NOTIFICATION SYSTEM
+   ══════════════════════════════════════ */
+const _NOTIF_KEY = `temba_notifs_prov_${_availProvKey()}`;
+
+function _commNotifKey(email) {
+  return 'temba_notifs_' + (email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+function _commVerifyKey(email) {
+  return 'temba_pending_verify_' + (email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+function _writePendingVerify(email, entry) {
+  if (!email) return;
+  const key  = _commVerifyKey(email);
+  const list = JSON.parse(localStorage.getItem(key) || '[]');
+  if (!list.some(i => i.id === entry.id)) {
+    list.push({ ...entry, completedAt: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(list));
+  }
+}
+function getNotifs()      { return JSON.parse(localStorage.getItem(_NOTIF_KEY) || '[]'); }
+function saveNotifs(list) { localStorage.setItem(_NOTIF_KEY, JSON.stringify(list)); }
+
+function _pushNotif({ type, icon, color, title, body }) {
+  const list = getNotifs();
+  list.unshift({ id: uid(), type, icon: icon || 'ti-bell', color: color || 'blue', title, body, read: false, createdAt: new Date().toISOString() });
+  if (list.length > 60) list.length = 60;
+  saveNotifs(list);
+  updateNotifBadge();
+  if (document.getElementById('notifDrawer').classList.contains('open')) _renderNotifList();
+}
+
+function _pushCommNotif(email, notif) {
+  if (!email) return;
+  const key  = _commNotifKey(email);
+  const list = JSON.parse(localStorage.getItem(key) || '[]');
+  list.unshift({ id: uid(), ...notif, read: false, createdAt: new Date().toISOString() });
+  if (list.length > 60) list.length = 60;
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+function updateNotifBadge() {
+  const unread = getNotifs().filter(n => !n.read).length;
+  const badge  = document.getElementById('notifBadge');
+  if (!badge) return;
+  badge.textContent   = unread > 9 ? '9+' : String(unread);
+  badge.style.display = unread > 0 ? 'flex' : 'none';
+}
+
+function openNotifDrawer() {
+  _renderNotifList();
+  document.getElementById('notifOverlay').classList.add('open');
+  document.getElementById('notifDrawer').classList.add('open');
+  setTimeout(() => { markAllNotifsRead(); }, 900);
+}
+
+function closeNotifDrawer() {
+  document.getElementById('notifOverlay').classList.remove('open');
+  document.getElementById('notifDrawer').classList.remove('open');
+}
+
+function markAllNotifsRead() {
+  saveNotifs(getNotifs().map(n => ({ ...n, read: true })));
+  updateNotifBadge();
+  _renderNotifList();
+}
+
+function _renderNotifList() {
+  const list   = getNotifs();
+  const el     = document.getElementById('notifList');
+  const sub    = document.getElementById('notifSubLine');
+  const unread = list.filter(n => !n.read).length;
+  if (sub) sub.textContent = unread > 0 ? `${unread} unread notification${unread > 1 ? 's' : ''}` : 'All caught up';
+  if (!list.length) {
+    el.innerHTML = `<div class="notif-empty">
+      <i class="ti ti-bell-off"></i>
+      <div class="notif-empty-title">No notifications yet</div>
+      <div class="notif-empty-sub">Booking requests, service updates,<br>and appointment activity<br>will appear here.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = list.map(n => `
+    <div class="notif-item ${n.read ? '' : 'unread'}">
+      <div class="notif-icon ${n.color || 'blue'}"><i class="ti ${n.icon || 'ti-bell'}"></i></div>
+      <div style="flex:1;min-width:0;">
+        <div class="notif-item-title">${n.title}</div>
+        <div class="notif-item-body">${n.body}</div>
+        <div class="notif-item-time"><i class="ti ti-clock" style="font-size:10px;margin-right:3px;"></i>${fmtDate(n.createdAt)}</div>
+      </div>
+      ${n.read ? '' : '<div class="notif-unread-dot"></div>'}
+    </div>`).join('');
+}
+</script>
+<script src="temba-i18n.js"></script>
+<script src="temba-chatbot.js"></script>
+</body>
+</html>

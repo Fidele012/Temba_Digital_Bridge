@@ -1,0 +1,128 @@
+"""Create the first admin user and seed demo water providers on startup if they don't exist."""
+import structlog
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.config import settings
+from app.core.security import hash_password
+from app.models.provider import Provider, ProviderServiceArea, ProviderStatus
+from app.models.user import User, UserRole
+
+log = structlog.get_logger(__name__)
+
+_SEED_PROVIDERS = [
+    {
+        "email":             "info@wasac.rw",
+        "full_name":         "WASAC Administrator",
+        "organization_name": "WASAC",
+        "description":       "Water and Sanitation Corporation — Rwanda's national water utility.",
+        "phone":             "+250788123000",
+        "org_phone":         "+250788123000",
+        "org_email":         "info@wasac.rw",
+        "website":           "https://www.wasac.rw",
+        "service_categories": ["water_supply", "sanitation", "infrastructure"],
+        "provinces":         ["Kigali City", "Northern Province", "Southern Province",
+                              "Eastern Province", "Western Province"],
+    },
+    {
+        "email":             "support@iriba.rw",
+        "full_name":         "IRIBA Water Group Admin",
+        "organization_name": "IRIBA Water Group",
+        "description":       "Urban water distribution specialist serving Kigali and peri-urban areas.",
+        "phone":             "+250788345000",
+        "org_phone":         "+250788345000",
+        "org_email":         "support@iriba.rw",
+        "website":           None,
+        "service_categories": ["water_supply", "meter_services", "water_quality"],
+        "provinces":         ["Kigali City"],
+    },
+    {
+        "email":             "hello@prowater.rw",
+        "full_name":         "Pro Water Rwanda Admin",
+        "organization_name": "Pro Water Rwanda",
+        "description":       "Commercial water supply and water truck delivery across Rwanda.",
+        "phone":             "+250788567000",
+        "org_phone":         "+250788567000",
+        "org_email":         "hello@prowater.rw",
+        "website":           None,
+        "service_categories": ["truck_delivery", "water_storage", "water_supply"],
+        "provinces":         ["Kigali City", "Eastern Province", "Southern Province"],
+    },
+]
+
+
+async def init_db(db: AsyncSession) -> None:
+    # ── Admin user ────────────────────────────────────────────────────────────
+    result = await db.execute(
+        select(User).where(User.email == settings.FIRST_ADMIN_EMAIL)
+    )
+    if not result.scalar_one_or_none():
+        admin = User(
+            email=settings.FIRST_ADMIN_EMAIL,
+            hashed_password=hash_password(settings.FIRST_ADMIN_PASSWORD),
+            full_name="Platform Administrator",
+            role=UserRole.ADMIN,
+            is_active=True,
+            is_verified=True,
+        )
+        db.add(admin)
+        await db.commit()
+        log.info("Created first admin user", email=settings.FIRST_ADMIN_EMAIL)
+
+    # ── Seed demo water providers (idempotent) ────────────────────────────────
+    for p in _SEED_PROVIDERS:
+        existing = (await db.execute(
+            select(User).where(User.email == p["email"])
+        )).scalar_one_or_none()
+
+        if existing:
+            # Make sure provider profile exists and is APPROVED
+            prov = (await db.execute(
+                select(Provider).where(Provider.user_id == existing.id)
+            )).scalar_one_or_none()
+            if prov and prov.status != ProviderStatus.APPROVED:
+                prov.status = ProviderStatus.APPROVED
+                await db.commit()
+            continue
+
+        # Check phone conflict — skip phone if taken
+        phone_taken = (await db.execute(
+            select(User).where(User.phone == p["phone"])
+        )).scalar_one_or_none()
+
+        user = User(
+            email=p["email"],
+            phone=None if phone_taken else p["phone"],
+            full_name=p["full_name"],
+            hashed_password=hash_password("Temba@Provider2025!"),
+            role=UserRole.PROVIDER,
+            is_active=True,
+            is_verified=True,
+        )
+        db.add(user)
+        await db.flush()
+
+        provider = Provider(
+            user_id=user.id,
+            organization_name=p["organization_name"],
+            description=p["description"],
+            phone=p["org_phone"],
+            email=p["org_email"],
+            website=p["website"],
+            service_categories=p["service_categories"],
+            custom_services=[],
+            status=ProviderStatus.APPROVED,
+            working_days=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            work_start_time="08:00",
+            work_end_time="17:00",
+            max_appointments_per_day=20,
+            unavailable_dates=[],
+        )
+        db.add(provider)
+        await db.flush()
+
+        for province in p["provinces"]:
+            db.add(ProviderServiceArea(provider_id=provider.id, province=province))
+
+        await db.commit()
+        log.info("Seeded provider", org=p["organization_name"])

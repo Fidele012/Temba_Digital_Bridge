@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Verify your Temba account</title></head>
+<body style="font-family:'Segoe UI',Arial,sans-serif;background:#f4f7fb;margin:0;padding:0;">
+  <div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(10,37,64,.08);overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#1565C0,#29B6F6);padding:32px 40px;">
+      <h1 style="color:#fff;margin:0;font-size:22px;">Temba Digital Bridge</h1>
+    </div>
+    <div style="padding:32px 40px;">
+      <h2 style="color:#0A2540;font-size:18px;">Hi {{ name }},</h2>
+      <p style="color:#475569;line-height:1.7;">Welcome! Please verify your email address to activate your account.</p>
+      <div style="text-align:center;margin:32px 0;">
+        <a href="{{ site_url }}/api/v1/auth/verify-email/{{ token }}"
+           style="background:linear-gradient(135deg,#1565C0,#29B6F6);color:#fff;padding:14px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;display:inline-block;">
+          Verify Email Address
+        </a>
+      </div>
+      <p style="color:#94A3B8;font-size:13px;">This link expires in 24 hours. If you didn't create an account, ignore this email.</p>
+    </div>
+    <div style="background:#F8FAFC;padding:20px 40px;border-top:1px solid #E2E8F0;">
+      <p style="color:#94A3B8;font-size:12px;margin:0;">© 2026 Temba Digital Bridge · Rwanda</p>
+    </div>
+  </div>
+</body>
+</html>

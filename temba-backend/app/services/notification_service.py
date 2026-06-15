@@ -1,0 +1,112 @@
+"""
+Notification service — creates in-app notification rows and dispatches
+SMS via Africa's Talking (fire-and-forget in a background task).
+Email is dispatched via Jinja2 template + SMTP.
+"""
+from __future__ import annotations
+
+import smtplib
+import uuid
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+import structlog
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.config import settings
+from app.models.notification import Notification, NotificationType
+
+if TYPE_CHECKING:
+    pass
+
+log = structlog.get_logger(__name__)
+
+_TEMPLATE_DIR = Path(__file__).parent.parent / "templates" / "email"
+_jinja_env: Environment | None = None
+
+
+def _get_jinja() -> Environment:
+    global _jinja_env
+    if _jinja_env is None:
+        _jinja_env = Environment(
+            loader=FileSystemLoader(str(_TEMPLATE_DIR)),
+            autoescape=select_autoescape(["html", "txt"]),
+        )
+    return _jinja_env
+
+
+# ── In-app notifications ───────────────────────────────────────────────────────
+
+async def notify_user(
+    db: AsyncSession,
+    *,
+    user_id: uuid.UUID,
+    notification_type: str,
+    title: str,
+    body: str,
+    reference_id: str | None = None,
+    reference_type: str | None = None,
+) -> Notification:
+    notif = Notification(
+        user_id=user_id,
+        notification_type=NotificationType(notification_type),
+        title=title,
+        body=body,
+        reference_id=reference_id,
+        reference_type=reference_type,
+    )
+    db.add(notif)
+    await db.flush()
+    return notif
+
+
+# ── Email ──────────────────────────────────────────────────────────────────────
+
+def send_email_background(to: str, subject: str, template: str, context: dict) -> None:
+    """Called as a BackgroundTask — runs in a thread, not async."""
+    if not settings.SMTP_USER or settings.SMTP_PASSWORD in ("", "change-me"):
+        log.warning("SMTP not configured, skipping email", to=to, subject=subject)
+        return
+
+    try:
+        env = _get_jinja()
+        html_body = env.get_template(f"{template}.html").render(**context)
+        txt_body = env.get_template(f"{template}.txt").render(**context)
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = f"{settings.EMAILS_FROM_NAME} <{settings.EMAILS_FROM_EMAIL}>"
+        msg["To"] = to
+        msg.attach(MIMEText(txt_body, "plain", "utf-8"))
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+        with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
+            server.ehlo()
+            server.starttls()
+            server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+            server.sendmail(settings.EMAILS_FROM_EMAIL, to, msg.as_string())
+
+        log.info("Email sent", to=to, subject=subject)
+    except Exception:
+        log.exception("Failed to send email", to=to)
+
+
+# ── SMS via Africa's Talking ───────────────────────────────────────────────────
+
+def send_sms_background(to: str, message: str) -> None:
+    """Called as a BackgroundTask."""
+    if not settings.AT_API_KEY:
+        log.warning("AT SDK not configured, skipping SMS", to=to)
+        return
+    try:
+        import africastalking
+        africastalking.initialize(settings.AT_USERNAME, settings.AT_API_KEY)
+        sms = africastalking.SMS
+        response = sms.send(message, [to], sender_id=settings.AT_SENDER_ID)
+        log.info("SMS sent", to=to, response=response)
+    except Exception:
+        log.exception("Failed to send SMS", to=to)

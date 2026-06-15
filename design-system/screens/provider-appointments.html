@@ -1,0 +1,106 @@
+<!-- @dsCard group="Screens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Provider — Appointments</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;color:#1E293B;min-height:100vh}
+.navbar{height:64px;background:#0A2540;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 24px;gap:14px}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.7);position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#C62828;border:2px solid #0A2540}
+.layout{display:flex;height:calc(100vh - 64px)}
+.sidebar{width:256px;background:#0F2F4F;flex-shrink:0;padding:16px 0;overflow-y:auto}
+.role-chip{margin:0 14px 18px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.role-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#E65100,#F57C00);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 18px;margin:14px 0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:1px 8px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);position:relative}
+.nav-item.active{background:rgba(230,81,0,.2);color:#F57C00}
+.nav-item.active::before{content:'';position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:#E65100;border-radius:2px}
+.nav-badge{margin-left:auto;background:#C62828;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:10px 14px}
+.main{flex:1;overflow-y:auto;padding:28px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+/* Calendar week view */
+.week-grid{display:grid;grid-template-columns:60px repeat(7,1fr);background:#fff;border-radius:14px;box-shadow:0 1px 6px rgba(10,37,64,.07);overflow:hidden;margin-bottom:20px}
+.wg-header{padding:12px 8px;background:#F8FAFB;border-bottom:1px solid #F1F5F9;text-align:center;font-size:12px;font-weight:700;color:#64748B}
+.wg-header.today{background:#FFF3E0;color:#E65100}
+.wg-time{padding:12px 8px;font-size:11px;color:#94A3B8;text-align:right;border-right:1px solid #F1F5F9;border-bottom:1px solid #F8FAFB}
+.wg-cell{border-right:1px solid #F8FAFB;border-bottom:1px solid #F8FAFB;min-height:44px;padding:3px}
+.wg-event{border-radius:6px;padding:4px 7px;font-size:11px;font-weight:700;margin-bottom:2px;cursor:pointer}
+/* Upcoming list */
+.apt-item{background:#fff;border-radius:11px;padding:14px 18px;box-shadow:0 1px 6px rgba(10,37,64,.07);margin-bottom:8px;display:flex;gap:14px;align-items:center;cursor:pointer}
+.apt-item:hover{box-shadow:0 4px 18px rgba(10,37,64,.10)}
+.apt-date{width:44px;flex-shrink:0;background:linear-gradient(135deg,#E65100,#F57C00);border-radius:9px;padding:6px 4px;text-align:center;color:#fff}
+</style></head><body>
+<nav class="navbar">
+  <div class="logo-mark" style="flex-shrink:0"><i class="ti ti-droplet" style="color:#fff;font-size:17px"></i></div>
+  <span style="font-size:15px;font-weight:800;color:#fff;margin-right:auto">Temba Digital Bridge</span>
+  <div class="icon-btn"><i class="ti ti-moon" style="font-size:16px"></i></div>
+  <div class="icon-btn"><i class="ti ti-bell" style="font-size:16px"></i><div class="notif-dot"></div></div>
+  <div class="avatar">A</div>
+  <button style="background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:7px 13px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ti-logout" style="font-size:14px"></i> Sign Out</button>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="role-chip"><div class="role-icon"><i class="ti ti-building" style="color:#fff;font-size:15px"></i></div><div><div style="font-size:13px;font-weight:800;color:#fff">WASAC</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Admin · Water Provider</div></div></div>
+    <div class="sec-label">OPERATIONS</div>
+    <div class="nav-item"><i class="ti ti-inbox" style="font-size:16px"></i> Reports Inbox <span class="nav-badge">12</span></div>
+    <div class="nav-item"><i class="ti ti-tools" style="font-size:16px"></i> Service Requests <span class="nav-badge">4</span></div>
+    <div class="nav-item active"><i class="ti ti-calendar" style="font-size:16px"></i> Appointments</div>
+    <div class="nav-item"><i class="ti ti-speakerphone" style="font-size:16px"></i> Announcements</div>
+    <div class="sb-divider"></div>
+    <div class="sec-label">MANAGEMENT</div>
+    <div class="nav-item"><i class="ti ti-users" style="font-size:16px"></i> Team</div>
+    <div class="nav-item"><i class="ti ti-building-community" style="font-size:16px"></i> Community</div>
+    <div class="nav-item"><i class="ti ti-flask" style="font-size:16px"></i> Water Quality</div>
+    <div class="nav-item"><i class="ti ti-calendar-event" style="font-size:16px"></i> Availability</div>
+  </aside>
+  <main class="main">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div><div style="font-size:22px;font-weight:800;color:#0A2540">Appointments</div><div style="font-size:13px;color:#64748B;margin-top:3px">Week of Jun 9 – 15, 2026 · 8 scheduled</div></div>
+      <div style="display:flex;gap:10px"><div style="display:flex;background:#fff;border-radius:9px;border:1.5px solid #E2E8F0;overflow:hidden"><button style="padding:8px 14px;border:none;background:#E65100;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">Week</button><button style="padding:8px 14px;border:none;background:transparent;color:#64748B;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">Day</button><button style="padding:8px 14px;border:none;background:transparent;color:#64748B;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer">List</button></div></div>
+    </div>
+    <!-- Week nav -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><button style="background:#fff;border:1.5px solid #E2E8F0;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;font-size:16px"><i class="ti ti-chevron-left"></i></button><span style="font-size:14px;font-weight:700;color:#0A2540">Jun 9 – 15, 2026</span><button style="background:#fff;border:1.5px solid #E2E8F0;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748B;font-size:16px"><i class="ti ti-chevron-right"></i></button><button style="background:#FFF3E0;border:1.5px solid rgba(230,81,0,.2);color:#E65100;border-radius:8px;padding:7px 14px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Today</button></div>
+    <!-- Week grid -->
+    <div class="week-grid">
+      <div class="wg-header"></div>
+      <div class="wg-header">Mon 9</div><div class="wg-header">Tue 10</div><div class="wg-header">Wed 11</div><div class="wg-header today">Thu 12 ●</div><div class="wg-header">Fri 13</div><div class="wg-header">Sat 14</div><div class="wg-header">Sun 15</div>
+      <!-- 08:00 -->
+      <div class="wg-time">08:00</div>
+      <div class="wg-cell"><div class="wg-event" style="background:#EFF6FF;color:#1565C0">Meter Insp. — Kicukiro</div></div>
+      <div class="wg-cell"></div><div class="wg-cell"></div>
+      <div class="wg-cell"><div class="wg-event" style="background:#FFF3E0;color:#E65100">Pipe Repair — Gasabo</div></div>
+      <div class="wg-cell"></div><div class="wg-cell"></div><div class="wg-cell"></div>
+      <!-- 10:00 -->
+      <div class="wg-time">10:00</div>
+      <div class="wg-cell"></div>
+      <div class="wg-cell"><div class="wg-event" style="background:#E8F5E9;color:#2E7D32">New Conn. — Gasabo</div></div>
+      <div class="wg-cell"></div>
+      <div class="wg-cell"><div class="wg-event" style="background:#FFEBEE;color:#C62828">Urgent Visit</div></div>
+      <div class="wg-cell"></div><div class="wg-cell"></div><div class="wg-cell"></div>
+      <!-- 14:00 -->
+      <div class="wg-time">14:00</div>
+      <div class="wg-cell"></div><div class="wg-cell"></div>
+      <div class="wg-cell"><div class="wg-event" style="background:#F3E5F5;color:#7B1FA2">Quality Check</div></div>
+      <div class="wg-cell"></div>
+      <div class="wg-cell"><div class="wg-event" style="background:#EFF6FF;color:#1565C0">Meter — Nyarugenge</div></div>
+      <div class="wg-cell"></div><div class="wg-cell"></div>
+    </div>
+    <!-- Upcoming -->
+    <div style="font-size:16px;font-weight:700;color:#0A2540;margin-bottom:12px">Today's Schedule</div>
+    <div class="apt-item">
+      <div class="apt-date"><div style="font-size:9px;font-weight:700;text-transform:uppercase;opacity:.8">JUN</div><div style="font-size:20px;font-weight:800;line-height:1">13</div></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Meter Inspection — Kicukiro Sector</div><div style="font-size:12px;color:#94A3B8;margin-top:3px;display:flex;gap:10px"><i class="ti ti-clock" style="font-size:11px"></i>10:00–12:00 <i class="ti ti-user" style="font-size:11px"></i>Jean Mugisha <i class="ti ti-user-check" style="font-size:11px"></i>Eric H.</div></div>
+      <span class="badge" style="background:#E8F5E9;color:#2E7D32">Confirmed</span>
+    </div>
+    <div class="apt-item">
+      <div class="apt-date"><div style="font-size:9px;font-weight:700;text-transform:uppercase;opacity:.8">JUN</div><div style="font-size:20px;font-weight:800;line-height:1">13</div></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#1E293B">Urgent Site Visit — Gasabo</div><div style="font-size:12px;color:#94A3B8;margin-top:3px;display:flex;gap:10px"><i class="ti ti-clock" style="font-size:11px"></i>14:00–16:00 <i class="ti ti-user" style="font-size:11px"></i>Marie N. <i class="ti ti-user-check" style="font-size:11px"></i>Unassigned</div></div>
+      <span class="badge" style="background:#FFEBEE;color:#C62828">Urgent</span>
+    </div>
+  </main>
+</div>
+</body></html>

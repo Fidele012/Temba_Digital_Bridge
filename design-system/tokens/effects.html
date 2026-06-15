@@ -1,0 +1,90 @@
+<!-- @dsCard group="Tokens" -->
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Effects & Spacing</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F2F6FA;padding:40px;color:#1E293B}
+h1{font-size:28px;font-weight:800;color:#0A2540;margin-bottom:6px}
+.sub{font-size:14px;color:#64748B;margin-bottom:40px}
+.section{margin-bottom:44px}
+.section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:20px}
+.shadow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.shadow-card{background:#fff;border-radius:12px;padding:28px 20px;text-align:center}
+.shadow-label{font-size:12px;font-weight:700;color:#334155;margin-top:16px}
+.shadow-spec{font-size:10px;color:#94A3B8;margin-top:3px;font-family:monospace}
+.radius-grid{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.radius-block{background:#1565C0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff}
+.radius-label{font-size:12px;font-weight:700;margin-top:8px;color:#334155}
+.radius-val{font-size:11px;color:#94A3B8}
+.spacing-row{display:flex;align-items:center;gap:16px;margin-bottom:12px;background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 1px 4px rgba(10,37,64,.07)}
+.spacing-bar{background:#1565C0;height:16px;border-radius:4px;flex-shrink:0}
+.spacing-info{font-size:13px;font-weight:600;color:#334155}
+.spacing-px{font-size:12px;color:#94A3B8;margin-left:4px}
+</style></head><body>
+<h1>Effects & Spacing</h1>
+<p class="sub">Shadows, border radii, and spacing scale used across the platform</p>
+
+<div class="section">
+  <div class="section-title">Shadows</div>
+  <div class="shadow-grid">
+    <div>
+      <div class="shadow-card" style="box-shadow:0 1px 4px rgba(10,37,64,.07)">Shadow SM</div>
+      <div class="shadow-label">Shadow / SM</div>
+      <div class="shadow-spec">0 1px 4px rgba(10,37,64,.07)</div>
+    </div>
+    <div>
+      <div class="shadow-card" style="box-shadow:0 4px 20px rgba(10,37,64,.10)">Shadow MD</div>
+      <div class="shadow-label">Shadow / MD</div>
+      <div class="shadow-spec">0 4px 20px rgba(10,37,64,.10)</div>
+    </div>
+    <div>
+      <div class="shadow-card" style="box-shadow:0 8px 40px rgba(10,37,64,.14)">Shadow LG</div>
+      <div class="shadow-label">Shadow / LG</div>
+      <div class="shadow-spec">0 8px 40px rgba(10,37,64,.14)</div>
+    </div>
+    <div>
+      <div class="shadow-card" style="box-shadow:0 4px 18px rgba(21,101,192,.32)">Shadow Blue</div>
+      <div class="shadow-label">Shadow / Blue</div>
+      <div class="shadow-spec">0 4px 18px rgba(21,101,192,.32)</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Border Radius</div>
+  <div class="radius-grid">
+    <div>
+      <div class="radius-block" style="width:60px;height:60px;border-radius:8px;font-size:11px;font-weight:700">8px</div>
+      <div class="radius-label">SM</div><div class="radius-val">Inputs, tags</div>
+    </div>
+    <div>
+      <div class="radius-block" style="width:72px;height:72px;border-radius:12px;font-size:11px;font-weight:700">12px</div>
+      <div class="radius-label">MD</div><div class="radius-val">Cards, dropdowns</div>
+    </div>
+    <div>
+      <div class="radius-block" style="width:88px;height:88px;border-radius:18px;font-size:11px;font-weight:700">18px</div>
+      <div class="radius-label">LG</div><div class="radius-val">Auth card, panels</div>
+    </div>
+    <div>
+      <div class="radius-block" style="width:104px;height:104px;border-radius:24px;font-size:11px;font-weight:700">24px</div>
+      <div class="radius-label">XL</div><div class="radius-val">Hero elements</div>
+    </div>
+    <div>
+      <div class="radius-block" style="width:80px;height:44px;border-radius:999px;font-size:11px;font-weight:700">∞</div>
+      <div class="radius-label">Pill</div><div class="radius-val">Badges, buttons</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Spacing Scale (base 8px)</div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:4px"></div><div class="spacing-info">4px<span class="spacing-px">— xs · icon gaps</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:8px"></div><div class="spacing-info">8px<span class="spacing-px">— sm · tight padding</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:12px"></div><div class="spacing-info">12px<span class="spacing-px">— form element gaps</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:16px"></div><div class="spacing-info">16px<span class="spacing-px">— md · sidebar items</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:24px"></div><div class="spacing-info">24px<span class="spacing-px">— lg · card padding</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:32px"></div><div class="spacing-info">32px<span class="spacing-px">— xl · section gaps</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:48px"></div><div class="spacing-info">48px<span class="spacing-px">— 2xl · content blocks</span></div></div>
+  <div class="spacing-row"><div class="spacing-bar" style="width:80px"></div><div class="spacing-info">80px<span class="spacing-px">— 4xl · section padding</span></div></div>
+</div>
+</body></html>
